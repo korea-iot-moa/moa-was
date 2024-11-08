@@ -31,7 +31,6 @@ public class JwtProvider {
         this.jwtExpirationMs = jwtExpirationMs;
     }
 
-
     public String generateJwtToken(String userId) {
         return Jwts.builder()
                 .claim("userId", userId)
@@ -40,7 +39,6 @@ public class JwtProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
-
 
     public String generateEmailValidToken(String username) {
         return Jwts.builder()
@@ -51,14 +49,12 @@ public class JwtProvider {
                 .compact();
     }
 
-
     public String removeBearer(String bearerToken) {
         if (bearerToken == null || !bearerToken.startsWith("Bearer ")) {
             throw new RuntimeException("Invalid JWT token format");
         }
         return bearerToken.substring("Bearer ".length());
     }
-
 
     public String getUserIdFromJwt(String token) {
         Claims claims = getClaims(token);
