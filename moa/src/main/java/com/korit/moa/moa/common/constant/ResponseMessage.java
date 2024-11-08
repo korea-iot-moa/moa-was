@@ -11,6 +11,7 @@ public class ResponseMessage {
     public static final String NOT_EXIST_DATA = "Data does not exist."; // 데이터가 존재하지 않을 때 반환 메시지
     public static final String NOT_EXIST_USER = "User does not exist."; // 사용자가 존재하지 않을 때 반환 메시지
     public static final String NOT_EXIST_GROUP = "Group does not exist."; // 그룹이 존재하지 않을 때 반환 메시지
+    public static final String HOBBY_VALIDATION_FAILED = "Hobby validation failed"; // 취미 필드 유효성 검사 실패시 반환 메세지
 
     // EX) 존재 여부 관련 메시지 예시 - 확인 후 생략 가능
     // : 검색한 데이터에 대한 응답 메시지
