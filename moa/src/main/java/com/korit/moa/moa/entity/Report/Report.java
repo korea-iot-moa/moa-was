@@ -15,11 +15,9 @@ public class Report {
     private  Long id;
 
     @JoinColumn(name = "user_id",nullable = false)
-    @Column(nullable = false, length = 255)
     private  String userId;
 
     @JoinColumn(name = "group_id",nullable = false)
-    @Column(nullable = false)
     private  Long groupId;
 
     @Column(name = "report_detail",nullable = false, columnDefinition = "TEXT")
@@ -27,7 +25,8 @@ public class Report {
 
     @Column(name = "report_user", nullable = false, length = 255)
     private String reportUser;
+
     @Column(name = "review_image")
-    private  byte[] reviewImage;
+    private  String reviewImage;
 
 }
