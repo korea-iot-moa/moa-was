@@ -15,11 +15,15 @@ import lombok.NoArgsConstructor;
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
 
     @JoinColumn(name = "user_id",nullable = false)
-    private  String userId;
+    private String userId;
 
     @JoinColumn(name = "group_id",nullable = false)
-    private  Long groupId;
+    private Long groupId;
+
+
+
+
 }
