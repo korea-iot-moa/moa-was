@@ -17,12 +17,12 @@ import java.util.Date;
 @Builder
 public class UserList {
     @Id
-    @JoinColumn(name = "group_id", nullable = false, unique = true)
+    @JoinColumn(name = "group_id", nullable = false)
     @ManyToOne
     private MeetingGroup groupId;
 
     @Id
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne
     private User userId;
 

@@ -12,6 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Data
 public class RecommendationsId implements Serializable {
-    private Integer groupId;
+    private Long groupId;
     private String userId;
 }
