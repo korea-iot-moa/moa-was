@@ -1,4 +1,4 @@
-package com.korit.moa.moa.entity;
+package com.korit.moa.moa.entity.notice;
 
 import jakarta.persistence.*;
 import lombok.*;
