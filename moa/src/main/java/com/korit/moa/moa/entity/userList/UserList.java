@@ -1,5 +1,6 @@
 package com.korit.moa.moa.entity.userList;
 
+import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,14 +17,18 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class UserList {
-    @Id
-    @JoinColumn(name = "group_id", nullable = false)
+
+    @EmbeddedId
+    private UserListId id;
+
     @ManyToOne
+    @MapsId("groupId")
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id")
     private MeetingGroup groupId;
 
-    @Id
-    @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne
+    @MapsId("userId")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User userId;
 
     @Column(name = "user_level", nullable = false, columnDefinition = "ENUM('일반회원', '우수회원', '관리자') DEFAULT '일반회원'")
