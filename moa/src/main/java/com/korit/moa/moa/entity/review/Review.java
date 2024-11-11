@@ -1,4 +1,4 @@
-package com.korit.moa.moa.entity;
+package com.korit.moa.moa.entity.review;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
