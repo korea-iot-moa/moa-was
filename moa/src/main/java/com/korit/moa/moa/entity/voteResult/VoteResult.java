@@ -22,7 +22,7 @@ public class VoteResult {
     private Long voteResultId;
 
     @ManyToOne
-    @JoinColumn(name = "vote_id", nullable = false)
+    @JoinColumn(name = "vote_id", nullable = false, referencedColumnName = "vote_id")
     private Votes voteId;
 
     @Column(name = "user_id", nullable = false)

@@ -13,5 +13,6 @@ import java.io.Serializable;
 @Data
 public class RecommendationsId implements Serializable {
     private Long groupId;
+
     private String userId;
 }
