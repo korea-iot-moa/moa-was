@@ -1,4 +1,4 @@
-package com.korit.moa.moa.entity.blackList;
+package com.korit.moa.moa.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
