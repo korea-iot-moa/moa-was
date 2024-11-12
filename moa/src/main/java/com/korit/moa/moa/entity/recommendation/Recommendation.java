@@ -1,7 +1,8 @@
 package com.korit.moa.moa.entity.recommendation;
+
+import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.user.User;
 import jakarta.persistence.*;
-
 import lombok.*;
 
 @Entity
