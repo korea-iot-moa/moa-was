@@ -19,10 +19,10 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
-    @JoinColumn(name = "user_id", nullable = false,  referencedColumnName = "user_id")
+    @Column(name = "user_id", nullable = false)
     private String userId;
 
-    @JoinColumn(name = "group_id",nullable = false , referencedColumnName = "user_id")
+    @Column(name = "group_id",nullable = false)
     private Long groupId;
 
     @Column(name = "review_content", nullable = false, columnDefinition = "TEXT")

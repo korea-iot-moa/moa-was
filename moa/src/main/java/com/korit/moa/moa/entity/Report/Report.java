@@ -17,10 +17,10 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long reportId;
 
-    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "user_id")
+    @Column(name = "user_id", nullable = false)
     private  String userId;
 
-    @JoinColumn(name = "group_id", nullable = false, referencedColumnName = "group_id")
+    @Column(name = "group_id", nullable = false)
     private  Long groupId;
 
     @Column(name = "report_detail", nullable = false, columnDefinition = "TEXT")
@@ -30,7 +30,7 @@ public class Report {
     @Enumerated(EnumType.STRING)
     private ReportType reportType;
 
-    @JoinColumn(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private String reportUser;
 
     @Column(name = "report_image")
@@ -38,7 +38,7 @@ public class Report {
 
     @Column(name = "report_result", nullable = false)
     @Enumerated(EnumType.STRING)
-    private ReportResult reportResultf =  ReportResult.processing;
+    private ReportResult reportResult =  ReportResult.processing;
 
 
 }
