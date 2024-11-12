@@ -1,6 +1,5 @@
 package com.korit.moa.moa.entity.balckList;
 
-import com.korit.moa.moa.entity.meetingGroup;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,10 +14,9 @@ public class BlackList {
     @Column(name = "black_list_id")
     private Long blackListId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private String userId;
 
-    @JoinColumn(nullable = false, name = "group_id")
-    private MeetingGroup meetingGroup;
+    @Column(nullable = false, name = "group_id")
+    private Long groupId;
 }

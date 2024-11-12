@@ -1,10 +1,11 @@
 package com.korit.moa.moa.entity.meetingGroup;
 
+import com.korit.moa.moa.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "Meeting-Groups")
+@Table(name = "Meeting_Groups")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,9 +17,8 @@ public class MeetingGroup {
     @Column(name = "group_id")
     private Long groupId;
 
-    @ManyToOne
-    @JoinColumn(name = "creat_id", referencedColumnName = "user_id")
-    private User user;
+    @Column(name = "creator_id")
+    private String creatorId;
 
     @Column(nullable = false, length = 255, name = "group_title")
     private String groupTitle;
@@ -43,7 +43,7 @@ public class MeetingGroup {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "group_category")
-    private GroupCategory gruopCategory;
+    private GroupCategory groupCategory;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "group_type")
