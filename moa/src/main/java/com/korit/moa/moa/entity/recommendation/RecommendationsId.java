@@ -1,4 +1,4 @@
-package com.korit.moa.moa.entity.Recommendation;
+package com.korit.moa.moa.entity.recommendation;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
