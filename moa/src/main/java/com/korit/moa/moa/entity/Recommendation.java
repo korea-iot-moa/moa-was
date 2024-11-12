@@ -18,13 +18,5 @@ public class Recommendation {
 
     @Column(name = "group_id",nullable = false)
     private  Long groupId;
-
-    @Entity
-    @AllArgsConstructor
-    @Data
-    public static class RecommendationId implements Serializable {
-
-        private Integer groupId;
-        private String userId;
-    }
+    
 }
