@@ -14,9 +14,9 @@ public class BlackList {
     @Column(name = "black_list_id")
     private Long blackListId;
 
-    @Column(name = "user_id")
-    private String userId;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(nullable = false, name = "group_id")
-    private Long groupId;
+    @JoinColumn(nullable = false, name = "group_id")
+    private MeetingGroup groupId;
 }
