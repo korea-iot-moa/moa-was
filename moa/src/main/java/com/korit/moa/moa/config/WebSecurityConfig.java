@@ -38,7 +38,6 @@ public class WebSecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-
     @Bean
     public CorsFilter corsFilter() {
 

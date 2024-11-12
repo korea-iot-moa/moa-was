@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import java.util.Date;
 import java.util.Set;
 
@@ -35,13 +34,11 @@ public class AuthServiceImplement implements AuthService {
         String confirmPassword = dto.getConfirmPassword();
         String userName = dto.getUserName();
         String nickName = dto.getNickName();
-        Gender userGender =dto.getUserGender();
+        Gender userGender = dto.getUserGender();
         Date userBirthdate = dto.getUserBirthDate();
         Set<Hobby> hobbies = dto.getHobbies();
         String profileImage = dto.getProfileImage();
         Region region = dto.getRegion();
-
-        SignUpResponseDto data = null;
 
         // 아이디 유효성 검사
         if (userId == null || userId.isEmpty() || !userId.matches("^[a-zA-Z0-9]{8,14}$")) {
@@ -76,7 +73,7 @@ public class AuthServiceImplement implements AuthService {
         }
 
         // 생년월일 유효성 검사
-        if (userBirthdate == null ) {
+        if (userBirthdate == null) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
@@ -100,38 +97,38 @@ public class AuthServiceImplement implements AuthService {
                     .build();
 
             userRepository.save(user);
-            data = new SignUpResponseDto(user);
+            SignUpResponseDto data = new SignUpResponseDto(user);
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
-            return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
     }
 
     @Override
     public ResponseDto<SignInResponseDto> signIn(SignInRequestDto dto) {
-         String userId = dto.getUserId();
-         String password = dto.getPassword();
-         SignInResponseDto data = null;
+        String userId = dto.getUserId();
+        String password = dto.getPassword();
+        SignInResponseDto data = null;
 
-         // 아이디 유효성 검사
-         if(userId == null || userId.isEmpty()) {
-             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
-         }
+        // 아이디 유효성 검사
+        if (userId == null || userId.isEmpty()) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
 
-         // 비밀번호 유효성 검사
-        if(password == null || password.isEmpty()){
+        // 비밀번호 유효성 검사
+        if (password == null || password.isEmpty()) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
         try {
-            User user  = userRepository.findByUserId(userId)
+            User user = userRepository.findByUserId(userId)
                     .orElse(null);
-            if(user == null){
-                return  ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
+            if (user == null) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
             }
-            if(!bCryptPasswordEncoder.matches(password, user.getPassword())){
-                return  ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD);
+            if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD);
             }
             String token = jwtProvider.generateJwtToken(userId);
             int exprTime = jwtProvider.getExpiration();
@@ -142,7 +139,6 @@ public class AuthServiceImplement implements AuthService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
 
-
-        return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 }
