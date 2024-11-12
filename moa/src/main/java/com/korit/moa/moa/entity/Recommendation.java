@@ -18,5 +18,5 @@ public class Recommendation {
 
     @Column(name = "group_id",nullable = false)
     private  Long groupId;
-    
+
 }
