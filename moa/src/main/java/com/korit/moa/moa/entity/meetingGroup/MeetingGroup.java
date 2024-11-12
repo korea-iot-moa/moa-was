@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "Black_List")
+@Table(name = "Meeting-Groups")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class MeetingGroup {
 
     @Id
@@ -15,8 +16,9 @@ public class MeetingGroup {
     @Column(name = "group_id")
     private Long groupId;
 
-    @JoinColumn(nullable = false, name = "creator_id")
-    private Long creatorId;
+    @ManyToOne
+    @JoinColumn(name = "creat_id", referencedColumnName = "user_id")
+    private User user;
 
     @Column(nullable = false, length = 255, name = "group_title")
     private String groupTitle;
@@ -27,7 +29,8 @@ public class MeetingGroup {
     @Column(nullable = false, length = 255, name = "group_address")
     private String groupAddress;
 
-//    private Blob group_image;
+    @Column(name = "group_image")
+    private String  groupImage;
 
     @Column(nullable = false, length = 255, name = "group_supplies")
     private String groupSupplies;
