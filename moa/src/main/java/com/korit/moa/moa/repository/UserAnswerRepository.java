@@ -1,9 +1,9 @@
 package com.korit.moa.moa.repository;
 
-import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
+import com.korit.moa.moa.entity.userAnswer.UserAnswer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MeetingGroupRepository extends JpaRepository<MeetingGroup,Long> {
+public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
 }
