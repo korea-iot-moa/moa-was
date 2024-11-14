@@ -1,6 +1,5 @@
 package com.korit.moa.moa.entity.meetingGroup;
 
-import com.korit.moa.moa.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
