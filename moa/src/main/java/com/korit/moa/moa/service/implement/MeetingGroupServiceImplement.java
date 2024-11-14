@@ -10,4 +10,5 @@ import org.springframework.stereotype.Service;
 public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     public final MeetingGroupRepository meetingGroupRepository;
+
 }

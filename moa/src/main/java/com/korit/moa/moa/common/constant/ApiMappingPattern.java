@@ -2,7 +2,7 @@ package com.korit.moa.moa.common.constant;
 
 public class ApiMappingPattern {
     // 인증 절차
-    // : 회원가입, 로그인
+    // : 회원가입, 로그인, 검색
     public static final String AUTH = "/api/v1/auth";
 
     // 회원 관련
