@@ -11,8 +11,6 @@ public class ApiMappingPattern {
     //로그인 모임 관련
     public static final String GROUP = "/api/v1/meeting-group";
 
-    //
-
     // 추천 관련
     public static final String RECOMMENDATION = "/api/v1/recommendation";
 
