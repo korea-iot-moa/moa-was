@@ -1,6 +1,5 @@
 package com.korit.moa.moa.repository;
 
-import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.entity.userList.UserList;
 import com.korit.moa.moa.entity.userList.UserListId;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +14,7 @@ public interface UserListRepository extends JpaRepository<UserList, UserListId> 
 
     // 모임 내 유저 조회
     @Query(
-            "SELECT u.userId, u.nickName, u.profileImage " +
+            "SELECT u " +
             "FROM User u JOIN UserList ul ON u.userId = ul.userId " +
             "WHERE ul.groupId = :groupId"
     )
