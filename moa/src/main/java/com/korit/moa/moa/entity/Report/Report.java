@@ -26,11 +26,11 @@ public class Report {
     @Column(name = "report_detail", nullable = false, columnDefinition = "TEXT")
     private  String reportDetail;
 
-    @Column(name = "report_result", nullable = false)
+    @Column(name = "report_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private ReportType reportType;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "report_user", nullable = false)
     private String reportUser;
 
     @Column(name = "report_image")
@@ -38,7 +38,7 @@ public class Report {
 
     @Column(name = "report_result", nullable = false)
     @Enumerated(EnumType.STRING)
-    private ReportResult reportResult =  ReportResult.processing;
+    private ReportResult reportResult;
 
 
 }
