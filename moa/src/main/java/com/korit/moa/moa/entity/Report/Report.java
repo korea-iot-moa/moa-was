@@ -30,7 +30,7 @@ public class Report {
     @Enumerated(EnumType.STRING)
     private ReportType reportType;
 
-    @Column(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private String reportUser;
 
     @Column(name = "report_image")
