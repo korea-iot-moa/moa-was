@@ -6,7 +6,9 @@ import com.korit.moa.moa.dto.group.request.RequestGroupDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
 import com.korit.moa.moa.service.MeetingGroupService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,18 +19,30 @@ public class MeetingGroupController {
     private MeetingGroupService meetingGroupService;
 
     @PostMapping
-    public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(){
-
+    public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(
+            @AuthenticationPrincipal String userId , RequestGroupDto dto
+    ){
+        ResponseDto<ResponseGroupDto> response = meetingGroupService.createMeetingGroup(userId, dto);
+        HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
+        return  ResponseEntity.status(status).body(response);
     }
 
     @PutMapping
-    public ResponseEntity<ResponseDto<ResponseGroupDto>>updateMeetingGroupId(){
-
+    public ResponseEntity<ResponseDto<ResponseGroupDto>>updateMeetingGroupId(
+           @AuthenticationPrincipal String creatorId, @PathVariable Long groupId , RequestGroupDto dto
+    ){
+        ResponseDto<ResponseGroupDto> response = meetingGroupService.updateMeetingGroup(creatorId,groupId, dto);
+        HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
+        return  ResponseEntity.status(status).body(response);
     }
 
     @DeleteMapping
-    public ResponseEntity<ResponseDto<ResponseGroupDto>> deleteMeetingGroupId(){
-
+    public ResponseEntity<ResponseDto<ResponseGroupDto>> deleteMeetingGroupId(
+           @AuthenticationPrincipal String creatorId , @PathVariable Long groupId
+    ){
+        ResponseDto<ResponseGroupDto> response = meetingGroupService.deleteMeetingGroup(creatorId,groupId);
+        HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
+        return  ResponseEntity.status(status).body(response);
     }
 
 
