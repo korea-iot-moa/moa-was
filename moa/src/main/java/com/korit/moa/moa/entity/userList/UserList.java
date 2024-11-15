@@ -24,12 +24,12 @@ public class UserList {
     @ManyToOne
     @MapsId("groupId")
     @JoinColumn(name = "group_id", referencedColumnName = "group_id")
-    private MeetingGroup groupId;
+    private MeetingGroup group;
 
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User userId;
+    private User user;
 
     @Column(name = "user_level", nullable = false, columnDefinition = "ENUM('일반회원', '우수회원', '관리자') DEFAULT '일반회원'")
     private UserLevel userLevel;

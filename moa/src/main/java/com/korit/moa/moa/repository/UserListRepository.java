@@ -15,16 +15,16 @@ public interface UserListRepository extends JpaRepository<UserList, UserListId> 
     // 모임 내 유저 조회
     @Query(
             "SELECT u " +
-            "FROM User u JOIN UserList ul ON u.userId = ul.userId " +
-            "WHERE ul.groupId = :groupId"
+            "FROM User u JOIN UserList ul ON u.userId = ul.user.userId " +
+            "WHERE ul.group.groupId = :groupId"
     )
     List<Object[]> findUsersByGroupId(@Param("groupId") Long groupId);
 
     // 내 모임 조회
     @Query(
             "SELECT g.groupId, g.groupImage, g.groupTitle " +
-            "FROM MeetingGroup g JOIN UserList ul ON g.groupId = ul.groupId.groupId " +
-            "WHERE ul.userId.userId = :userId"
+            "FROM MeetingGroup g JOIN UserList ul ON g.groupId = ul.group.groupId " +
+            "WHERE ul.user.userId = :userId"
     )
     List<Object[]> findGroupByUserId(@Param("userId") String userId);
 

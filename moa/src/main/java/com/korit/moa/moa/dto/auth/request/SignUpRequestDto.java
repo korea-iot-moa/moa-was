@@ -4,6 +4,8 @@ import com.korit.moa.moa.entity.user.Gender;
 import com.korit.moa.moa.entity.user.Hobby;
 import com.korit.moa.moa.entity.user.Region;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +14,7 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class SignUpRequestDto {
     @NotBlank
     private String userId;
@@ -28,10 +31,10 @@ public class SignUpRequestDto {
     @NotBlank
     private String nickName;
 
-    @NotBlank
+    @NotNull
     private Gender userGender;
 
-    @NotBlank
+    @NotNull
     private Date userBirthDate;
 
     private Set<Hobby> hobbies;
