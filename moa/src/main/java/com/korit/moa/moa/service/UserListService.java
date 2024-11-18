@@ -9,5 +9,5 @@ import java.util.List;
 public interface UserListService {
     ResponseDto<List<GroupResponseDto>> getMyGroups(String userId);
     ResponseDto<List<UserListResponseDto>> getUserList(Long groupId);
-
+    ResponseDto<Void> deleteUserList(String userId, Long groupId);
 }
