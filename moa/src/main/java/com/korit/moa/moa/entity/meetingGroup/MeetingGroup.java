@@ -31,14 +31,14 @@ public class MeetingGroup {
     @Column(name = "group_image")
     private String  groupImage;
 
-    @Column(nullable = false, length = 255, name = "group_supplies")
+    @Column(length = 255, name = "group_supplies")
     private String groupSupplies;
 
     @Column(nullable = false, name = "group_date")
     private String groupDate;
 
     @Column(nullable = false, name = "group_question")
-    private String group_question;
+    private String groupQuestion;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "group_category")
