@@ -7,6 +7,7 @@ import com.korit.moa.moa.dto.user_list.response.UserListResponseDto;
 import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.repository.UserListRepository;
 import com.korit.moa.moa.service.UserListService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserListServiceImplement implements UserListService {
 
     private final UserListRepository userListRepository;
@@ -55,5 +57,21 @@ public class UserListServiceImplement implements UserListService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+    }
+
+    // 모임 나가기
+    @Override
+    public ResponseDto<Void> deleteUserList(String userId, Long groupId) {
+        try{
+//            if (!userListRepository.existsByUserIdAndGroupId(userId, groupId)) {
+//                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+//            }
+            userListRepository.deleteUserList(userId, groupId);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
     }
 }
