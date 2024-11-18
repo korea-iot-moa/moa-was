@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +22,7 @@ public class UserListController {
 
     public static final String USER_LIST = "/{groupId}";
 
-
+    // 내 모임 조회
     @GetMapping
     public ResponseEntity<ResponseDto<List<GroupResponseDto>>> getMyGroups(
             @AuthenticationPrincipal String userId
@@ -35,6 +32,7 @@ public class UserListController {
         return ResponseEntity.status(status).body(response);
     }
 
+    // 모임 내 유저리스트 조회
     @GetMapping(USER_LIST)
     public ResponseEntity<ResponseDto<List<UserListResponseDto>>> getUserList(
             @PathVariable Long groupId
@@ -43,4 +41,13 @@ public class UserListController {
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
+
+    // 모임 나가기
+    @DeleteMapping
+    public ResponseEntity<ResponseDto<Void>> deleteUserList(@RequestParam String userId, @RequestParam Long groupId) {
+        ResponseDto<Void> response = userListService.deleteUserList(userId, groupId);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
 }

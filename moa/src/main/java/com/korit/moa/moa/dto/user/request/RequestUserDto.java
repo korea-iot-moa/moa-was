@@ -1,4 +1,4 @@
 package com.korit.moa.moa.dto.user.request;
 
-public class ReqeustUserDto {
+public class RequestUserDto {
 }
