@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 
 @Entity
 @Table(name = "reviews")
@@ -29,7 +28,7 @@ public class Review {
     private String reviewContent;
 
     @Column(name = "review_date", nullable = false)
-    private Date reviewDate;
+    private String reviewDate;
 
     @Column(name = "review_image")
     private String reviewImage;
