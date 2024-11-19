@@ -14,22 +14,22 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MeetingGroupController {
 
-//    private MeetingGroupService meetingGroupService;
-//
-//    @PostMapping
-//    public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(){
-//
-//    }
-//
-//    @PutMapping
-//    public ResponseEntity<ResponseDto<ResponseGroupDto>>updateMeetingGroupId(){
-//
-//    }
-//
-//    @DeleteMapping
-//    public ResponseEntity<ResponseDto<ResponseGroupDto>> deleteMeetingGroupId(){
-//
-//    }
+    private MeetingGroupService meetingGroupService;
+
+    @PostMapping
+    public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(){
+
+    }
+
+    @PutMapping
+    public ResponseEntity<ResponseDto<ResponseGroupDto>>updateMeetingGroupId(){
+
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ResponseDto<ResponseGroupDto>> deleteMeetingGroupId(){
+
+    }
 
 
 }
