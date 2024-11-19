@@ -6,8 +6,12 @@ import com.korit.moa.moa.dto.group.request.RequestGroupDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
 import com.korit.moa.moa.service.MeetingGroupService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(ApiMappingPattern.GROUP)
@@ -30,6 +34,16 @@ public class MeetingGroupController {
     public ResponseEntity<ResponseDto<ResponseGroupDto>> deleteMeetingGroupId(){
 
     }
+
+    //
+    @GetMapping("{/userId}")
+    public ResponseEntity<ResponseDto<List<ResponseGroupDto>>> findGroupHomeSelectByGroupId(@AuthenticationPrincipal Long userId) {
+        ResponseDto<List<ResponseGroupDto>> response = meetingGroupService.findGroupHomeSelectByGroupId(userId);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
+
 
 
 }
