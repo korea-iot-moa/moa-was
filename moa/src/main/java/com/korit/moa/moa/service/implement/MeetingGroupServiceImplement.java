@@ -43,7 +43,12 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         if (groupAddress != null && groupAddress.isEmpty()){
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
-        if (groupType != null &&)
+        if (groupDate != null && groupDate.isEmpty()){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
+        if (groupQuestion != null && groupQuestion.isEmpty()){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
 
         try{
            MeetingGroup meetingGroup = MeetingGroup.builder()
@@ -72,16 +77,39 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
     }
 
     @Override
-    public ResponseDto<ResponseGroupDto> updateMeetingGroup(String creatorId, Long groupId, RequestGroupDto dto) {
+    public ResponseDto<ResponseGroupDto> updateMeetingGroup(String userId, Long groupId, RequestGroupDto dto) {
 
-        if(creatorId != null && creatorId.isEmpty()){
+        if(userId != null && userId.isEmpty()){
             return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
         }
         if (groupId != null ){
             return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
         }
 
-        return null;
+        try {
+            MeetingGroup meetingGroup =  meetingGroupRepository.findById(groupId)
+                    .orElseThrow(() ->  new IllegalAccessException("모임을 찾을수 없습니다" + groupId));
+
+            if(meetingGroup.getCreatorId().equals(userId)){
+                meetingGroup.setGroupTitle(meetingGroup.getGroupTitle());
+                meetingGroup.setGroupContent(meetingGroup.getGroupContent());
+                meetingGroup.setGroupAddress(meetingGroup.getGroupAddress());
+                meetingGroup.setGroupImage(meetingGroup.getGroupImage());
+                meetingGroup.setGroupSupplies(meetingGroup.getGroupSupplies());
+                meetingGroup.setGroupCategory(meetingGroup.getGroupCategory());
+                meetingGroup.setGroupType(meetingGroup.getGroupType());
+                meetingGroup.setMeetingType(meetingGroup.getMeetingType());
+                MeetingGroup updateMeetinGroup = meetingGroupRepository.save(meetingGroup);
+
+                return  ResponseDto.setSuccess(ResponseMessage.SUCCESS,)
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+
     }
 
     @Override

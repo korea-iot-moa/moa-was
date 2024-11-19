@@ -29,18 +29,17 @@ public class MeetingGroupController {
 
     @PutMapping
     public ResponseEntity<ResponseDto<ResponseGroupDto>>updateMeetingGroupId(
-           String creatorId, @PathVariable Long groupId , RequestGroupDto dto
+          @AuthenticationPrincipal String userId, @PathVariable Long groupId, RequestGroupDto dto
     ){
-        ResponseDto<ResponseGroupDto> response = meetingGroupService.updateMeetingGroup(creatorId,groupId, dto);
+        ResponseDto<ResponseGroupDto> response = meetingGroupService.updateMeetingGroup(userId,groupId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
     }
 
     @DeleteMapping
     public ResponseEntity<ResponseDto<ResponseGroupDto>> deleteMeetingGroupId(
-            String creatorId , @PathVariable Long groupId
-    ){
-        ResponseDto<ResponseGroupDto> response = meetingGroupService.deleteMeetingGroup(creatorId,groupId);
+        @AuthenticationPrincipal String userId, @PathVariable Long groupId){
+        ResponseDto<ResponseGroupDto> response = meetingGroupService.deleteMeetingGroup(userId,groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
     }
