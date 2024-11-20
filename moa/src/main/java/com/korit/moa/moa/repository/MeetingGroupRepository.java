@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MeetingGroupRepository extends JpaRepository<MeetingGroup,Long> {
@@ -27,24 +28,36 @@ public interface MeetingGroupRepository extends JpaRepository<MeetingGroup,Long>
 
 
     // 그룹 모임 홈화면 출력 사용자가 카테고리 선택한 경우
-    @Query(value = "SELECT ranked.groupId, ranked.groupTitle, ranked.groupAddress, ranked.meetingType, ranked.groupImage, ranked.groupDate, ranked.groupCategory " +
-            "FROM (SELECT mg.groupId, u.userId, mg.groupTitle, mg.groupAddress, mg.meetingType, mg.groupCategory, mg.groupImage, mg.groupDate, " +
-            "ROW_NUMBER() OVER (PARTITION BY mg.groupCategory ORDER BY mg.groupTitle) AS rn " +
-            "FROM MeetingGroup mg " +
-            "INNER JOIN User u ON mg.groupCategory = u.hobbies " +
-            "WHERE u.userId = 'userId' " +
-            "AND mg.groupCategory = (:mg.groupCategory) ) AS ranked " +
-            "WHERE ranked.rn <= 3" +
-            "ORDER BY ranked.groupCategory, RAND()", nativeQuery = true)
-    List<Object[]> findGroupHomeSelectByUserId(@Param("userId") Long userId);
+//    @Query("SELECT ranked.groupId, ranked.groupTitle, ranked.groupAddress, ranked.meetingType, ranked.groupImage, ranked.groupDate, ranked.groupCategory " +
+//            "FROM ( " +
+//            "  SELECT mg.groupId, mg.groupTitle, mg.groupAddress, mg.meetingType, mg.groupCategory, mg.groupImage, mg.groupDate, " +
+//            "         ROW_NUMBER() OVER (PARTITION BY mg.groupCategory ORDER BY mg.groupTitle) AS rn " +
+//            "  FROM MeetingGroup mg " +
+//            "  INNER JOIN User u ON mg.groupCategory = u.hobbies " +
+//            "  WHERE u.userId = :userId " +
+//            ") AS ranked " +
+//            "WHERE ranked.rn <= 3 " +
+//            "ORDER BY ranked.groupCategory, RAND()")
+//    Optional<List<MeetingGroup>> findGroupHomeSelectByUserId(@Param("userId") Long userId);
 
     // 그룹 모임 홈화면 출력 사용자가 카테고리 선택 안한 경우
-    @Query(value = "SELECT groupId, groupTitle, groupAddress, groupCategory, groupImage, groupDate " +
-            "FROM (SELECT groupId, groupTitle, groupAddress, groupCategory, groupImage, groupDate " +
-            "ROW_NUMBER() OVER (PARTITION BY mg.group_category ORDER BY group_title) AS rn " +
-            "FROM MeetingGroup" +
-            "WHERE mg.groupCategory = (:mg.groupCategory) ) AS ranked " +
+    @Query("SELECT ranked.groupId, ranked.groupTitle, ranked.groupAddress, ranked.meetingType, ranked.groupImage, ranked.groupDate, ranked.groupCategory " +
+            "FROM ( " +
+            "  SELECT groupId, groupTitle, groupAddress, meetingType, groupCategory, groupImage, groupDate, " +
+            "         ROW_NUMBER() OVER (PARTITION BY groupCategory ORDER BY groupTitle) AS rn " +
+            "  FROM MeetingGroup " +
+            ") AS ranked " +
             "WHERE ranked.rn <= 3 " +
-            "ORDER BY grouptCategory, RAND()", nativeQuery = true)
-    List<Object[]> findGroupHomeNoSelectByGroupId(@Param("groupId") Long groupId);
+            "ORDER BY ranked.groupCategory, RAND()")
+    Optional<List<MeetingGroup>> findGroupHomeNoSelectByGroupId(@Param("groupId") Long groupId);
+
+    // 모임 필터링 검색
+
+    @Query("SELECT groupId, groupTitle, groupAddress, groupCategory, groupImage, groupDate " +
+            "FROM MeetingGroup " +
+            "WHERE groupTitle LIKE %:groupTitle% " +
+            "ORDER BY groupId")
+    Optional<List<MeetingGroup>> findGroupSearchByGroupTitle(@Param("groupTitle") String groupTitle);
+
+
 }

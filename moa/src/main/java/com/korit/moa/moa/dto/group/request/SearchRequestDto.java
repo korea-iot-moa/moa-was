@@ -1,12 +1,15 @@
 package com.korit.moa.moa.dto.group.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestGroupDto {
+public class SearchRequestDto {
+    @NotBlank
+    private String groupTitle;
 
 }
