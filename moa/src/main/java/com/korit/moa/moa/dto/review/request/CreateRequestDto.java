@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,5 +18,6 @@ public class CreateRequestDto {
 
     private String reviewImage;
 
-    private String reviewDate = String.valueOf(LocalDate.now());
+    @NotBlank
+    private String reviewDate;
 }
