@@ -1,8 +1,8 @@
 package com.korit.moa.moa.entity.Report;
 
 public enum ReportResult {
-   processing, //처리중
-    out, //추방
-    stay, // 유지
+   처리중, //처리중
+    추방, //추방
+    유지, // 유지
 }
 
