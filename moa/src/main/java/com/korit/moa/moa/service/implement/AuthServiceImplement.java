@@ -48,33 +48,33 @@ public class AuthServiceImplement implements AuthService {
         // 비밀번호 유효성 검사
         if (password == null || password.isEmpty()
                 || !password.matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[\\W_])[a-zA-Z\\d\\W_]{8,16}$")) {
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL+"1");
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
         // 비밀번호 확인 유효성 검사
         if (confirmPassword == null || confirmPassword.isEmpty()
                 || !confirmPassword.matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[\\W_])[a-zA-Z\\d\\W_]{8,16}$")) {
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL+"2");
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
         // 비밀번호 일치 여부 확인
         if (!password.equals(confirmPassword)) {
-            return ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD+"3");
+            return ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD);
         }
 
         // 이름 유효성 검사
         if (userName == null || userName.isEmpty() || !userName.matches("^[a-zA-Z가-힣]+$")) {
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL+"4");
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
         // 닉네임 유효성 검사
         if (nickName == null || nickName.isEmpty() || !nickName.matches("^[a-zA-Z가-힣0-9]{1,10}$")) {
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL+"5");
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
         // 생년월일 유효성 검사
         if (userBirthdate == null) {
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL+"6");
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
 //        // 취미 유효성 검사
