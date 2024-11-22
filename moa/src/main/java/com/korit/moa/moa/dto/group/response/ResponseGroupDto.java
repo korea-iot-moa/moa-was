@@ -4,6 +4,7 @@ import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.meetingGroup.MeetingTypeCategory;
+import com.korit.moa.moa.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class ResponseGroupDto {
 
     private Long groupId;
 
-    private String creatorId;
+    private String  creatorId;//string
 
     private String groupTitle;
 
@@ -39,8 +40,8 @@ public class ResponseGroupDto {
 
         public ResponseGroupDto(MeetingGroup meetingGroup){
             this.groupId = meetingGroup.getGroupId();
-            this.creatorId = meetingGroup.getCreatorId();
             this.groupTitle = meetingGroup.getGroupTitle();
+            this.creatorId = meetingGroup.getCreatorId().toString();
             this.groupContent = meetingGroup.getGroupContent();
             this.groupAddress = meetingGroup.getGroupAddress();
             this.groupImage = meetingGroup.getGroupImage();

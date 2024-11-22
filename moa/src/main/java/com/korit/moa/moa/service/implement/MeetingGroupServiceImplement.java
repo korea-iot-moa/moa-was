@@ -11,7 +11,6 @@ import com.korit.moa.moa.entity.meetingGroup.MeetingTypeCategory;
 import com.korit.moa.moa.repository.MeetingGroupRepository;
 import com.korit.moa.moa.service.MeetingGroupService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,14 +18,13 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MeetingGroupServiceImplement implements MeetingGroupService {
-    @Autowired
+
     public final MeetingGroupRepository meetingGroupRepository;
 
     @Override
     // 모임 생성
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
         Long groundId = dto.getGroupId();
-        String creatorId = dto.getCreatorId();
         String groupTitle = dto.getGroupTitle();
         String groupContent = dto.getGroupContent();
         String groupAddress = dto.getGroupAddress();
@@ -38,26 +36,35 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         GroupTypeCategory groupType = dto.getGroupType();
         MeetingTypeCategory meetingType = dto.getMeetingType();
 
-        if (groupTitle != null && groupTitle.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        if(groundId == null){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "1");
         }
-        if (groupContent != null && groupContent.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        if (groupTitle == null || groupTitle.isEmpty()){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "2");
         }
-        if (groupAddress != null && groupAddress.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        if (groupContent == null || groupContent.isEmpty()){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "3");
         }
-        if (groupDate != null && groupDate.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        if (groupAddress == null || groupAddress.isEmpty()){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "4");
         }
-        if (groupQuestion != null && groupQuestion.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        if (groupDate == null || groupDate.isEmpty()){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "5");
+        }
+        if (groupQuestion == null || groupQuestion.isEmpty()){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "6");
+        }
+        if (groupType == null){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "7");
+        }
+        if (meetingType == null){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "8");
         }
 
         try{
            MeetingGroup meetingGroup = MeetingGroup.builder()
                    .groupId(groundId)
-                   .creatorId(creatorId)
+                   .creatorId(userId)
                    .groupTitle(groupTitle)
                    .groupContent(groupContent)
                    .groupAddress(groupAddress)
@@ -69,8 +76,10 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
                    .groupType(groupType)
                    .meetingType(meetingType)
                    .build();
-//         meetingGroup.setCreatorId(creatorId); // creatorId가 설정 되었는지 확인
+            System.out.println(dto);
            meetingGroupRepository.save(meetingGroup);
+
+           System.out.println(meetingGroupRepository);
            ResponseGroupDto data = new ResponseGroupDto(meetingGroup);
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
         } catch (Exception e) {
@@ -124,7 +133,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
     // 모임 삭제
     public ResponseDto<Void> deleteMeetingGroupId(String userId, Long groupId) {
 
-        if(userId != null && userId.isEmpty()){
+        if(userId == null || userId.isEmpty()){
             return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
         }
         try {
