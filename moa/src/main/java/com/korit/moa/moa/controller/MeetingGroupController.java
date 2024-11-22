@@ -11,35 +11,39 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+
+
 @RestController
 @RequestMapping(ApiMappingPattern.GROUP)
 @RequiredArgsConstructor
 public class MeetingGroupController {
 
-    private MeetingGroupService meetingGroupService;
+    private final MeetingGroupService meetingGroupService;
+    private static final String UPD_MEETINGGROUP = "/update/{groupId}";
+    private static final String DEL_MEETINGGROUP = "/delete/{groupId}";
 
     @PostMapping
     public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(
             @AuthenticationPrincipal String userId , RequestGroupDto dto
     ){
-        ResponseDto<ResponseGroupDto> response = meetingGroupService.createMeetingGroup(userId, dto);
+        ResponseDto<ResponseGroupDto> response = meetingGroupService.createGroupMeeting(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
     }
 
-    @PutMapping
+    @PutMapping(UPD_MEETINGGROUP)
     public ResponseEntity<ResponseDto<ResponseGroupDto>>updateMeetingGroupId(
           @AuthenticationPrincipal String userId, @PathVariable Long groupId, RequestGroupDto dto
     ){
-        ResponseDto<ResponseGroupDto> response = meetingGroupService.updateMeetingGroup(userId,groupId, dto);
+        ResponseDto<ResponseGroupDto> response = meetingGroupService.updateMeetingGroupId(userId,groupId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
     }
 
-    @DeleteMapping
-    public ResponseEntity<ResponseDto<ResponseGroupDto>> deleteMeetingGroupId(
+    @DeleteMapping(DEL_MEETINGGROUP)
+    public ResponseEntity<ResponseDto<Void>> deleteMeetingGroupId(
         @AuthenticationPrincipal String userId, @PathVariable Long groupId){
-        ResponseDto<ResponseGroupDto> response = meetingGroupService.deleteMeetingGroup(userId,groupId);
+        ResponseDto<Void> response = meetingGroupService.deleteMeetingGroupId(userId,groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
     }

@@ -11,16 +11,20 @@ import com.korit.moa.moa.entity.meetingGroup.MeetingTypeCategory;
 import com.korit.moa.moa.repository.MeetingGroupRepository;
 import com.korit.moa.moa.service.MeetingGroupService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class MeetingGroupServiceImplement implements MeetingGroupService {
-
+    @Autowired
     public final MeetingGroupRepository meetingGroupRepository;
 
     @Override
-    public ResponseDto<ResponseGroupDto> createMeetingGroup(String userId, RequestGroupDto dto) {
+    // 모임 생성
+    public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
         Long groundId = dto.getGroupId();
         String creatorId = dto.getCreatorId();
         String groupTitle = dto.getGroupTitle();
@@ -65,7 +69,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
                    .groupType(groupType)
                    .meetingType(meetingType)
                    .build();
-
+//         meetingGroup.setCreatorId(creatorId); // creatorId가 설정 되었는지 확인
            meetingGroupRepository.save(meetingGroup);
            ResponseGroupDto data = new ResponseGroupDto(meetingGroup);
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
@@ -77,12 +81,13 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
     }
 
     @Override
-    public ResponseDto<ResponseGroupDto> updateMeetingGroup(String userId, Long groupId, RequestGroupDto dto) {
-
-        if(userId != null && userId.isEmpty()){
+    // 모임 수정
+    public ResponseDto<ResponseGroupDto> updateMeetingGroupId(String userId, Long groupId, RequestGroupDto dto) {
+        ResponseGroupDto data = null;
+        if(userId == null || userId.isEmpty()){
             return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
         }
-        if (groupId != null ){
+        if (groupId == null ){
             return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
         }
 
@@ -91,36 +96,47 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
                     .orElseThrow(() ->  new IllegalAccessException("모임을 찾을수 없습니다" + groupId));
 
             if(meetingGroup.getCreatorId().equals(userId)){
-                meetingGroup.setGroupTitle(meetingGroup.getGroupTitle());
-                meetingGroup.setGroupContent(meetingGroup.getGroupContent());
-                meetingGroup.setGroupAddress(meetingGroup.getGroupAddress());
-                meetingGroup.setGroupImage(meetingGroup.getGroupImage());
-                meetingGroup.setGroupSupplies(meetingGroup.getGroupSupplies());
-                meetingGroup.setGroupCategory(meetingGroup.getGroupCategory());
-                meetingGroup.setGroupType(meetingGroup.getGroupType());
-                meetingGroup.setMeetingType(meetingGroup.getMeetingType());
-                MeetingGroup updateMeetinGroup = meetingGroupRepository.save(meetingGroup);
+                meetingGroup.setGroupTitle(dto.getGroupTitle());
+                meetingGroup.setGroupContent(dto.getGroupContent());
+                meetingGroup.setGroupAddress(dto.getGroupAddress());
+                meetingGroup.setGroupImage(dto.getGroupImage());
+                meetingGroup.setGroupSupplies(dto.getGroupSupplies());
+                meetingGroup.setGroupCategory(dto.getGroupCategory());
+                meetingGroup.setGroupType(dto.getGroupType());
+                meetingGroup.setMeetingType(dto.getMeetingType());
 
-                return  ResponseDto.setSuccess(ResponseMessage.SUCCESS,)
+                meetingGroupRepository.save(meetingGroup);
+                data = new ResponseGroupDto(meetingGroup);
+
+                return  ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
+
+            }else{
+                return ResponseDto.setFailed(ResponseMessage.UNAUTHORIZED_USER);
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
-
     }
 
     @Override
-    public ResponseDto<ResponseGroupDto> deleteMeetingGroup(String creatorId, Long groupId) {
+    // 모임 삭제
+    public ResponseDto<Void> deleteMeetingGroupId(String userId, Long groupId) {
 
-        if(creatorId != null && creatorId.isEmpty()){
+        if(userId != null && userId.isEmpty()){
             return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
         }
-        if (groupId != null ){
-            return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
+        try {
+            Optional<MeetingGroup> optionalMeetingGroup = meetingGroupRepository.findById(groupId);
+            if(optionalMeetingGroup.isPresent() && optionalMeetingGroup.get().getCreatorId().equals(userId)){
+                meetingGroupRepository.deleteById(groupId);
+            }
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS,null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
-        return null;
+
     }
 }

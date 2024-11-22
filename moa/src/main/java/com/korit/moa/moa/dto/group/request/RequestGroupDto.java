@@ -15,6 +15,7 @@ public class RequestGroupDto {
     @NotBlank
     private Long groupId;
 
+    @NotBlank
     private String creatorId;
 
     @NotBlank
@@ -36,10 +37,13 @@ public class RequestGroupDto {
     @NotBlank
     private String groupQuestion;
 
+    @NotBlank
     private GroupCategory groupCategory;
 
+    @NotBlank
     private GroupTypeCategory groupType;
 
+    @NotBlank
     private MeetingTypeCategory meetingType;
 
 

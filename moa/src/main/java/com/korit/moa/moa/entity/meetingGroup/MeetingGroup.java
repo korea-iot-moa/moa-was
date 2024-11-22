@@ -16,7 +16,7 @@ public class MeetingGroup {
     @Column(name = "group_id")
     private Long groupId;
 
-    @Column(name = "creator_id")
+    @Column(name = "creator_id", nullable = false)
     private String creatorId;
 
     @Column(nullable = false, length = 255, name = "group_title")
@@ -41,7 +41,7 @@ public class MeetingGroup {
     private String groupQuestion;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "group_category")
+    @Column(name = "group_category", nullable = false)
     private GroupCategory groupCategory;
 
     @Enumerated(EnumType.STRING)
