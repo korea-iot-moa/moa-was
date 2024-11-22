@@ -1,5 +1,6 @@
 package com.korit.moa.moa.entity.meetingGroup;
 
+import com.korit.moa.moa.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,7 @@ public class MeetingGroup {
     @Column(name = "group_id")
     private Long groupId;
 
-    @Column(name = "creator_id", nullable = false)
+    @Column(name = "creator_id")
     private String creatorId;
 
     @Column(nullable = false, length = 255, name = "group_title")
@@ -41,7 +42,7 @@ public class MeetingGroup {
     private String groupQuestion;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "group_category", nullable = false)
+    @Column(name = "group_category")
     private GroupCategory groupCategory;
 
     @Enumerated(EnumType.STRING)

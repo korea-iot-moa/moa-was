@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class MeetingGroupController {
 
     private final MeetingGroupService meetingGroupService;
-    private static final String UPD_MEETINGGROUP = "/update/{groupId}";
-    private static final String DEL_MEETINGGROUP = "/delete/{groupId}";
+    private static final String UPD_MEETINGGROUP = "/{groupId}";
+    private static final String DEL_MEETINGGROUP = "/{groupId}";
 
     @PostMapping
     public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(
-            @AuthenticationPrincipal String userId , RequestGroupDto dto
+            @AuthenticationPrincipal String userId , @RequestBody RequestGroupDto dto
     ){
         ResponseDto<ResponseGroupDto> response = meetingGroupService.createGroupMeeting(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
@@ -33,7 +33,7 @@ public class MeetingGroupController {
 
     @PutMapping(UPD_MEETINGGROUP)
     public ResponseEntity<ResponseDto<ResponseGroupDto>>updateMeetingGroupId(
-          @AuthenticationPrincipal String userId, @PathVariable Long groupId, RequestGroupDto dto
+          @AuthenticationPrincipal String userId, @PathVariable Long groupId, @RequestBody RequestGroupDto dto
     ){
         ResponseDto<ResponseGroupDto> response = meetingGroupService.updateMeetingGroupId(userId,groupId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
