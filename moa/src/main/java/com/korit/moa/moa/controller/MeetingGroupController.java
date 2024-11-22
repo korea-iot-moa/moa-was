@@ -2,10 +2,8 @@ package com.korit.moa.moa.controller;
 
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
-import com.korit.moa.moa.dto.group.request.RequestGroupDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
 import com.korit.moa.moa.dto.group.response.SearchResponseDto;
-import com.korit.moa.moa.service.MeetingGroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MeetingGroupController {
 
-    private MeetingGroupService meetingGroupService;
+    private com.korit.moa.moa.service.meetingGroupService meetingGroupService;
 
 //    @PostMapping
 //    public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(){
@@ -37,17 +35,17 @@ public class MeetingGroupController {
 //    }
 
     //
-    @GetMapping("{/userId}")
-    public ResponseEntity<ResponseDto<List<ResponseGroupDto>>> findGroupHomeSelectByUserId(@AuthenticationPrincipal Long userId) {
-        ResponseDto<List<ResponseGroupDto>> response = meetingGroupService.findGroupHomeSelectByUserId(userId);
-        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-        return ResponseEntity.status(status).body(response);
-    }
+//    @GetMapping("{/userId}")
+//    public ResponseEntity<ResponseDto<List<ResponseGroupDto>>> findHomeSelectByUserId(@AuthenticationPrincipal String userId) {
+//        ResponseDto<List<ResponseGroupDto>> response = meetingGroupService.findHomeSelectByUserId(userId);
+//        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+//        return ResponseEntity.status(status).body(response);
+//    }
 
-    @GetMapping("{/groupTitle}")
-    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> findGroupSearchByGroupTitle(@RequestParam String groupTitle) {
-        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findGroupSearchByGroupTitle(groupTitle);
-        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    @GetMapping("/keyword")
+    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> findSearchByGroupTitle(@RequestParam("groupTitle") String groupTitle) {
+        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findSearchByGroupTitle(groupTitle);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status).body(response);
     }
 

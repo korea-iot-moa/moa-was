@@ -6,11 +6,9 @@ import com.korit.moa.moa.dto.group.response.SearchResponseDto;
 
 import java.util.List;
 
-public interface MeetingGroupService {
+public interface meetingGroupService {
 
+//    ResponseDto<List<ResponseGroupDto>> findHomeSelectByUserId(String userId);
 
-
-    ResponseDto<List<ResponseGroupDto>> findGroupHomeSelectByUserId(Long userId);
-
-    ResponseDto<List<SearchResponseDto>> findGroupSearchByGroupTitle(String groupTitle);
+    ResponseDto<List<SearchResponseDto>> findSearchByGroupTitle(String groupTitle);
 }

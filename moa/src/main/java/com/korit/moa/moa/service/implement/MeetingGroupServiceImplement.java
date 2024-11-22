@@ -6,27 +6,26 @@ import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
 import com.korit.moa.moa.dto.group.response.SearchResponseDto;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.repository.MeetingGroupRepository;
-import com.korit.moa.moa.service.MeetingGroupService;
+import com.korit.moa.moa.service.meetingGroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class MeetingGroupServiceImplement implements MeetingGroupService {
+public class MeetingGroupServiceImplement implements meetingGroupService {
 
     public final MeetingGroupRepository meetingGroupRepository;
 
-    @Override
-    public ResponseDto<List<ResponseGroupDto>> findGroupHomeSelectByUserId(Long userId) {
-        List<ResponseGroupDto> data = null;
+//    @Override
+//    public ResponseDto<List<ResponseGroupDto>> findHomeSelectByUserId(String userId) {
+//        List<ResponseGroupDto> data = null;
 //
 //        try {
-//            Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findGroupHomeSelectByUserId(userId);
+//            Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findHomeSelectByUserId(userId);
 //
 //            if(optionalMeetingGroups.isPresent()) {
 //                List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
@@ -43,15 +42,20 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 //            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
 //        }
 //        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-        return null;
-    }
+//
+//    }
 
     @Override
-    public ResponseDto<List<SearchResponseDto>> findGroupSearchByGroupTitle(String groupTitle) {
+    public ResponseDto<List<SearchResponseDto>> findSearchByGroupTitle(String groupTitle) {
         List<SearchResponseDto> data = null;
         String searchKeyword = groupTitle;
+
+        if (groupTitle == null || groupTitle.trim().isEmpty()) {
+            return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+        }
+
         try {
-            Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findGroupSearchByGroupTitle(searchKeyword);
+            Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findSearchByGroupTitle(searchKeyword);
 
             if(optionalMeetingGroups.isPresent()) {
                 List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();

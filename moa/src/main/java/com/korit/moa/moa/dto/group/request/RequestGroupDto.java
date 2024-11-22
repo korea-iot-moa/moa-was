@@ -1,12 +1,13 @@
 package com.korit.moa.moa.dto.group.request;
 
+import com.korit.moa.moa.entity.user.User;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class RequestGroupDto {
-
+    @NotBlank
+    private User user;
 }
