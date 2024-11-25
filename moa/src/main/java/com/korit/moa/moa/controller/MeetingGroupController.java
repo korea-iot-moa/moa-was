@@ -42,9 +42,9 @@ public class MeetingGroupController {
 //        return ResponseEntity.status(status).body(response);
 //    }
 
-    @GetMapping("/keyword")
-    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> findSearchByGroupTitle(@RequestParam("groupTitle") String groupTitle) {
-        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findSearchByGroupTitle(groupTitle);
+    @GetMapping("/groupTitle")
+    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> findByGroupTitle(@RequestParam("groupTitle") String groupTitle) {
+        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupTitle(groupTitle);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status).body(response);
     }

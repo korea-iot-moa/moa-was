@@ -10,5 +10,5 @@ public interface meetingGroupService {
 
 //    ResponseDto<List<ResponseGroupDto>> findHomeSelectByUserId(String userId);
 
-    ResponseDto<List<SearchResponseDto>> findSearchByGroupTitle(String groupTitle);
+    ResponseDto<List<SearchResponseDto>> findByGroupTitle(String groupTitle);
 }

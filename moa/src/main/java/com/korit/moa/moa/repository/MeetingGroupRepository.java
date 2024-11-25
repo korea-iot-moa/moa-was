@@ -27,7 +27,7 @@ public interface MeetingGroupRepository extends JpaRepository<MeetingGroup,Long>
 //    Object deleteMeetingGroupId(@PathVariable Long groupId);
 
 
-//    // 그룹 모임 홈화면 출력 사용자가 카테고리 선택한 경우
+//   // 그룹 모임 홈화면 출력 사용자가 카테고리 선택한 경우
 //    @Query("SELECT ranked.groupId, ranked.groupTitle, ranked.groupAddress, ranked.meetingType, ranked.groupImage, ranked.groupDate, ranked.groupCategory " +
 //            "FROM ( " +
 //            "  SELECT mg.groupId, mg.groupTitle, mg.groupAddress, mg.meetingType, mg.groupCategory, mg.groupImage, mg.groupDate, " +
@@ -40,7 +40,7 @@ public interface MeetingGroupRepository extends JpaRepository<MeetingGroup,Long>
 //            "ORDER BY ranked.groupCategory, RAND()")
 //    Optional<List<MeetingGroup>> findHomeSelectByUserId(@Param("userId") String userId);
 
-    // 그룹 모임 홈화면 출력 사용자가 카테고리 선택 안한 경우
+////     그룹 모임 홈화면 출력 사용자가 카테고리 선택 안한 경우
 //    @Query("SELECT ranked.groupId, ranked.groupTitle, ranked.groupAddress, ranked.meetingType, ranked.groupImage, ranked.groupDate, ranked.groupCategory " +
 //            "FROM ( " +
 //            "  SELECT groupId, groupTitle, groupAddress, meetingType, groupCategory, groupImage, groupDate, " +
@@ -52,11 +52,10 @@ public interface MeetingGroupRepository extends JpaRepository<MeetingGroup,Long>
 //    Optional<List<MeetingGroup>> findNoSelectByGroupId(@Param("groupId") Long groupId);
 
     // 모임 필터링 검색
-    @Query("SELECT groupId, groupTitle, groupAddress, groupCategory, groupImage, groupDate " +
-            "FROM MeetingGroup " +
-            "WHERE groupTitle LIKE %:groupTitle% " +
-            "ORDER BY groupId")
-    Optional<List<MeetingGroup>> findSearchByGroupTitle(@Param("groupTitle") String groupTitle);
+    @Query("SELECT m FROM MeetingGroup m " +
+            "WHERE m.groupTitle LIKE %:groupTitle% " +
+            "ORDER BY m.groupId")
+    Optional<List<MeetingGroup>> findByGroupTitle(@Param("groupTitle") String groupTitle);
 
 
 }

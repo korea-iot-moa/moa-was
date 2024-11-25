@@ -46,16 +46,15 @@ public class MeetingGroupServiceImplement implements meetingGroupService {
 //    }
 
     @Override
-    public ResponseDto<List<SearchResponseDto>> findSearchByGroupTitle(String groupTitle) {
+    public ResponseDto<List<SearchResponseDto>> findByGroupTitle(String groupTitle) {
         List<SearchResponseDto> data = null;
-        String searchKeyword = groupTitle;
 
         if (groupTitle == null || groupTitle.trim().isEmpty()) {
             return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
         }
 
         try {
-            Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findSearchByGroupTitle(searchKeyword);
+            Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findByGroupTitle(groupTitle);
 
             if(optionalMeetingGroups.isPresent()) {
                 List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
