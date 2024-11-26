@@ -151,6 +151,7 @@ public class AuthServiceImplement implements AuthService {
     }
 
     @Override
+    // 아이디 찾기
     public ResponseDto<FindIdResponseDto> findLoginId(String userName, Date userBirthDate) {
         FindIdResponseDto data = null;
 

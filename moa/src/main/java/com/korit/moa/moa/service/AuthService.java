@@ -16,4 +16,5 @@ public interface AuthService {
     ResponseDto<SignUpResponseDto> signUp (SignUpRequestDto dto);
     ResponseDto<SignInResponseDto> signIn (SignInRequestDto dto);
     ResponseDto<FindIdResponseDto> findLoginId(String userName, Date userBirthDate);
+
 }
