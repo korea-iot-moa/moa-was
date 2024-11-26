@@ -38,20 +38,20 @@ public class ResponseGroupDto {
 
     private MeetingTypeCategory meetingType;
 
-        public ResponseGroupDto(MeetingGroup meetingGroup){
-            this.groupId = meetingGroup.getGroupId();
-            this.groupTitle = meetingGroup.getGroupTitle();
-            this.creatorId = meetingGroup.getCreatorId().toString();
-            this.groupContent = meetingGroup.getGroupContent();
-            this.groupAddress = meetingGroup.getGroupAddress();
-            this.groupImage = meetingGroup.getGroupImage();
-            this.groupSupplies = meetingGroup.getGroupSupplies();
-            this.groupDate = meetingGroup.getGroupDate();
-            this.groupQuestion = meetingGroup.getGroupQuestion();
-            this.groupCategory = meetingGroup.getGroupCategory();
-            this.groupType = meetingGroup.getGroupType();
-            this.meetingType = meetingGroup.getMeetingType();
-        }
+    public ResponseGroupDto(MeetingGroup meetingGroup){
+        this.groupId = meetingGroup.getGroupId();
+        this.groupTitle = meetingGroup.getGroupTitle();
+        this.creatorId = meetingGroup.getCreatorId().toString();
+        this.groupContent = meetingGroup.getGroupContent();
+        this.groupAddress = meetingGroup.getGroupAddress();
+        this.groupImage = meetingGroup.getGroupImage();
+        this.groupSupplies = meetingGroup.getGroupSupplies();
+        this.groupDate = meetingGroup.getGroupDate();
+        this.groupQuestion = meetingGroup.getGroupQuestion();
+        this.groupCategory = meetingGroup.getGroupCategory();
+        this.groupType = meetingGroup.getGroupType();
+        this.meetingType = meetingGroup.getMeetingType();
+    }
 
 
 }

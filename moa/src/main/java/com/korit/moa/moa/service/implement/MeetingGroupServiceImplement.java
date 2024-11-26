@@ -4,6 +4,7 @@ import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.group.request.RequestGroupDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
+import com.korit.moa.moa.dto.group.response.SearchResponseDto;
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
@@ -13,7 +14,9 @@ import com.korit.moa.moa.service.MeetingGroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -62,25 +65,25 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         }
 
         try{
-           MeetingGroup meetingGroup = MeetingGroup.builder()
-                   .groupId(groundId)
-                   .creatorId(userId)
-                   .groupTitle(groupTitle)
-                   .groupContent(groupContent)
-                   .groupAddress(groupAddress)
-                   .groupImage(groupImage)
-                   .groupSupplies(groupSupplies)
-                   .groupDate(groupDate)
-                   .groupQuestion(groupQuestion)
-                   .groupCategory(groupCategory)
-                   .groupType(groupType)
-                   .meetingType(meetingType)
-                   .build();
+            MeetingGroup meetingGroup = MeetingGroup.builder()
+                    .groupId(groundId)
+                    .creatorId(userId)
+                    .groupTitle(groupTitle)
+                    .groupContent(groupContent)
+                    .groupAddress(groupAddress)
+                    .groupImage(groupImage)
+                    .groupSupplies(groupSupplies)
+                    .groupDate(groupDate)
+                    .groupQuestion(groupQuestion)
+                    .groupCategory(groupCategory)
+                    .groupType(groupType)
+                    .meetingType(meetingType)
+                    .build();
             System.out.println(dto);
-           meetingGroupRepository.save(meetingGroup);
+            meetingGroupRepository.save(meetingGroup);
 
-           System.out.println(meetingGroupRepository);
-           ResponseGroupDto data = new ResponseGroupDto(meetingGroup);
+            System.out.println(meetingGroupRepository);
+            ResponseGroupDto data = new ResponseGroupDto(meetingGroup);
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -148,4 +151,59 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         }
 
     }
+
+  // 그룹 모임 홈화면 출력 사용자가 카테고리 선택한 경우
+//    @Override
+//    public ResponseDto<List<ResponseGroupDto>> findHomeSelectByUserId(String userId) {
+//        List<ResponseGroupDto> data = null;
+//
+//        try {
+//            Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findHomeSelectByUserId(userId);
+//
+//            if(optionalMeetingGroups.isPresent()) {
+//                List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
+//
+//                data = meetingGroups.stream()
+//                        .map(ResponseGroupDto::new)
+//                        .collect(Collectors.toList());
+//            } else {
+//                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
+//            }
+//
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+//        }
+//        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+//
+//    }
+
+    @Override
+    public ResponseDto<List<SearchResponseDto>> findByGroupTitle(String groupTitle) {
+        List<SearchResponseDto> data = null;
+
+        if (groupTitle == null || groupTitle.trim().isEmpty()) {
+            return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+        }
+
+        try {
+            Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findByGroupTitle(groupTitle);
+
+            if(optionalMeetingGroups.isPresent()) {
+                List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
+
+                data = meetingGroups.stream()
+                        .map(SearchResponseDto::new)
+                        .collect(Collectors.toList());
+            } else {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+    }
+
 }
