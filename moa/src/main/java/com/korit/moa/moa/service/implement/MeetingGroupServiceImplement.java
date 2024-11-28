@@ -71,7 +71,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
                    .groupType(groupType)
                    .meetingType(meetingType)
                    .build();
-            System.out.println(dto);
+           
            meetingGroupRepository.save(meetingGroup);
 
            ResponseGroupDto data = new ResponseGroupDto(meetingGroup);

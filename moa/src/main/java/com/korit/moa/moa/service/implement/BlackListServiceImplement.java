@@ -62,7 +62,7 @@ public class BlackListServiceImplement implements BlackListService {
         }
 
         try {
-            
+
             BlackList newBlackList = new BlackList();
             newBlackList.setUserId(userId);
             newBlackList.setGroupId(groupId);
