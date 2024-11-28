@@ -27,7 +27,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
     @Override
     // 모임 생성
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
-        Long groundId = dto.getGroupId();
         String groupTitle = dto.getGroupTitle();
         String groupContent = dto.getGroupContent();
         String groupAddress = dto.getGroupAddress();
@@ -39,51 +38,48 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         GroupTypeCategory groupType = dto.getGroupType();
         MeetingTypeCategory meetingType = dto.getMeetingType();
 
-        if(groundId == null){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "1");
-        }
         if (groupTitle == null || groupTitle.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "2");
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
         }
         if (groupContent == null || groupContent.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "3");
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
         }
         if (groupAddress == null || groupAddress.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "4");
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
         }
         if (groupDate == null || groupDate.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "5");
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
         }
         if (groupQuestion == null || groupQuestion.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "6");
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
         }
         if (groupType == null){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "7");
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
         }
         if (meetingType == null){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "8");
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
         }
 
         try{
-            MeetingGroup meetingGroup = MeetingGroup.builder()
-                    .groupId(groundId)
-                    .creatorId(userId)
-                    .groupTitle(groupTitle)
-                    .groupContent(groupContent)
-                    .groupAddress(groupAddress)
-                    .groupImage(groupImage)
-                    .groupSupplies(groupSupplies)
-                    .groupDate(groupDate)
-                    .groupQuestion(groupQuestion)
-                    .groupCategory(groupCategory)
-                    .groupType(groupType)
-                    .meetingType(meetingType)
-                    .build();
-            System.out.println(dto);
-            meetingGroupRepository.save(meetingGroup);
 
-            System.out.println(meetingGroupRepository);
-            ResponseGroupDto data = new ResponseGroupDto(meetingGroup);
+           MeetingGroup meetingGroup = MeetingGroup.builder()
+                   .creatorId(userId)
+                   .groupTitle(groupTitle)
+                   .groupContent(groupContent)
+                   .groupAddress(groupAddress)
+                   .groupImage(groupImage)
+                   .groupSupplies(groupSupplies)
+                   .groupDate(groupDate)
+                   .groupQuestion(groupQuestion)
+                   .groupCategory(groupCategory)
+                   .groupType(groupType)
+                   .meetingType(meetingType)
+                   .build();
+           
+           meetingGroupRepository.save(meetingGroup);
+
+           ResponseGroupDto data = new ResponseGroupDto(meetingGroup);
+
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,7 +103,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
             MeetingGroup meetingGroup =  meetingGroupRepository.findById(groupId)
                     .orElseThrow(() ->  new IllegalAccessException("모임을 찾을수 없습니다" + groupId));
 
-            if(meetingGroup.getCreatorId().equals(userId)){
                 meetingGroup.setGroupTitle(dto.getGroupTitle());
                 meetingGroup.setGroupContent(dto.getGroupContent());
                 meetingGroup.setGroupAddress(dto.getGroupAddress());
@@ -122,10 +117,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
                 return  ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
 
-            }else{
-                return ResponseDto.setFailed(ResponseMessage.UNAUTHORIZED_USER);
-            }
-
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
@@ -139,9 +130,12 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         if(userId == null || userId.isEmpty()){
             return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
         }
+        if(groupId == null){
+            return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
+        }
         try {
             Optional<MeetingGroup> optionalMeetingGroup = meetingGroupRepository.findById(groupId);
-            if(optionalMeetingGroup.isPresent() && optionalMeetingGroup.get().getCreatorId().equals(userId)){
+            if(optionalMeetingGroup.isPresent()){
                 meetingGroupRepository.deleteById(groupId);
             }
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,null);

@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestGroupDto {
-    @NotBlank
-    private Long groupId;
 
     @NotBlank
     private String creatorId;
