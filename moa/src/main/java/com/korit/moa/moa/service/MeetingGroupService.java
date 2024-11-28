@@ -8,6 +8,7 @@ import com.korit.moa.moa.dto.group.response.SearchResponseDto;
 import java.util.List;
 
 public interface MeetingGroupService {
+
     //모임 생성
     ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto);
 

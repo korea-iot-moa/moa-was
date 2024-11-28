@@ -53,7 +53,7 @@ public class MeetingGroupController {
     // 홈화면 카테고리별 추천 모임
 //    @GetMapping("{/userId}")
 //    public ResponseEntity<ResponseDto<List<ResponseGroupDto>>> findHomeSelectByUserId(@AuthenticationPrincipal String userId) {
-//        ResponseDto<List<ResponseGroupDto>> response = meetingGroupService.findHomeSelectByUserId(userId);
+//        ResponseDto<List<ResponseGroupDto>> response = MeetingGroupService.findHomeSelectByUserId(userId);
 //        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
 //        return ResponseEntity.status(status).body(response);
 //    }
