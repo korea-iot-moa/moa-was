@@ -4,6 +4,7 @@ import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.group.request.RequestGroupDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
+import com.korit.moa.moa.dto.group.response.SearchResponseDto;
 import com.korit.moa.moa.service.MeetingGroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -48,5 +50,19 @@ public class MeetingGroupController {
         return  ResponseEntity.status(status).body(response);
     }
 
+    // 홈화면 카테고리별 추천 모임
+//    @GetMapping("{/userId}")
+//    public ResponseEntity<ResponseDto<List<ResponseGroupDto>>> findHomeSelectByUserId(@AuthenticationPrincipal String userId) {
+//        ResponseDto<List<ResponseGroupDto>> response = meetingGroupService.findHomeSelectByUserId(userId);
+//        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+//        return ResponseEntity.status(status).body(response);
+//    }
 
+    // 모임이름 검색 필터링
+    @GetMapping("/groupTitle")
+    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> findByGroupTitle(@RequestParam("groupTitle") String groupTitle) {
+        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupTitle(groupTitle);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(response);
+    }
 }
