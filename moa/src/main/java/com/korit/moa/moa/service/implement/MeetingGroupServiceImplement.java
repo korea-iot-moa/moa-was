@@ -4,6 +4,7 @@ import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.group.request.RequestGroupDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
+import com.korit.moa.moa.dto.group.response.SearchResponseDto;
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
@@ -13,6 +14,7 @@ import com.korit.moa.moa.service.MeetingGroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,22 +38,22 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         MeetingTypeCategory meetingType = dto.getMeetingType();
 
         if (groupTitle == null || groupTitle.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
         if (groupContent == null || groupContent.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
         if (groupAddress == null || groupAddress.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
         if (groupDate == null || groupDate.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
         if (groupQuestion == null || groupQuestion.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
         if (groupType == null){
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
         if (meetingType == null){
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
@@ -71,9 +73,8 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
                    .groupType(groupType)
                    .meetingType(meetingType)
                    .build();
-           
-           meetingGroupRepository.save(meetingGroup);
 
+           meetingGroupRepository.save(meetingGroup);
            ResponseGroupDto data = new ResponseGroupDto(meetingGroup);
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
         } catch (Exception e) {
@@ -98,6 +99,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
             MeetingGroup meetingGroup =  meetingGroupRepository.findById(groupId)
                     .orElseThrow(() ->  new IllegalAccessException("모임을 찾을수 없습니다" + groupId));
 
+            if(meetingGroup.getCreatorId().equals(userId)){
                 meetingGroup.setGroupTitle(dto.getGroupTitle());
                 meetingGroup.setGroupContent(dto.getGroupContent());
                 meetingGroup.setGroupAddress(dto.getGroupAddress());
@@ -112,6 +114,10 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
                 return  ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
 
+            }else{
+                return ResponseDto.setFailed(ResponseMessage.UNAUTHORIZED_USER);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
@@ -125,12 +131,9 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         if(userId == null || userId.isEmpty()){
             return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
         }
-        if(groupId == null){
-            return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
-        }
         try {
             Optional<MeetingGroup> optionalMeetingGroup = meetingGroupRepository.findById(groupId);
-            if(optionalMeetingGroup.isPresent()){
+            if(optionalMeetingGroup.isPresent() && optionalMeetingGroup.get().getCreatorId().equals(userId)){
                 meetingGroupRepository.deleteById(groupId);
             }
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,null);
@@ -139,5 +142,10 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
 
+    }
+
+    @Override
+    public ResponseDto<List<SearchResponseDto>> findByGroupTitle(String groupTitle) {
+        return null;
     }
 }
