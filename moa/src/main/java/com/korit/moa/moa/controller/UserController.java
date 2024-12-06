@@ -2,8 +2,10 @@ package com.korit.moa.moa.controller;
 
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
+import com.korit.moa.moa.dto.auth.request.FindIdRequestDto;
 import com.korit.moa.moa.dto.auth.request.SignInRequestDto;
 import com.korit.moa.moa.dto.auth.request.SignUpRequestDto;
+import com.korit.moa.moa.dto.auth.response.FindIdResponseDto;
 import com.korit.moa.moa.dto.auth.response.SignInResponseDto;
 import com.korit.moa.moa.dto.auth.response.SignUpResponseDto;
 import com.korit.moa.moa.service.AuthService;
@@ -11,10 +13,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping(ApiMappingPattern.AUTH)
@@ -38,4 +39,15 @@ public class UserController {
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(response);
     }
+
+    @GetMapping("/userId")
+    public ResponseEntity<ResponseDto<FindIdResponseDto>> findLoginId(@Valid @RequestBody FindIdRequestDto dto) {
+        String userName = dto.getUserName();
+        Date userBirthDate = dto.getUserBirthDate();
+
+        ResponseDto<FindIdResponseDto> response = authService.findLoginId(userName, userBirthDate);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
 }

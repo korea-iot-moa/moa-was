@@ -15,9 +15,9 @@ public class BlackList {
     @Column(name = "black_list_id")
     private Long blackListId;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false, unique = true)
     private String userId;
 
-    @Column(nullable = false, name = "group_id")
+    @Column(name = "group_id", nullable = false, unique = true)
     private Long groupId;
 }

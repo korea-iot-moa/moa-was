@@ -2,8 +2,10 @@ package com.korit.moa.moa.service.implement;
 
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
+import com.korit.moa.moa.dto.auth.request.FindIdRequestDto;
 import com.korit.moa.moa.dto.auth.request.SignInRequestDto;
 import com.korit.moa.moa.dto.auth.request.SignUpRequestDto;
+import com.korit.moa.moa.dto.auth.response.FindIdResponseDto;
 import com.korit.moa.moa.dto.auth.response.SignInResponseDto;
 import com.korit.moa.moa.dto.auth.response.SignUpResponseDto;
 import com.korit.moa.moa.entity.user.Gender;
@@ -16,8 +18,10 @@ import com.korit.moa.moa.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -143,6 +147,34 @@ public class AuthServiceImplement implements AuthService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
 
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+    }
+
+    @Override
+    // 아이디 찾기
+    public ResponseDto<FindIdResponseDto> findLoginId(String userName, Date userBirthDate) {
+        FindIdResponseDto data = null;
+
+        if (userName == null || userName.isEmpty()) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
+
+        if (userBirthDate == null) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
+        try{
+            Optional<User> userOptional = userRepository.findByNameAndBirthDate(userName, userBirthDate);
+
+            if (userOptional.isEmpty()) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+            }
+            User user = userOptional.get();
+            data = new FindIdResponseDto(user);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 }

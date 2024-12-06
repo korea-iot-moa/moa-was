@@ -31,6 +31,7 @@ public class ResponseMessage {
     public static final String NOT_MATCH_PASSWORD = "Password does not match."; // 비밀번호 불일치 시 반환 메시지
     public static final String NOT_MATCH_NAME = "Name does not match."; // 이름 불일치 시 반환 메시지
     public static final String NOT_MATCH_BIRTHDAY = "Birthday does not match."; // 생년월일  불일치 시 반환 메시지
+    public static final String  UNAUTHORIZED_USER = "Unauthorized User"; // 승인 받지않은 사용자가 들어 왔을 때 반환 메시지
 
     // 토큰 및 메시지 관련 에러
     public static final String TOKEN_CREATE_FAIL = "Token creation failed."; // 토큰 생성 실패 시 반환 메시지

@@ -1,5 +1,6 @@
 package com.korit.moa.moa.repository;
 
+import com.korit.moa.moa.entity.balckList.BlackList;
 import com.korit.moa.moa.entity.userList.UserList;
 import com.korit.moa.moa.entity.userList.UserListId;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,13 @@ import java.util.List;
 
 @Repository
 public interface UserListRepository extends JpaRepository<UserList, UserListId> {
+
+    static void save(Long blackListId) {
+
+    }
+
+    static void deleteById(BlackList newBlackList) {
+    }
 
     // 모임 내 유저 조회
     @Query(
