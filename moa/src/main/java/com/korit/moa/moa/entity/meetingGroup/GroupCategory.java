@@ -8,5 +8,5 @@ public enum GroupCategory {
     자기계발,
     여행,
     연애,
-    힐딩
+    힐링
 }

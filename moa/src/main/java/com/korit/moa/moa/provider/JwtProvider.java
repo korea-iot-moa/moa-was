@@ -31,9 +31,11 @@ public class JwtProvider {
         this.jwtExpirationMs = jwtExpirationMs;
     }
 
-    public String generateJwtToken(String userId) {
+    public String generateJwtToken(String userId, String nickName, String profileImage) {
         return Jwts.builder()
                 .claim("userId", userId)
+                .claim("nickName", nickName)
+                .claim("profileImage", profileImage)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -62,9 +64,20 @@ public class JwtProvider {
         return claims.get("userId", String.class);
     }
 
+    public String getNickNameFromJwt(String token) {
+        Claims claims = getClaims(token);
+
+        return claims.get("nickName", String.class);
+    }
+
+    public String getProfileImageFromJwt(String token) {
+        Claims claims = getClaims(token);
+        return claims.get("profileImage", String.class);
+    }
+
     public boolean isValidToken(String token) {
         try {
-            getClaims(token); // JWT 클레임을 가져오면서 유효성 검증
+            getClaims(token);
             return true;
         } catch (Exception e) {
             return false;

@@ -44,8 +44,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             String userId = jwtProvider.getUserIdFromJwt(token);
+            String nickName = jwtProvider.getNickNameFromJwt(token);
+            String profileImage = jwtProvider.getProfileImageFromJwt(token);
 
-            setAuthenticationContext(request, userId);
+            setAuthenticationContext(request, userId, nickName, profileImage);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -54,7 +56,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
 
-    private void setAuthenticationContext(HttpServletRequest request, String userId) {
+
+    private void setAuthenticationContext(HttpServletRequest request, String userId, String nickName, String profileImage) {
         AbstractAuthenticationToken authenticationToken
                 = new UsernamePasswordAuthenticationToken(userId, null, AuthorityUtils.NO_AUTHORITIES);
 

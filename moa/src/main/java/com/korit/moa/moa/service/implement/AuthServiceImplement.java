@@ -134,7 +134,7 @@ public class AuthServiceImplement implements AuthService {
             if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD);
             }
-            String token = jwtProvider.generateJwtToken(userId);
+            String token = jwtProvider.generateJwtToken(userId, user.getNickName(), user.getProfileImage());
             int exprTime = jwtProvider.getExpiration();
 
             data = new SignInResponseDto(user, token, exprTime);
