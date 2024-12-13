@@ -1,7 +1,7 @@
 package com.korit.moa.moa.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Past;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,21 +10,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Setter
 public class User {
     @Id
     @Column(name = "user_id", updatable = false)
     private String userId;
 
     @Column(name = "user_password", nullable = false)
+    @JsonIgnoreProperties
     private String password;
 
-    @Past
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Column(name = "user_birth_date", nullable = false)
     private Date userBirthDate;
@@ -39,10 +39,8 @@ public class User {
     @Column(name = "user_nickname", nullable = false, unique = true)
     private String nickName;
 
-    @Column(name = "hobby")
-    @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Hobby> hobbies = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserHobbies> hobbies = new HashSet<>();
 
     @Column(name = "profile_image")
     private String profileImage;
@@ -52,3 +50,4 @@ public class User {
     private Region region;
 
 }
+
