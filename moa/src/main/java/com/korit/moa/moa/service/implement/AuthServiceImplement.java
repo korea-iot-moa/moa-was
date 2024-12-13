@@ -20,9 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +39,7 @@ public class AuthServiceImplement implements AuthService {
         String nickName = dto.getNickName();
         Gender userGender = dto.getUserGender();
         Date userBirthdate = dto.getUserBirthDate();
-        Set<Hobby> hobbies = dto.getHobbies();
+        Set<String> hobbies = dto.getHobbies();
         String profileImage = dto.getProfileImage();
         Region region = dto.getRegion();
 
@@ -99,7 +98,7 @@ public class AuthServiceImplement implements AuthService {
                     .nickName(nickName)
                     .userGender(userGender)
                     .userBirthDate(userBirthdate)
-                    .hobbies(hobbies)
+                    .hobbies(String.join(",", hobbies))
                     .profileImage(profileImage)
                     .region(region)
                     .build();
@@ -141,7 +140,18 @@ public class AuthServiceImplement implements AuthService {
             String token = jwtProvider.generateJwtToken(userId);
             int exprTime = jwtProvider.getExpiration();
 
-            data = new SignInResponseDto(user, token, exprTime);
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("userId", user.getUserId());
+            userData.put("password", user.getPassword());
+            userData.put("userName", user.getUserName());
+            userData.put("nickName", user.getNickName());
+            userData.put("userGender", user.getUserGender());
+            userData.put("userBirthDate", user.getUserBirthDate());
+            userData.put("hobbies", user.getHobbies());
+            userData.put("profileImage", user.getProfileImage());
+            userData.put("region", user.getRegion());
+
+            data = new SignInResponseDto(userData, token, exprTime);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);

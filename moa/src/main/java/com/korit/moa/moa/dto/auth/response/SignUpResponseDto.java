@@ -33,15 +33,15 @@ public class SignUpResponseDto {
 
     private Region region;
 
-        public SignUpResponseDto(User user) {
-            this.userId = user.getUserId();
-            this.password = user.getPassword();
-            this.userBirthDate = user.getUserBirthDate();
-            this.userGender = user.getUserGender();
-            this.userName = user.getUserName();
-            this.nickName = user.getNickName();
-            this.profileImage = user.getProfileImage();
-            this.hobbies = user.getHobbies();
-            this.region = user.getRegion();
+    public SignUpResponseDto(User user) {
+        this.userId = user.getUserId();
+        this.password = user.getPassword();
+        this.userBirthDate = user.getUserBirthDate();
+        this.userGender = user.getUserGender();
+        this.userName = user.getUserName();
+        this.nickName = user.getNickName();
+        this.profileImage = user.getProfileImage();
+        this.hobbies = user.getHobbies();
+        this.region = user.getRegion();
     }
 }

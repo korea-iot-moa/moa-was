@@ -1,22 +1,18 @@
-package com.korit.moa.moa.dto.user_answer.request;
+package com.korit.moa.moa.dto.group.request;
 
+import com.korit.moa.moa.entity.user.Hobby;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestUserAnswerDto {
+public class GroupHomeFilterRequestDto {
 
-    @NotNull
-    private Long groupId;
     @NotNull
     private String userId;
-    @NotNull
-    private String userAnswer;
 
+    private Hobby hobbies;
 }

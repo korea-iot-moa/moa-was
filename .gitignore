@@ -16,6 +16,7 @@ $RECYCLE.BIN/
 *.iws
 out/
 target/
+.application.properties/
 
 # Java / Spring Boot
 *.class

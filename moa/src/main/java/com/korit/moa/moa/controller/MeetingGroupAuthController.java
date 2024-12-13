@@ -1,9 +1,9 @@
 package com.korit.moa.moa.controller;
 
+
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.group.request.GroupHomeFilterRequestDto;
-import com.korit.moa.moa.dto.group.request.RequestGroupDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
 import com.korit.moa.moa.dto.group.response.SearchResponseDto;
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
@@ -17,47 +17,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
-@RequestMapping(ApiMappingPattern.GROUP)
+@RequestMapping(ApiMappingPattern.AUTH)
 @RequiredArgsConstructor
-public class MeetingGroupController {
+public class MeetingGroupAuthController {
 
     private final MeetingGroupService meetingGroupService;
-    private static final String UPD_MEETINGGROUP = "/{groupId}";
-    private static final String DEL_MEETINGGROUP = "/{groupId}";
-    private static final String GET_MEETINGGROUP_HOME = "/{userId}";
-    private static final String GET_MEETINGGROUP_CATEGORY = "/groupCategory";
-    private static final String GET_MEETINGGROUP_TYPE = "/groupType";
-
-    @PostMapping
-    public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(
-            @AuthenticationPrincipal String userId , @RequestBody RequestGroupDto dto
-    ){
-        ResponseDto<ResponseGroupDto> response = meetingGroupService.createGroupMeeting(userId, dto);
-        HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
-        return  ResponseEntity.status(status).body(response);
-    }
-
-    @PutMapping(UPD_MEETINGGROUP)
-    public ResponseEntity<ResponseDto<ResponseGroupDto>>updateMeetingGroupId(
-          @AuthenticationPrincipal String userId, @PathVariable Long groupId, @RequestBody RequestGroupDto dto
-    ){
-        ResponseDto<ResponseGroupDto> response = meetingGroupService.updateMeetingGroupId(userId,groupId, dto);
-        HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
-        return  ResponseEntity.status(status).body(response);
-    }
-
-    @DeleteMapping(DEL_MEETINGGROUP)
-    public ResponseEntity<ResponseDto<Void>> deleteMeetingGroupId(
-        @AuthenticationPrincipal String userId, @PathVariable Long groupId){
-        ResponseDto<Void> response = meetingGroupService.deleteMeetingGroupId(userId,groupId);
-        HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
-        return  ResponseEntity.status(status).body(response);
-    }
+    private static final String GET_GROUP = "/meeting-group";
+    private static final String GET_GROUP_CATEGORY = "/meeting-group/groupCategory";
+    private static final String GET_GROUP_TYPE = "/meeting-group/groupType";
+    private static final String GET_GROUP_HOME = "/meeting-group/group";
 
     // 모임이름 검색 필터링
-    @GetMapping
+    @GetMapping(GET_GROUP)
     public ResponseEntity<ResponseDto<List<SearchResponseDto>>> SearchGroupKeyword(@RequestParam("keyword") String groupTitle) {
         ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupTitle(groupTitle);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
@@ -65,7 +37,7 @@ public class MeetingGroupController {
     }
 
     // 모임 취미카테고리,지역칸테고리 필터링
-    @GetMapping(GET_MEETINGGROUP_CATEGORY)
+    @GetMapping(GET_GROUP_CATEGORY)
     public ResponseEntity<ResponseDto<List<SearchResponseDto>>> findByGroupCategoryAndRegion(
             @RequestParam GroupCategory groupCategory,
             @RequestParam String region
@@ -76,7 +48,7 @@ public class MeetingGroupController {
     }
 
     // 단기/정기 모임 필터
-    @GetMapping(GET_MEETINGGROUP_TYPE)
+    @GetMapping(GET_GROUP_TYPE)
     public ResponseEntity<ResponseDto<List<ResponseGroupDto>>> filterGroupType(@RequestParam GroupTypeCategory groupType) {
         ResponseDto<List<ResponseGroupDto>> response = meetingGroupService.findByGroupType(groupType);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
@@ -84,10 +56,11 @@ public class MeetingGroupController {
     }
 
     // 홈화면 카테고리별 추천 모임
-    @GetMapping(GET_MEETINGGROUP_HOME)
-    public ResponseEntity<ResponseDto<List<ResponseGroupDto>>> getGroupAtHome(@AuthenticationPrincipal @PathVariable String userId, GroupHomeFilterRequestDto dto) {
-        ResponseDto<List<ResponseGroupDto>> response = meetingGroupService.findGroupByUserId(userId, dto);
+    @GetMapping(GET_GROUP_HOME)
+    public ResponseEntity<ResponseDto<List<ResponseGroupDto>>> getGroupAtHomeAuth() {
+        ResponseDto<List<ResponseGroupDto>> response = meetingGroupService.getGroupAtHomeAuth();
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
+
 }

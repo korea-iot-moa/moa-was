@@ -19,7 +19,7 @@ public class UpdateUserRequestDto {
     @NotBlank
     private String nickName;
 
-    private Set<Hobby> hobbies;
+    private Set<String> hobbies;
 
     private String profileImage;
 

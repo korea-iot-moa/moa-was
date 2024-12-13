@@ -27,18 +27,18 @@ public class UserInfoController {
 
     // 사용자 정보 조회
     @GetMapping(USER_INFO_PATH)
-    public ResponseEntity<ResponseDto<ResponseUserDto>> findByUserId(@PathVariable String userId) {
-        ResponseDto<ResponseUserDto> response = userService.findByUserId(userId);
+    public ResponseEntity<ResponseDto<ResponseUserDto>> findUserInfo(@AuthenticationPrincipal @PathVariable String userId) {
+        ResponseDto<ResponseUserDto> response = userService.findUserInfo(userId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
     // 사용자 정보 업데이트
     @PutMapping(USER_INFO_PATH)
-    public ResponseEntity<ResponseDto<ResponseUserDto>> updateByUserId(
+    public ResponseEntity<ResponseDto<ResponseUserDto>> updateUser(
            @AuthenticationPrincipal @PathVariable String userId,
             @RequestBody UpdateUserRequestDto dto) {
-        ResponseDto<ResponseUserDto> response = userService.updateByUserId(userId, dto);
+        ResponseDto<ResponseUserDto> response = userService.updateUser(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

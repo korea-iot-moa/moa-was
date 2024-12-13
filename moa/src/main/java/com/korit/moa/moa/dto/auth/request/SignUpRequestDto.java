@@ -26,7 +26,7 @@ public class SignUpRequestDto {
     private String confirmPassword;
 
     @NotBlank
-     private String userName;
+    private String userName;
 
     @NotBlank
     private String nickName;

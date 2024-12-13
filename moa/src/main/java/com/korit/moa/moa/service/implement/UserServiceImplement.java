@@ -21,11 +21,12 @@ public class UserServiceImplement implements UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public ResponseDto<ResponseUserDto> findByUserId(String userId) {
+    // 내정보 조회
+    public ResponseDto<ResponseUserDto> findUserInfo(String userId) {
         ResponseUserDto data = null;
 
         try{
-            Optional<User> optionalUser = userRepository.findByUserId(userId);
+            Optional<User> optionalUser = userRepository.findById(userId);
 
             User user = optionalUser.get();
             data = new ResponseUserDto(user);
@@ -36,8 +37,9 @@ public class UserServiceImplement implements UserService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
+    // 사용자 정보 수정
     @Override
-    public ResponseDto<ResponseUserDto> updateByUserId(String userId, UpdateUserRequestDto dto) {
+    public ResponseDto<ResponseUserDto> updateUser(String userId, UpdateUserRequestDto dto) {
         ResponseUserDto data = null;
 
         try {
@@ -65,7 +67,7 @@ public class UserServiceImplement implements UserService {
                     .userGender((user.getUserGender()))
                     .userName(dto.getUserName())
                     .nickName(dto.getNickName())
-                    .hobbies(dto.getHobbies())
+                    .hobbies(String.join(",", dto.getHobbies()))
                     .profileImage(dto.getProfileImage())
                     .region(dto.getRegion())
                     .build();
