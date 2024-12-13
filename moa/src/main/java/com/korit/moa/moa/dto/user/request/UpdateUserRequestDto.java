@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
 
@@ -19,9 +20,8 @@ public class UpdateUserRequestDto {
     @NotBlank
     private String nickName;
 
-    private Set<Hobby> hobbies;
 
-    private String profileImage;
+    private MultipartFile profileImage;
 
     private Region region;
 }

@@ -26,8 +26,6 @@ public class ResponseUserDto {
 
     private String nickName;
 
-    private Set<Hobby> hobbies ;
-
     private String  profileImage;
 
     private Region region;
@@ -38,7 +36,6 @@ public class ResponseUserDto {
         this.userGender = user.getUserGender();
         this.userName = user.getUserName();
         this.nickName = user.getNickName();
-        this.hobbies = user.getHobbies();
         this.profileImage = user.getProfileImage();
         this.region = user.getRegion();
 

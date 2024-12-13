@@ -29,7 +29,7 @@ public class UserListServiceImplement implements UserListService {
         try{
             List<Object[]> results = userListRepository.findGroupByUserId(userId);
             data = results.stream()
-                    .map(result -> new GroupResponseDto((Long) result[0], (String) result[1], (String) result[2]))
+                    .map(result -> new GroupResponseDto((Long) result[0], (String) result[2], (String) result[1]))
                     .collect(Collectors.toList());
 
         } catch (Exception e) {
