@@ -2,13 +2,19 @@ package com.korit.moa.moa.service.implement;
 
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
+import com.korit.moa.moa.dto.vote.request.RequestUpdateVoteDto;
+import com.korit.moa.moa.dto.vote.request.RequestVoteDto;
+import com.korit.moa.moa.dto.vote.response.VotePostResponseDto;
 import com.korit.moa.moa.dto.vote.response.VoteResponseDto;
 import com.korit.moa.moa.entity.votes.Votes;
 import com.korit.moa.moa.repository.VoteRepository;
 import com.korit.moa.moa.service.VoteService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -35,5 +41,74 @@ public class VoteServiceImplement implements VoteService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+    }
+
+    //투표 등록
+    @Override
+    public ResponseDto<VotePostResponseDto> postMyGroupVote(Long groupId, RequestVoteDto dto) {
+        VotePostResponseDto  data = null;
+        String voteContent = dto.getVoteContent();
+        Date createDate = dto.getCreateDate();
+        Date closeDate = dto.getCloseDate();
+
+        if(voteContent == null){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
+        }
+        if(createDate == null ){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
+        }
+        if(closeDate == null ){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
+        }
+        try {
+            Votes votes = Votes.builder()
+                    .voteContent(voteContent)
+                    .createDate(createDate)
+                    .closeDate(closeDate)
+                    .build();
+            voteRepository.save(votes);
+            data = new VotePostResponseDto(votes);
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
+    @Override
+    //투표  수정
+    public ResponseDto<VoteResponseDto> updateMyGroupVote(Long voteId, RequestUpdateVoteDto dto) {
+        VoteResponseDto data = null;
+        try {
+            Votes votes = voteRepository.findById(voteId)
+                    .orElseThrow(() -> new IllegalAccessException("모임 투표를 찾을수 없습니다" + voteId) );
+
+            votes.setVoteContent(dto.getVoteContent());
+            votes.setCreateDate(dto.getCreateDate());
+            votes.setCloseDate(dto.getCloseDate());
+
+            voteRepository.save(votes);
+            data = new VoteResponseDto(votes);
+
+            return  ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
+    //투표 삭제
+    @Override
+    public ResponseDto<Void> deleteMyGroupVote(Long voteId) {
+        try {
+            Optional<Votes> optionalVotes = voteRepository.findById(voteId);
+            if(optionalVotes.isPresent()){
+                voteRepository.deleteById(voteId);
+            }
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS,null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
     }
 }

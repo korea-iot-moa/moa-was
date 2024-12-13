@@ -11,12 +11,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(ApiMappingPattern.VOTE_RESULT)
 public class VoteResultController {
 
     private final VoteResultService voteResultService;
+    private static final String GET_VOTE_RESULT = "/{groupId}";
 
     @PostMapping
     public ResponseEntity<ResponseDto<VoteResultResponseDto>> createVoteResult(
@@ -26,6 +29,14 @@ public class VoteResultController {
         ResponseDto<VoteResultResponseDto> response = voteResultService.createVoteResult(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
+    }
+
+    @GetMapping(GET_VOTE_RESULT)
+    //투표 결과 조회
+    public ResponseEntity<ResponseDto<List<VoteResultResponseDto>>> getVoteResult(@PathVariable Long voteId){
+        ResponseDto<List<VoteResultResponseDto>> response = voteResultService.getVoteResult(voteId);
+        HttpStatus status  = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return  ResponseEntity.status(status).body(response);
     }
 
 }

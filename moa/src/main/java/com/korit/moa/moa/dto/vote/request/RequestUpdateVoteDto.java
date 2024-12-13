@@ -7,13 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestVoteDto {
-
-
+public class RequestUpdateVoteDto {
     @NotBlank
     private String voteContent;
 

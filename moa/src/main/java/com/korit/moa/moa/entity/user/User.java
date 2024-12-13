@@ -48,5 +48,6 @@ public class User {
     @Column(name = "region")
     @Enumerated(EnumType.STRING)
     private Region region;
+
 }
 
