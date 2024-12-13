@@ -4,16 +4,17 @@ package com.korit.moa.moa.controller;
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.black_list.response.ResponseBlackListDto;
+import com.korit.moa.moa.dto.black_list.response.ResponseGetBlackListDto;
 import com.korit.moa.moa.service.BlackListService;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(ApiMappingPattern.BLACK_LIST)
@@ -27,17 +28,17 @@ public class BlackListController {
 
 
     @GetMapping(GET_BLACK_LIST)
-    public ResponseEntity<ResponseDto<List<ResponseBlackListDto>>> getBlackList(
-            @AuthenticationPrincipal String userId, @PathVariable Long groupId) {
-        ResponseDto<List<ResponseBlackListDto>> response = blackListService.getBlackList(userId,groupId);
+    public ResponseEntity<ResponseDto<List<ResponseGetBlackListDto>>> getBlackList(@PathVariable Long groupId){
+        ResponseDto<List<ResponseGetBlackListDto>> response = blackListService.getBlackList(groupId);
+        System.out.println(response);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
     }
 
     @PostMapping(POST_BLACK_LIST)
     public ResponseEntity<ResponseDto<ResponseBlackListDto>> postBlackList(
-        @PathVariable Long groupId,@AuthenticationPrincipal  String userId ) {
-        ResponseDto<ResponseBlackListDto> response = blackListService.postBlackList(groupId,userId );
+            @PathVariable Long groupId, @RequestBody Map<String, String> reqBody) {
+        ResponseDto<ResponseBlackListDto> response = blackListService.postBlackList(groupId, reqBody.get("userId"));
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
     }

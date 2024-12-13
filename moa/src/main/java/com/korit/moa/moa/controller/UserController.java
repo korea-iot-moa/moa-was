@@ -21,6 +21,7 @@ import java.util.Date;
 @RequestMapping(ApiMappingPattern.AUTH)
 @RequiredArgsConstructor
 public class UserController {
+
     private final AuthService authService ;
 
     private static final String SIGN_UP_PATH ="/signUp";

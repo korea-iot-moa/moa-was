@@ -2,10 +2,7 @@ package com.korit.moa.moa.entity.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -18,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Setter
 public class User {
     @Id
     @Column(name = "user_id", updatable = false)
@@ -52,4 +50,5 @@ public class User {
     @Column(name = "region")
     @Enumerated(EnumType.STRING)
     private Region region;
+
 }

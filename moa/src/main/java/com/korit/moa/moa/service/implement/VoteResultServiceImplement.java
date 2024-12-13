@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,4 +46,23 @@ public class VoteResultServiceImplement implements VoteResultService {
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
+
+    @Override
+    //결과 조회
+    public ResponseDto<List<VoteResultResponseDto>> getVoteResult(Long voteId) {
+        List<VoteResultResponseDto> data = null;
+        try {
+            List<VoteResult> voteResults=  voteResultRepository.findByGroupId(voteId);
+            data =  voteResults.stream()
+                    .map(VoteResultResponseDto:: new)
+                    .collect(Collectors.toList());
+
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
+
 }

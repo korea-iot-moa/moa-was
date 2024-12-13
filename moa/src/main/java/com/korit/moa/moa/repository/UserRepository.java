@@ -26,4 +26,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     )
     Optional<User> findByNameAndBirthDate(@Param("userName") String userName, @Param("userBirthdate") Date userBirthDate);
 
+    // 회원 존재 여부 확인
+    @Query("SELECT COUNT(u) > 0 FROM User u WHERE u.userId = :userId")
+    boolean existsByUserId(@Param("userId") String userId);
 }
