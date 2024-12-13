@@ -1,25 +1,18 @@
-package com.korit.moa.moa.dto.vote.request;
+package com.korit.moa.moa.dto.user_list.request;
 
+import com.korit.moa.moa.entity.userList.UserLevel;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestVoteDto {
-
+public class UserLevelRequestDto {
+    @NotBlank
+    private Long groupId;
 
     @NotBlank
-    private String voteContent;
-
-    @NotBlank
-    private Date createDate;
-
-    @NotBlank
-    private Date closeDate;
+    private UserLevel userLevel;
 }

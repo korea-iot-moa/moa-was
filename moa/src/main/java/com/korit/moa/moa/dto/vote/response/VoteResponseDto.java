@@ -1,6 +1,7 @@
 package com.korit.moa.moa.dto.vote.response;
 
 import com.korit.moa.moa.entity.votes.Votes;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,17 +10,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VoteResponseDto {
-
+    @NotBlank
     private Long voteId;
 
+    @NotBlank
     private Long groupId;
 
+    @NotBlank
     private String creatorId;
 
+    @NotBlank
     private String voteContent;
 
+    @NotBlank
     private String createDate;
 
+    @NotBlank
     private String closeDate;
 
     public VoteResponseDto(Votes vote) {

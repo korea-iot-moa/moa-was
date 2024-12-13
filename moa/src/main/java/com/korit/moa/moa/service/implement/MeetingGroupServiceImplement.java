@@ -24,8 +24,8 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     public final MeetingGroupRepository meetingGroupRepository;
 
-    @Override
     // 모임 생성
+    @Override
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
         String groupTitle = dto.getGroupTitle();
         String groupContent = dto.getGroupContent();
@@ -88,8 +88,8 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     }
 
-    @Override
     // 모임 수정
+    @Override
     public ResponseDto<ResponseGroupDto> updateMeetingGroupId(String userId, Long groupId, RequestGroupDto dto) {
         ResponseGroupDto data = null;
         if(userId == null || userId.isEmpty()){
@@ -123,8 +123,8 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         }
     }
 
-    @Override
     // 모임 삭제
+    @Override
     public ResponseDto<Void> deleteMeetingGroupId(String userId, Long groupId) {
 
         if(userId == null || userId.isEmpty()){
