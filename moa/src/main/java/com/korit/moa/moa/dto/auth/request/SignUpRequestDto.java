@@ -1,21 +1,23 @@
 package com.korit.moa.moa.dto.auth.request;
 
+
+
 import com.korit.moa.moa.entity.user.Gender;
-import com.korit.moa.moa.entity.user.Hobby;
 import com.korit.moa.moa.entity.user.Region;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
+
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpRequestDto {
+
     @NotBlank
     private String userId;
 
@@ -31,18 +33,15 @@ public class SignUpRequestDto {
     @NotBlank
     private String nickName;
 
-    @NotNull
+    @NotBlank
     private Gender userGender;
 
-    @NotNull
-    private Date userBirthDate;
+    @NotBlank
+    private String userBirthDate;
 
-    private Set<Hobby> hobbies;
+    private Set<Long> hobbies;
 
-    private String profileImage ;
+    private MultipartFile profileImage ;
 
     private Region region;
-
-
-
 }

@@ -16,8 +16,11 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, String> {
     // 사용자 검색
     Optional<User> findByUserId(String userId);
+
     // 닉네임중복 확인
     boolean existsByNickName(String nickName);
+
+    boolean existsByUserId(String userId);
 
     // 아이디 찾기
     @Query(

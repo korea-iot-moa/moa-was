@@ -1,22 +1,19 @@
 package com.korit.moa.moa.dto.user_answer.request;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
-@Data
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class RequestUserAnswerDto {
 
-    @NotNull
-    private Long groupId;
-    @NotNull
-    private String userId;
-    @NotNull
+    @NotBlank
+    private  String userId;
+
+    @NotBlank
     private String userAnswer;
 
 }

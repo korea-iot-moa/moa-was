@@ -1,36 +1,29 @@
 package com.korit.moa.moa.dto.user_answer.response;
 
 import com.korit.moa.moa.entity.userAnswer.UserAnswer;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.util.Date;
 
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseUserAnswerDto {
 
-    private Long answerId;
-
+    @NotBlank
     private Long groupId;
 
+    @NotBlank
     private String userId;
 
-    private String userAnswer;
+    @NotBlank
+    private int isApproved = 2;
 
-    private LocalDate answerDate;
-
-    private boolean isApproved;
-
-
-    public ResponseUserAnswerDto(UserAnswer userAnswers) {
-        this.answerId = userAnswers.getAnswerId();
-        this.groupId = userAnswers.getGroupId();
-        this.userId = userAnswers.getUserId();
-        this.userAnswer = userAnswers.getUserAnswer();
-        this.answerDate = userAnswers.getAnswerDate();
+    public ResponseUserAnswerDto(UserAnswer userAnswer) {
+        this.groupId = userAnswer.getGroupId();
+        this.userId = userAnswer.getUserId();
+        this.isApproved = userAnswer.getIsApproved();
     }
 }

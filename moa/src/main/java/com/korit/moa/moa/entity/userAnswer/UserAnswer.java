@@ -1,6 +1,5 @@
 package com.korit.moa.moa.entity.userAnswer;
 
-import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,5 +34,5 @@ public class UserAnswer {
     private LocalDate answerDate;
 
     @Column(name = "is_approved", nullable = false)
-    private boolean isApproved;
+    private int isApproved = 2; //기본 값 2 -> 대기중
 }

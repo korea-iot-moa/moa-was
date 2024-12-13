@@ -1,16 +1,14 @@
 package com.korit.moa.moa.entity.votes;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "Votes")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -35,5 +33,6 @@ public class Votes {
 
     @Column(name = "vote_close_date", nullable = false)
     private Date closeDate;
+
 
 }

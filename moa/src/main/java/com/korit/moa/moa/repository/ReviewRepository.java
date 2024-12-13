@@ -1,5 +1,6 @@
 package com.korit.moa.moa.repository;
 
+import com.korit.moa.moa.entity.balckList.BlackList;
 import com.korit.moa.moa.entity.review.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
+
     List<Review> findAllByUserId(String userId);
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "Notices")
@@ -24,5 +25,5 @@ public class Notice {
     private String noticeContent;
 
     @Column(nullable = false, name = "notice_date")
-    private LocalDateTime noticeDate;
+    private Date noticeDate;
 }
