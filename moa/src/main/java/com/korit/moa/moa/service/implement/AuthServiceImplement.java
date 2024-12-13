@@ -95,7 +95,7 @@ public class AuthServiceImplement implements AuthService {
         try {
             String profileImgPath = null;
             if(dto.getProfileImage() != null) {
-                profileImgPath = imgFileService.convertImgFile(dto.getProfileImage());
+                profileImgPath = imgFileService.convertImgFile(dto.getProfileImage(), "profile");
             }
             DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
             String encodingPassword = bCryptPasswordEncoder.encode(password);
