@@ -53,4 +53,16 @@ public class UserAnswerController {
         return ResponseEntity.status(status).body(response);
     }
 
+//    모임참여 신청
+//    @PostMapping
+//    public ResponseEntity<ResponseDto<ResponseUserAnswerDto>> createUserAnswer(
+//            @AuthenticationPrincipal String userId,
+//            @RequestBody RequestUserAnswerDto dto,
+//            Long answerId
+//    ){
+//        ResponseDto<ResponseUserAnswerDto> response = userAnswerService.createUserAnswer(userId, dto, answerId);
+//        HttpStatus status = response.isResult() ? HttpStatus.OK:HttpStatus.BAD_REQUEST;
+//        return  ResponseEntity.status(status).body(response);
+//    }
+
 }

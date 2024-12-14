@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -30,7 +31,7 @@ public class UserAnswer {
     private String userAnswer;
 
     @Column(name = "answer_date", nullable = false)
-    private Date answerDate;
+    private LocalDate answerDate;
 
     @Column(name = "is_approved", nullable = false)
     private int isApproved = 2; //기본 값 2 -> 대기중
