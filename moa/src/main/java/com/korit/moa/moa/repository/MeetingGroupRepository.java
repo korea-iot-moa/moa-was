@@ -16,46 +16,46 @@ import java.util.Optional;
 public interface MeetingGroupRepository extends JpaRepository<MeetingGroup,Long> {
 
        // 그룹 모임 홈화면 출력 사용자가 카테고리 선택한 경우/선택 안한 경우
-       @Query(value = """
-SELECT ranked.*
-FROM (
-    SELECT mg.*, 
-           ROW_NUMBER() OVER (PARTITION BY mg.group_category ORDER BY RAND()) AS rn
-    FROM Meeting_Groups mg
-    WHERE EXISTS (
-        SELECT 1
-        FROM Users u
-        WHERE u.user_id = :userId
-          AND (
-              u.hobby LIKE CONCAT('%', mg.group_category, '%')
-              OR (TRIM(u.hobby) = '' OR u.hobby IS NULL AND mg.group_category IN (
-                  SELECT group_category
-                  FROM (
-                      SELECT DISTINCT mg2.group_category
-                      FROM Meeting_Groups mg2
-                      ORDER BY RAND()
-                      LIMIT 3
-                  ) AS random_categories
-              ))
-          )
-    )
-) AS ranked
-WHERE ranked.rn <= 3
-ORDER BY ranked.group_category, RAND();
-""", nativeQuery = true)
-       Optional<List<MeetingGroup>> findGroupByUserId(@Param("userId") String userId);
-
+//       @Query(value = """
+//SELECT ranked.*
+//FROM (
+//    SELECT mg.*,
+//           ROW_NUMBER() OVER (PARTITION BY mg.group_category ORDER BY RAND()) AS rn
+//    FROM Meeting_Groups mg
+//    WHERE EXISTS (
+//        SELECT 1
+//        FROM Users u
+//        WHERE u.user_id = :userId
+//          AND (
+//              u.hobby LIKE CONCAT('%', mg.group_category, '%')
+//              OR (TRIM(u.hobby) = '' OR u.hobby IS NULL AND mg.group_category IN (
+//                  SELECT group_category
+//                  FROM (
+//                      SELECT DISTINCT mg2.group_category
+//                      FROM Meeting_Groups mg2
+//                      ORDER BY RAND()
+//                      LIMIT 3
+//                  ) AS random_categories
+//              ))
+//          )
+//    )
+//) AS ranked
+//WHERE ranked.rn <= 3
+//ORDER BY ranked.group_category, RAND();
+//""", nativeQuery = true)
+//       Optional<List<MeetingGroup>> findGroupByUserId(@Param("userId") String userId);
+//
     // 그룹 모임 홈화면 출력 비로그인 상태
     @Query(value = """
 SELECT ranked.*
 FROM (
-    SELECT mg.*, 
+    SELECT mg.*,
            ROW_NUMBER() OVER (PARTITION BY mg.group_category ORDER BY RAND()) AS rn
     FROM Meeting_Groups mg
     WHERE EXISTS (
         SELECT 1
         FROM Users u
-        WHERE 
+        WHERE
               SELECT group_category
               FROM (
                   SELECT DISTINCT mg2.group_category

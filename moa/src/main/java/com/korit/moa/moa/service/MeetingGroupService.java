@@ -34,7 +34,7 @@ public interface MeetingGroupService {
     ResponseDto<List<SearchResponseDto>> findByGroupCategoryAndRegion(GroupCategory groupCategory, String region);
 
     //홈화면 필터링(로그인)
-    ResponseDto<List<ResponseGroupDto>> findGroupByUserId(String userId, GroupHomeFilterRequestDto dto);
+//    ResponseDto<List<ResponseGroupDto>> findGroupByUserId(String userId, GroupHomeFilterRequestDto dto);
 
     //홈화면필터링(비회원)
     ResponseDto<List<ResponseGroupDto>> getGroupAtHomeAuth();

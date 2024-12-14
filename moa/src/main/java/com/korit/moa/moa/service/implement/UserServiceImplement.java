@@ -7,6 +7,7 @@ import com.korit.moa.moa.dto.user.request.UpdateUserRequestDto;
 import com.korit.moa.moa.dto.user.response.ResponseUserDto;
 import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.repository.UserRepository;
+import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +21,7 @@ public class UserServiceImplement implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ImgFileService imgFileService;
 
     // 내정보 조회
     public ResponseDto<ResponseUserDto> findUserInfo(String userId) {
@@ -60,6 +62,11 @@ public class UserServiceImplement implements UserService {
                 return ResponseDto.setFailed(ResponseMessage.DUPLICATED_TEL_NICKNAME);
             }
 
+            String profileImgPath = null;
+            if (dto.getProfileImage() != null) {
+                profileImgPath = imgFileService.convertImgFile(dto.getProfileImage(), "profile");
+            }
+
             user = User.builder()
                     .userId(user.getUserId())
                     .password(user.getPassword())
@@ -67,8 +74,7 @@ public class UserServiceImplement implements UserService {
                     .userGender((user.getUserGender()))
                     .userName(dto.getUserName())
                     .nickName(dto.getNickName())
-                    .hobbies(String.join(",", dto.getHobbies()))
-                    .profileImage(dto.getProfileImage())
+                    .profileImage(profileImgPath)
                     .region(dto.getRegion())
                     .build();
 
