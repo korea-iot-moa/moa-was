@@ -1,13 +1,12 @@
 package com.korit.moa.moa.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.korit.moa.moa.entity.recommendation.Recommendation;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -49,4 +48,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Region region;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Recommendation> recommendation = new ArrayList<>();
 }
