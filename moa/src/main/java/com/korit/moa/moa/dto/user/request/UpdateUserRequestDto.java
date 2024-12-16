@@ -25,4 +25,3 @@ public class UpdateUserRequestDto {
 
     private Region region;
 }
-

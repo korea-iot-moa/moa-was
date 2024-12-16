@@ -10,4 +10,6 @@ import java.util.List;
 public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
     List<UserAnswer> findByGroupId(Long groupId);
     void deleteByUserId(String userId);
+
+//    boolean existsByGroupIdAndUserId(Long groupId, String userId);
 }

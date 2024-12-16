@@ -44,14 +44,14 @@ public class UserAnswerServiceImplement implements UserAnswerService {
             return ResponseDto.setFailed(ResponseMessage.DUPLICATED_USER_ID);
         }
         try {
-              userAnswerRepository.findById(groupId);
-              UserAnswer newUserAnswer = UserAnswer.builder()
-                      .userId(userId)
-                      .userAnswer(userAnswer)
-                      .build();
+            userAnswerRepository.findById(groupId);
+            UserAnswer newUserAnswer = UserAnswer.builder()
+                    .userId(userId)
+                    .userAnswer(userAnswer)
+                    .build();
 
-              userAnswerRepository.save(newUserAnswer);
-              ResponseUserAnswerDto data = new ResponseUserAnswerDto(newUserAnswer);
+            userAnswerRepository.save(newUserAnswer);
+            ResponseUserAnswerDto data = new ResponseUserAnswerDto(newUserAnswer);
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,22 +87,22 @@ public class UserAnswerServiceImplement implements UserAnswerService {
             if (optionalUserAnswer.isEmpty()) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
             }
-                if(isApproved == 1){
-                    MeetingGroup meetingGroup = meetingGroupRepository.findById(groupId).get();
-                    User user = userRepository.findByUserId(dto.getUserId()).get();
-                    UserList userList = userListRepository.save(UserList.builder()
-                            .group(meetingGroup)
-                            .user(user)
-                            .userLevel(UserLevel.일반회원)
-                            .joinDate(new Date())
-                            .build());
+            if(isApproved == 1){
+                MeetingGroup meetingGroup = meetingGroupRepository.findById(groupId).get();
+                User user = userRepository.findByUserId(dto.getUserId()).get();
+                UserList userList = userListRepository.save(UserList.builder()
+                        .group(meetingGroup)
+                        .user(user)
+                        .userLevel(UserLevel.일반회원)
+                        .joinDate(new Date())
+                        .build());
 
-                    userAnswerRepository.deleteByUserId(dto.getUserId());
-                }
-                if (isApproved == 0){
-                    userAnswerRepository.deleteByUserId(dto.getUserId());
-                    return ResponseDto.setSuccess(ResponseMessage.SUCCESS,null);
-                }
+                userAnswerRepository.deleteByUserId(dto.getUserId());
+            }
+            if (isApproved == 0){
+                userAnswerRepository.deleteByUserId(dto.getUserId());
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS,null);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,5 +110,48 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS,null);
     }
+
+//    모임참여 답변
+//    @Override
+//    public ResponseDto<ResponseUserAnswerDto> createUserAnswer(String userId, RequestUserAnswerDto dto, Long answerId) {
+//
+//        Long groupId = dto.getGroupId();
+//        String userAnswer = dto.getUserAnswer();
+//
+//
+//        if(userId == null) {
+//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userId");
+//        }
+//
+//        if (userAnswer == null || userAnswer.isEmpty()) {
+//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userAnswer");
+//        }
+//
+//        boolean exists = userAnswerRepository.existsByGroupIdAndUserId(groupId, userId);
+//        if (exists) {
+//            return ResponseDto.setFailed(ResponseMessage.DUPLICATED_USER_ID);
+//        }
+//
+//        try {
+//            UserAnswer userAnswers = UserAnswer.builder()
+//                    .answerId(answerId)
+//                    .groupId(groupId)
+//                    .userId(userId)
+//                    .userAnswer(userAnswer)
+//                    .answerDate(LocalDate.now())
+//                    .isApproved(false)
+//                    .build();
+//            System.out.println(dto);
+//            userAnswerRepository.save(userAnswers);
+//
+//            System.out.println(userAnswerRepository);
+//            ResponseUserAnswerDto data = new ResponseUserAnswerDto(userAnswers);
+//            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+//        }
+//
+//    }
 
 }
