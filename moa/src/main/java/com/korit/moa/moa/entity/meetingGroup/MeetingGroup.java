@@ -1,8 +1,12 @@
 package com.korit.moa.moa.entity.meetingGroup;
 
+import com.korit.moa.moa.entity.recommendation.Recommendation;
 import com.korit.moa.moa.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Meeting_Groups")
@@ -52,4 +56,7 @@ public class MeetingGroup {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "meeting_type")
     private MeetingTypeCategory meetingType;
+
+    @OneToMany(mappedBy = "meetingGroup", cascade = CascadeType.ALL)
+    private List<Recommendation> recommendation = new ArrayList<>();
 }
