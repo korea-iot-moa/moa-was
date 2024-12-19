@@ -44,8 +44,17 @@ public class ReportController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //신고 처리
-    @DeleteMapping
+    //신고 처리 - 추방
+    @PostMapping(GET_REPORT)
+    public  ResponseEntity<ResponseDto<Void>> postReport(
+            @PathVariable Long groupId, @RequestBody DeleteReportRequestDto dto){
+        ResponseDto<Void> response = reportService.postReport(groupId,dto);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
+    //신고 처리 - 유지
+    @DeleteMapping(GET_REPORT)
     public  ResponseEntity<ResponseDto<Void>> deleteReport(
             @PathVariable Long groupId, @RequestBody DeleteReportRequestDto dto){
         ResponseDto<Void> response = reportService.deleteReport(groupId,dto);

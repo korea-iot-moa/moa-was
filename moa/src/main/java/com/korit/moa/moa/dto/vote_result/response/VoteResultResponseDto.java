@@ -31,4 +31,8 @@ public class VoteResultResponseDto {
         this.voteAnswer = voteResult.getVoteAnswer();
         this.voteDate = voteResult.getVoteDate();
     }
+
+
+    public VoteResultResponseDto(VoteResultResponseDto voteResultResponseDto) {
+    }
 }

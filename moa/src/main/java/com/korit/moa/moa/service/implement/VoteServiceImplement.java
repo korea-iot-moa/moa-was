@@ -4,12 +4,10 @@ import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.vote.request.RequestUpdateVoteDto;
 import com.korit.moa.moa.dto.vote.request.RequestVoteDto;
-import com.korit.moa.moa.dto.vote.response.VotePostResponseDto;
 import com.korit.moa.moa.dto.vote.response.VoteResponseDto;
 import com.korit.moa.moa.entity.votes.Votes;
 import com.korit.moa.moa.repository.VoteRepository;
 import com.korit.moa.moa.service.VoteService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,8 +43,10 @@ public class VoteServiceImplement implements VoteService {
 
     //투표 등록
     @Override
-    public ResponseDto<VotePostResponseDto> postMyGroupVote(Long groupId, RequestVoteDto dto) {
-        VotePostResponseDto  data = null;
+    public ResponseDto<VoteResponseDto> postMyGroupVote(RequestVoteDto dto) {
+        VoteResponseDto  data = null;
+        Long groupId = dto.getGroupId();
+        String createId = dto.getCreateId();
         String voteContent = dto.getVoteContent();
         Date createDate = dto.getCreateDate();
         Date closeDate = dto.getCloseDate();
@@ -62,12 +62,14 @@ public class VoteServiceImplement implements VoteService {
         }
         try {
             Votes votes = Votes.builder()
+                    .groupId(groupId)
+                    .creatorId(createId)
                     .voteContent(voteContent)
                     .createDate(createDate)
                     .closeDate(closeDate)
                     .build();
             voteRepository.save(votes);
-            data = new VotePostResponseDto(votes);
+            data = new VoteResponseDto(votes);
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,8 +86,11 @@ public class VoteServiceImplement implements VoteService {
                     .orElseThrow(() -> new IllegalAccessException("모임 투표를 찾을수 없습니다" + voteId) );
 
             votes.setVoteContent(dto.getVoteContent());
+            System.out.println(dto.getVoteContent());
             votes.setCreateDate(dto.getCreateDate());
+            System.out.println(dto.getCreateDate());
             votes.setCloseDate(dto.getCloseDate());
+            System.out.println(dto.getCloseDate());
 
             voteRepository.save(votes);
             data = new VoteResponseDto(votes);

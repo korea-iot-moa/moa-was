@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,11 +53,10 @@ public class VoteResultServiceImplement implements VoteResultService {
     public ResponseDto<List<VoteResultResponseDto>> getVoteResult(Long voteId) {
         List<VoteResultResponseDto> data = null;
         try {
-            List<VoteResult> voteResults=  voteResultRepository.findByGroupId(voteId);
+            List<VoteResult> voteResults=  voteResultRepository.findByVoteId(voteId);
             data =  voteResults.stream()
                     .map(VoteResultResponseDto:: new)
                     .collect(Collectors.toList());
-
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
         } catch (Exception e) {
             e.printStackTrace();

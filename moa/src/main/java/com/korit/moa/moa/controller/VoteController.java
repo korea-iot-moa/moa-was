@@ -4,7 +4,6 @@ import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.vote.request.RequestUpdateVoteDto;
 import com.korit.moa.moa.dto.vote.request.RequestVoteDto;
-import com.korit.moa.moa.dto.vote.response.VotePostResponseDto;
 import com.korit.moa.moa.dto.vote.response.VoteResponseDto;
 import com.korit.moa.moa.service.VoteService;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +33,11 @@ public class VoteController {
         return ResponseEntity.status(status).body(response);
     }
     //투표 등록
-    @PostMapping(GET_VOTE)
-    public ResponseEntity<ResponseDto<VotePostResponseDto>> postMyGroupVote(
-            @PathVariable Long groupId, @RequestBody RequestVoteDto dto
+    @PostMapping
+    public ResponseEntity<ResponseDto<VoteResponseDto>> postMyGroupVote(
+            @RequestBody RequestVoteDto dto
     ){
-        ResponseDto<VotePostResponseDto> response = voteService.postMyGroupVote(groupId,dto);
+        ResponseDto<VoteResponseDto> response = voteService.postMyGroupVote(dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
@@ -54,7 +53,7 @@ public class VoteController {
     }
 
     //투표 조회 삭제
-    @DeleteMapping
+    @DeleteMapping(PUT_VOTE)
     public ResponseEntity<ResponseDto<Void>> deleteMyGroupVote(
             @PathVariable Long voteId
     ){
