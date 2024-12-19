@@ -18,7 +18,6 @@ public class Votes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long voteId;
 
-
     @JoinColumn(name = "group_id", nullable = false)
     private Long groupId;
 

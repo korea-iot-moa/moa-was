@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserLevelRequestDto {
     @NotBlank
-    private Long groupId;
+    private String userId;
 
     @NotBlank
     private UserLevel userLevel;

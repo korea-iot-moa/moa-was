@@ -10,7 +10,5 @@ import java.util.List;
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
     List<Object[]> findReportByGroupId(Long gropId);
-
-
     void deleteByUserId(String userId);
 }
