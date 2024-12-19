@@ -67,8 +67,6 @@ public interface UserListRepository extends JpaRepository<UserList, UserListId> 
         """, nativeQuery = true)
     List<Object[]> getQuarterlyData(@Param("groupId") Long groupId);
 
-
-
     //유저 등급 수정
     @Query("SELECT ul FROM UserList ul WHERE ul.group.groupId = :groupId")
     Optional<UserList> findByGroupId(Long groupId);

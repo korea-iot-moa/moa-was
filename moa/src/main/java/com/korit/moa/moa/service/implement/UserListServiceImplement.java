@@ -149,7 +149,6 @@ public class UserListServiceImplement implements UserListService {
                         if (parts.length != 2) {
                             throw new IllegalArgumentException("Invalid date format: " + result[0]);
                         }
-                        // 연도와 분기 추출 (2024, 1)
                         int year = Integer.parseInt(parts[0]);
                         int quarter = Integer.parseInt(parts[1]);
                         long userCount = Long.parseLong(result[1].toString());
@@ -157,7 +156,7 @@ public class UserListServiceImplement implements UserListService {
 
                         return new MonthRatioResponseDto(quarter, userCount, ratio);
 
-                            }
+                        }
                     )
                     .collect(Collectors.toList());
         } catch (Exception e) {
