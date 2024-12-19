@@ -11,7 +11,7 @@ public interface UserAnswerService {
     ResponseDto<List<ResponseUserAnswerDto>> getUserAnswer(Long groupId);
     ResponseDto<ResponseUserAnswerDto> postMeetingGroup(Long groupId, RequestUserAnswerDto dto);
     ResponseDto<Void> approveUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto);
-
+    ResponseDto<Void> deleteUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto);
 //    모임참여 답변
 //    ResponseDto<ResponseUserAnswerDto> createUserAnswer(String userId, RequestUserAnswerDto dto, Long answerId);
 }

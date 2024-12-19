@@ -33,6 +33,4 @@ public class VoteResultResponseDto {
     }
 
 
-    public VoteResultResponseDto(VoteResultResponseDto voteResultResponseDto) {
-    }
 }

@@ -14,13 +14,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class MonthRatioResponseDto {
 
-//    @NotBlank
-//    private String userId;
-//
-
-    private int quarter; // 분기
+    private int quarter;  // 분기
     private Long userCount; // 유저 수
-    private Double ratio;//백분율
+    private Double ratio; //백분율
 
 
     public MonthRatioResponseDto(int quarter, long userCount, double ratio) {

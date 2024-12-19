@@ -20,6 +20,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -39,17 +40,18 @@ public class UserAnswerServiceImplement implements UserAnswerService {
     public ResponseDto<ResponseUserAnswerDto> postMeetingGroup(Long groupId, RequestUserAnswerDto dto) {
         String userId = dto.getUserId();
         String userAnswer = dto.getUserAnswer();
-        if (userAnswer == null || userAnswer.isEmpty()
-//                !userAnswer.matches("^(?!\\s)[가-힣A-Za-z\\s]{9,199}[가-힣A-Za-z\\s!@#$%^&*(),.?\":{}|<>]$\n")
-        ) {
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
-        }
+        LocalDate date = LocalDate.now();
+//        if (userAnswer == null || userAnswer.isEmpty()
+//              !userAnswer.matches("^(?!\\s)[가-힣A-Za-z\\s]{9,199}[가-힣A-Za-z\\s!@#$%^&*(),.?\":{}|<>]$\n")
+//        ) {
+//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+//        }
         try {
             userAnswerRepository.findById(groupId);
             UserAnswer newUserAnswer = UserAnswer.builder()
                     .userId(userId)
                     .groupId(groupId)
-                    .answerDate(new Date())
+                    .answerDate(date)
                     .isApproved(2)
                     .userAnswer(userAnswer)
                     .build();
