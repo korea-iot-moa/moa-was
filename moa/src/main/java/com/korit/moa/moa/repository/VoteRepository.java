@@ -18,4 +18,7 @@ public interface VoteRepository extends JpaRepository<Votes, Long> {
                     "WHERE v.groupId = :groupId"
     )
     Optional<Votes> findVoteByGroupId(@Param("groupId") Long groupId);
+
+    // 투표 존재 여부 확인
+    Boolean existsByGroupId (Long groupId);
 }

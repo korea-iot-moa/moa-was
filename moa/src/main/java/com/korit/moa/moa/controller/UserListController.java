@@ -25,6 +25,7 @@ public class UserListController {
     private final UserListService userListService;
 
     public static final String USER_LIST = "/{groupId}";
+    public static final String LEAVE_GROUP = "/leave/{groupId}";
     public static final String USER_DEL = "/van/{groupId}";
     public static final String USER_LEVEL = "/userLevel/{groupId}";
     public static final String GENDER_CHART_PAGE = "/genderChart/{groupId}";
@@ -52,8 +53,11 @@ public class UserListController {
     }
 
     // 모임 나가기
-    @DeleteMapping
-    public ResponseEntity<ResponseDto<Void>> deleteUserList(@RequestParam String userId, @RequestParam Long groupId) {
+    @DeleteMapping(LEAVE_GROUP)
+    public ResponseEntity<ResponseDto<Void>> deleteUserList(
+            @AuthenticationPrincipal String userId,
+            @PathVariable Long groupId
+    ) {
         ResponseDto<Void> response = userListService.deleteUserList(userId, groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);

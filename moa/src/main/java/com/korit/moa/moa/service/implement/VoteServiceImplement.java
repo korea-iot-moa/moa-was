@@ -110,4 +110,25 @@ public class VoteServiceImplement implements VoteService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
     }
+
+    @Override
+    public ResponseDto<Boolean> existsVote(Long groupId) {
+        Boolean data = null;
+
+        try {
+            data = voteRepository.existsByGroupId(groupId);
+
+            if(data) {
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
+            } else {
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, false);
+            }
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
 }
