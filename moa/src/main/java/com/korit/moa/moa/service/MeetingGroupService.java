@@ -38,4 +38,7 @@ public interface MeetingGroupService {
 
     //홈화면필터링(비회원)
     ResponseDto<List<ResponseGroupDto>> getGroupAtHomeAuth();
+
+    // 그룹 단건 조회
+    ResponseDto<ResponseGroupDto> getGroupById(Long groupId);
 }

@@ -64,5 +64,24 @@ public class VoteResultServiceImplement implements VoteResultService {
         }
     }
 
+    @Override
+    public ResponseDto<Boolean> existsByVoteIdAndUserId(String userId, Long voteId) {
+        Boolean data = null;
+
+        try{
+            data = voteResultRepository.existsByUserIdAndVoteId(userId, voteId);
+
+            if(data) {
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
+            }else {
+                return  ResponseDto.setSuccess(ResponseMessage.SUCCESS, false);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
 
 }
