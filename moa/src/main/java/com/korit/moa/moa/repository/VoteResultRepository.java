@@ -16,4 +16,6 @@ public interface VoteResultRepository extends JpaRepository<VoteResult, Long> {
             "FROM VoteResult vr " +
             "WHERE vr.voteId = :voteId")
     List<VoteResult> findByGroupId(@Param("voteId") Long voteId);
+
+    Boolean existsByUserIdAndVoteId(String userId, Long voteId);
 }

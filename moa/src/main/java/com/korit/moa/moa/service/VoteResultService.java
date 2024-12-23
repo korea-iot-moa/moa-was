@@ -9,4 +9,5 @@ import java.util.List;
 public interface VoteResultService {
     ResponseDto<VoteResultResponseDto> createVoteResult(String userId, VoteResultRequestDto dto);
     ResponseDto<List<VoteResultResponseDto>> getVoteResult(Long groupId);
+    ResponseDto<Boolean> existsByVoteIdAndUserId(String userId, Long voteId);
 }

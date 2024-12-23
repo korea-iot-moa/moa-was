@@ -203,6 +203,8 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     }
 
+
+
     // 검색어 필터링
     @Override
     public ResponseDto<List<SearchResponseDto>> findByGroupTitle(String keyword) {
@@ -285,6 +287,31 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
             } else {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+    }
+
+
+
+
+
+    // 그룹 단건 조회
+    @Override
+    public ResponseDto<ResponseGroupDto> getGroupById(Long groupId) {
+        ResponseGroupDto data = null;
+
+        try{
+            Optional<MeetingGroup> optionalGroup = meetingGroupRepository.findById(groupId);
+            if(optionalGroup.isEmpty()) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+            }
+
+            MeetingGroup meetingGroup = optionalGroup.get();
+            data = new ResponseGroupDto(meetingGroup);
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
