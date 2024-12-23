@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class ResponseGetBlackListDto {
 
     @NotBlank
-    private String userId;
+    private String profileImage;
 
     @NotBlank
     private String nickName;

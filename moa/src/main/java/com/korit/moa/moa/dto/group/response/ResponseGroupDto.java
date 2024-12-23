@@ -41,7 +41,7 @@ public class ResponseGroupDto {
     public ResponseGroupDto(MeetingGroup meetingGroup){
         this.groupId = meetingGroup.getGroupId();
         this.groupTitle = meetingGroup.getGroupTitle();
-        this.creatorId = meetingGroup.getCreatorId().toString();
+        this.creatorId = meetingGroup.getCreatorId();
         this.groupContent = meetingGroup.getGroupContent();
         this.groupAddress = meetingGroup.getGroupAddress();
         this.groupImage = meetingGroup.getGroupImage();
