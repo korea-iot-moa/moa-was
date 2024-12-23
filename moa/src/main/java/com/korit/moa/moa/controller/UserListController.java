@@ -25,8 +25,8 @@ public class UserListController {
     private final UserListService userListService;
 
     public static final String USER_LIST = "/{groupId}";
-    public static final String USER_DEL = "/van/{userListId}";
-    public static final String USER_LEVEL = "/userLevel/{userId}";
+    public static final String USER_DEL = "/van/{groupId}";
+    public static final String USER_LEVEL = "/userLevel/{groupId}";
     public static final String GENDER_CHART_PAGE = "/genderChart/{groupId}";
     public static final String USER_CHART_PAGE = "/userChart/{groupId}";
 
@@ -62,17 +62,17 @@ public class UserListController {
     //유저 레벨 수정
     @PutMapping(USER_LEVEL)
     public ResponseEntity<ResponseDto<UserLevelResponseDto>> putUserLevel(
-            @PathVariable String userId, @RequestBody UserLevelRequestDto dto)
+            @PathVariable Long groupId, @RequestBody UserLevelRequestDto dto)
     {
-        ResponseDto<UserLevelResponseDto> response = userListService.putUserLevel(userId,dto);
+        ResponseDto<UserLevelResponseDto> response = userListService.putUserLevel(groupId,dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
     //모임에서 추방
     @DeleteMapping(USER_DEL)
-    public ResponseEntity<ResponseDto<Void>> deleteUser(@PathVariable UserListId userListId){
-        ResponseDto<Void> response = userListService.deleteUser(userListId);
+    public ResponseEntity<ResponseDto<Void>> deleteUser(@PathVariable Long groupId, @RequestParam String userId){
+        ResponseDto<Void> response = userListService.deleteUser(groupId,userId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
@@ -85,7 +85,7 @@ public class UserListController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //모입 유입률 차트
+    //모입 유입율 차트
     @GetMapping(USER_CHART_PAGE)
     public ResponseEntity<ResponseDto<List<MonthRatioResponseDto>>> getMonthUserList(@PathVariable Long groupId){
         ResponseDto<List<MonthRatioResponseDto>> response = userListService.getMonthUserList(groupId);

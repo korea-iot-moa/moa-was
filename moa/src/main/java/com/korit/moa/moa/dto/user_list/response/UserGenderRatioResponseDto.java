@@ -12,9 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserGenderRatioResponseDto {
 
-
-
     @NotBlank
     private String userGender;
+    private Long count;
+    private Double ratio;
+
 
 }

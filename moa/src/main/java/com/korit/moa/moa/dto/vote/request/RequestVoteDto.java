@@ -13,6 +13,11 @@ import java.util.Date;
 @NoArgsConstructor
 public class RequestVoteDto {
 
+    @NotBlank
+    private Long groupId;
+
+    @NotBlank
+    private  String createId;
 
     @NotBlank
     private String voteContent;

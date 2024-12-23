@@ -24,9 +24,10 @@ public class UserAnswerController {
 
     private final UserAnswerService userAnswerService;
     private static final String GET_USER_ANSWER = "/{groupId}";
+    private static final String POST_USER_ANSWER = "approved/{groupId}";
 
     //모임 참가
-    @PostMapping
+    @PostMapping(GET_USER_ANSWER)
     public ResponseEntity<ResponseDto<ResponseUserAnswerDto>> postMeetingGroup(
             @PathVariable Long groupId, @RequestBody RequestUserAnswerDto dto)
     {
@@ -43,8 +44,18 @@ public class UserAnswerController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //참여 승인 및 거절
-    @DeleteMapping()
+    //참여거절
+    @DeleteMapping(GET_USER_ANSWER)
+    public ResponseEntity<ResponseDto<Void>> deleteUserAnswer(
+            @PathVariable Long groupId, @RequestBody RequestDeleteUserAnswerDto dto)
+    {
+        ResponseDto<Void> response = userAnswerService.deleteUserAnswer(groupId, dto);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
+    //참여 승인
+    @PostMapping(POST_USER_ANSWER)
     public ResponseEntity<ResponseDto<Void>> approveUserAnswer(
             @PathVariable Long groupId, @RequestBody RequestDeleteUserAnswerDto dto)
     {

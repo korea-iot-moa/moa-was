@@ -14,15 +14,17 @@ import com.korit.moa.moa.repository.UserListRepository;
 import com.korit.moa.moa.service.UserListService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.SignatureUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+//@Transactional
 public class UserListServiceImplement implements UserListService {
 
     private final UserListRepository userListRepository;
@@ -83,16 +85,13 @@ public class UserListServiceImplement implements UserListService {
 
     //유저 등급 수정
     @Override
-    public ResponseDto<UserLevelResponseDto> putUserLevel(String userId, UserLevelRequestDto dto) {
+    public ResponseDto<UserLevelResponseDto> putUserLevel(Long groupId, UserLevelRequestDto dto) {
         UserLevelResponseDto data = null;
-
-        UserListId userListId = new UserListId();
-        userListId.setUserId(userId);
 
         UserLevel userLevel = dto.getUserLevel();
         try{
-            UserList userList = userListRepository.findById(userListId)
-                 .orElseThrow(() -> new IllegalArgumentException("유저리스트를 찾을 수 없습니다" + userListId));
+            UserList userList = userListRepository.findByGroupId(groupId)
+                 .orElseThrow(() -> new IllegalArgumentException("유저리스트를 찾을 수 없습니다" + groupId));
             userList.setUserLevel(userLevel);
 
             userListRepository.save(userList);
@@ -105,11 +104,13 @@ public class UserListServiceImplement implements UserListService {
         }
 
     }
+
     //유저 추방
     @Override
-    public ResponseDto<Void> deleteUser(UserListId userListId) {
+    public ResponseDto<Void> deleteUser(Long groupId, String userId) {
         try{
-            userListRepository.deleteById(userListId);
+            System.out.println(userId);
+            userListRepository.deleteByUserId(userId);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,32 +122,43 @@ public class UserListServiceImplement implements UserListService {
     //모임 내 남여 성비 차트
     @Override
     public ResponseDto<List<UserGenderRatioResponseDto>> getUserListGender(Long groupId) {
-        List<UserGenderRatioResponseDto> data = null;
+        List<UserGenderRatioResponseDto> data = new ArrayList<>();
         try {
-            List<Object[]> results = userListRepository.findGroupByUserGender(groupId);
+            List<Object[]> results = userListRepository.findGroupByUserGenderWithCount(groupId);
+            int total = results.stream().mapToInt(result -> ((Long) result[1]).intValue()).sum();
             data = results.stream()
-                    .map(result -> {
-                        User gender = (User) result[0];
-                        return new UserGenderRatioResponseDto(gender.getUserGender().toString());
-                    })
+                    .map(result -> new UserGenderRatioResponseDto
+                            (result[0].toString(), (Long) result[1], (double) ((Long) result[1]) / total * 100))
                     .collect(Collectors.toList());
-
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
+
+    //모임 분기별 유입율 차트
     @Override
     public ResponseDto<List<MonthRatioResponseDto>> getMonthUserList(Long groupId) {
-        List<MonthRatioResponseDto> data = null;
-
+        List<MonthRatioResponseDto> data = new ArrayList<>();
         try{
-            List<Object[]> results = userListRepository.findGroupMonthJoinDate(groupId);
-            data = results.stream()
-                    .map(result -> new MonthRatioResponseDto((UserList) result[1]))
-                    .toList();
+            List<Object[]> results = userListRepository.getQuarterlyData(groupId);
+           data = results.stream()
+                    .map(result -> {
+                        String[] parts = result[0].toString().split("-");
+                        if (parts.length != 2) {
+                            throw new IllegalArgumentException("Invalid date format: " + result[0]);
+                        }
+                        int year = Integer.parseInt(parts[0]);
+                        int quarter = Integer.parseInt(parts[1]);
+                        long userCount = Long.parseLong(result[1].toString());
+                        double ratio = Double.parseDouble(result[2].toString());
 
+                        return new MonthRatioResponseDto(quarter, userCount, ratio);
+
+                        }
+                    )
+                    .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
@@ -154,6 +166,6 @@ public class UserListServiceImplement implements UserListService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
     }
 
-    //모임 유입별 차트
+
 
 }
