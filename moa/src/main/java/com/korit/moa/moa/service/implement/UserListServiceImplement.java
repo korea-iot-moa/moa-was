@@ -109,7 +109,7 @@ public class UserListServiceImplement implements UserListService {
     @Override
     public ResponseDto<Void> deleteUser(Long groupId, String userId) {
         try{
-            System.out.println(userId);
+
             userListRepository.deleteByUserId(userId);
 
         } catch (Exception e) {
