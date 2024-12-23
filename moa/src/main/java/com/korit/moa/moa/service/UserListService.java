@@ -13,8 +13,8 @@ public interface UserListService {
     ResponseDto<List<GroupResponseDto>> getMyGroups(String userId);
     ResponseDto<List<UserListResponseDto>> getUserList(Long groupId);
     ResponseDto<Void> deleteUserList(String userId, Long groupId);
-    ResponseDto<UserLevelResponseDto> putUserLevel(String userId, UserLevelRequestDto dto);
-    ResponseDto<Void> deleteUser(UserListId userListId);
+    ResponseDto<UserLevelResponseDto> putUserLevel(Long groupId , UserLevelRequestDto dto);
+    ResponseDto<Void> deleteUser(Long groupId, String userId);
     ResponseDto<List<UserGenderRatioResponseDto>> getUserListGender(Long groupId);
     ResponseDto<List<MonthRatioResponseDto>> getMonthUserList(Long groupId);
 }

@@ -64,7 +64,6 @@ public class ReportServiceImplement implements ReportService {
     }
 
     @Override
-    //신고 조회
     public ResponseDto<List<ReportResponseDto>> getReport(Long groupId) {
 
         List<ReportResponseDto> data = null;
@@ -87,14 +86,35 @@ public class ReportServiceImplement implements ReportService {
         }
     }
 
-    //신고 삭제 - 블랙 리스트 등록
+
     //신고 유지시 - 그냥 삭제
     @Override
-    @Transactional(rollbackOn = Exception.class)
     public ResponseDto<Void> deleteReport(Long groupId, DeleteReportRequestDto dto ) {
         ReportResult reportResult = dto.getReportResult();
-
         try {
+            Optional<Report> optionalReport = reportRepository.findById(groupId);
+
+            if (optionalReport.isEmpty()) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
+            }
+            if (reportResult == ReportResult.유지) {
+                reportRepository.deleteByUserId(dto.getUserId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
+    }
+
+    //신고 삭제 - 블랙 리스트 등록
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public ResponseDto<Void> postReport(Long groupId, DeleteReportRequestDto dto) {
+
+        ReportResult reportResult = dto.getReportResult();
+
+        try{
             Optional<Report> optionalReport = reportRepository.findById(groupId);
 
             if (optionalReport.isEmpty()) {
@@ -114,10 +134,7 @@ public class ReportServiceImplement implements ReportService {
                     blackListRepository.save(blackList);
                 }
             }
-            if (reportResult == ReportResult.유지) {
-                reportRepository.deleteByUserId(dto.getUserId());
-                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);

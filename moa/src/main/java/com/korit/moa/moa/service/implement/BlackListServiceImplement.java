@@ -58,11 +58,11 @@ public class BlackListServiceImplement implements BlackListService {
         System.out.println(userId);
         try {
             if (!userRepository.existsByUserId(userId)) {
-                return ResponseDto.setFailed("사용자를 찾을 수 없습니다.");
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
             }
             System.out.println(userId);
             if (blackListRepository.existsByUserId(userId)) {
-                return ResponseDto.setFailed("이미 블랙리스트에 등록된 사용자입니다.");
+                return ResponseDto.setFailed(ResponseMessage.DUPLICATED_USER_ID);
             }
 
             BlackList blackList = BlackList.builder()

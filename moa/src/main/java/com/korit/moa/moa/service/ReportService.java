@@ -14,9 +14,9 @@ public interface ReportService {
     //신고 조회
     ResponseDto<List<ReportResponseDto>> getReport(Long groupId);
 
-    //신고 처리
+    //신고 처리 - 유지
     ResponseDto<Void> deleteReport(Long groupId, DeleteReportRequestDto dto);
 
-
-
+    //신고 처리 - 추방
+    ResponseDto<Void> postReport(Long groupId, DeleteReportRequestDto dto);
 }
