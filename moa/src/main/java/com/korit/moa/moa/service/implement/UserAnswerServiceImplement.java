@@ -142,5 +142,49 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         }
 
     }
+
+    //    모임참여 답변
+//    @Override
+//    public ResponseDto<ResponseUserAnswerDto> createUserAnswer(String userId, RequestUserAnswerDto dto, Long answerId) {
+//
+//        Long groupId = dto.getGroupId();
+//        String userAnswer = dto.getUserAnswer();
+//
+//
+//        if(userId == null) {
+//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userId");
+//        }
+//
+//        if (userAnswer == null || userAnswer.isEmpty()) {
+//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userAnswer");
+//        }
+//
+//        boolean exists = userAnswerRepository.existsByGroupIdAndUserId(groupId, userId);
+//        if (exists) {
+//            return ResponseDto.setFailed(ResponseMessage.DUPLICATED_USER_ID);
+//        }
+//
+//        try {
+//            UserAnswer userAnswers = UserAnswer.builder()
+//                    .answerId(answerId)
+//                    .groupId(groupId)
+//                    .userId(userId)
+//                    .userAnswer(userAnswer)
+//                    .answerDate(LocalDate.now())
+//                    .isApproved(false)
+//                    .build();
+//            System.out.println(dto);
+//            userAnswerRepository.save(userAnswers);
+//
+//            System.out.println(userAnswerRepository);
+//            ResponseUserAnswerDto data = new ResponseUserAnswerDto(userAnswers);
+//            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+//        }
+//
+//    }
+
 }
 
