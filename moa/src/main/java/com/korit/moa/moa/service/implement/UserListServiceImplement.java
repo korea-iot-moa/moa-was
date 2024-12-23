@@ -68,6 +68,7 @@ public class UserListServiceImplement implements UserListService {
     }
 
     // 모임 나가기
+    @Transactional
     @Override
     public ResponseDto<Void> deleteUserList(String userId, Long groupId) {
         try{
