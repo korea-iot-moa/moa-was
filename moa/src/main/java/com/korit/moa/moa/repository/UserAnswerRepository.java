@@ -14,4 +14,6 @@ public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
     void deleteByUserId(String userId);
 
     Optional<UserAnswer> findByGroupId(Long groupId);
+
+//    boolean existsByGroupIdAndUserId(Long groupId, String userId);
 }
