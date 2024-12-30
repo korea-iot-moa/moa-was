@@ -1,6 +1,5 @@
 package com.korit.moa.moa.dto.report.request;
 
-
 import com.korit.moa.moa.entity.Report.ReportResult;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,10 +9,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteReportRequestDto {
-    @NotBlank
-    private String userId;
+public class PostReportRequestDto {
 
     @NotBlank
-    private ReportResult reportResult;
+    String reportUser;
+
+    @NotBlank
+    ReportResult reportResult;
+
+
 }

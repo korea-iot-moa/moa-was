@@ -81,7 +81,7 @@ public class BlackListServiceImplement implements BlackListService {
     @Override
     //블랙 리스트 삭제
     public ResponseDto<Void> deleteBlackList(Long blackListId) {
-
+        System.out.println(blackListId);
         try {
             Optional<BlackList> optionalBlackList = blackListRepository.findById(blackListId);
             if(optionalBlackList.isPresent()){
