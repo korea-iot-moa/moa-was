@@ -45,6 +45,7 @@ public class BlackListController {
 
     @DeleteMapping(DEL_BLACK_LIST)
     public ResponseEntity<ResponseDto<Void>> deleteBlackList(@PathVariable Long blackListId) {
+
         ResponseDto<Void> response = blackListService.deleteBlackList(blackListId);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
