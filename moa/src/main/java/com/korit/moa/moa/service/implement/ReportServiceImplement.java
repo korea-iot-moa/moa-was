@@ -16,6 +16,7 @@ import com.korit.moa.moa.repository.BlackListRepository;
 import com.korit.moa.moa.repository.MeetingGroupRepository;
 import com.korit.moa.moa.repository.ReportRepository;
 import com.korit.moa.moa.repository.UserRepository;
+import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.ReportService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class ReportServiceImplement implements ReportService {
     private final MeetingGroupRepository meetingGroupRepository;
     private final UserRepository userRepository;
     private final BlackListRepository blackListRepository;
+    private final ImgFileService imgFileService;
 
     @Override
     public ResponseDto<ReportResponseDto> createReport(String userId, CreateReportRequestDto dto) {
@@ -40,7 +42,11 @@ public class ReportServiceImplement implements ReportService {
         String reportDetail = dto.getReportDetail();
         ReportType reportType = dto.getReportType();
         String reportUser = dto.getReportUser();
-        String reportImage = dto.getReportImage();
+        String reportImgPath = null;
+
+        if(dto.getReportImage() != null) {
+            reportImgPath = imgFileService.convertImgFile(dto.getReportImage(), "reportImg");
+        }
 
         try{
             Report report = Report.builder()
@@ -49,7 +55,7 @@ public class ReportServiceImplement implements ReportService {
                     .reportDetail(reportDetail)
                     .reportType(reportType)
                     .reportUser(reportUser)
-                    .reportImage(reportImage)
+                    .reportImage(reportImgPath)
                     .reportResult(ReportResult.처리중)
                     .build();
             reportRepository.save(report);
