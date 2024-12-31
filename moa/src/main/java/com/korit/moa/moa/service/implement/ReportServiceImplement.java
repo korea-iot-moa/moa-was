@@ -5,6 +5,7 @@ import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.report.request.CreateReportRequestDto;
 
 import com.korit.moa.moa.dto.report.request.DeleteReportRequestDto;
+import com.korit.moa.moa.dto.report.request.PostReportRequestDto;
 import com.korit.moa.moa.dto.report.response.ReportResponseDto;
 import com.korit.moa.moa.entity.Report.Report;
 import com.korit.moa.moa.entity.Report.ReportResult;
@@ -95,10 +96,11 @@ public class ReportServiceImplement implements ReportService {
 
     //신고 유지시 - 그냥 삭제
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public ResponseDto<Void> deleteReport(Long groupId, DeleteReportRequestDto dto ) {
         ReportResult reportResult = dto.getReportResult();
         try {
-            Optional<Report> optionalReport = reportRepository.findById(groupId);
+            Optional<MeetingGroup> optionalReport = meetingGroupRepository.findById(groupId);
 
             if (optionalReport.isEmpty()) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
@@ -116,19 +118,18 @@ public class ReportServiceImplement implements ReportService {
     //신고 삭제 - 블랙 리스트 등록
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public ResponseDto<Void> postReport(Long groupId, DeleteReportRequestDto dto) {
-
+    public ResponseDto<Void> postReport(Long groupId, PostReportRequestDto dto) {
         ReportResult reportResult = dto.getReportResult();
-
         try{
-            Optional<Report> optionalReport = reportRepository.findById(groupId);
+            Optional<MeetingGroup> optionalReport = meetingGroupRepository.findById(groupId);
 
             if (optionalReport.isEmpty()) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
             }
+
             if (reportResult == ReportResult.추방) {
                 Optional<MeetingGroup> meetingGroupOptional = meetingGroupRepository.findById(groupId);
-                Optional<User> userOptional = userRepository.findByUserId(dto.getUserId());
+                Optional<User> userOptional = userRepository.findByUserId(dto.getReportUser());
 
                 if (meetingGroupOptional.isPresent() && userOptional.isPresent()) {
                     MeetingGroup meetingGroup = meetingGroupOptional.get();
