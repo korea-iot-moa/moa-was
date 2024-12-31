@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -14,10 +15,13 @@ public class CreateRequestDto {
     private Long groupId;
 
     @NotBlank
-    private String reviewContent;
+    private String groupName;
 
-    private String reviewImage;
+    @NotBlank
+    private String reviewContent;
 
     @NotBlank
     private String reviewDate;
+
+    private MultipartFile reviewImage;
 }

@@ -28,7 +28,7 @@ public class ReportController {
     @PostMapping
     public ResponseEntity<ResponseDto<ReportResponseDto>> createReport(
             @AuthenticationPrincipal String userId,
-            @RequestBody CreateReportRequestDto dto
+            @ModelAttribute CreateReportRequestDto dto
     ) {
         ResponseDto<ReportResponseDto> response = reportService.createReport(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
