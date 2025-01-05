@@ -2,11 +2,13 @@ package com.korit.moa.moa.controller;
 
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
+import com.korit.moa.moa.dto.group.request.GroupHomeFilterRequestDto;
 import com.korit.moa.moa.dto.group.request.RequestGroupDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
 import com.korit.moa.moa.dto.group.response.SearchResponseDto;
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
+import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.service.MeetingGroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +26,7 @@ public class MeetingGroupController {
     private final MeetingGroupService meetingGroupService;
     private static final String UPD_MEETINGGROUP = "/{groupId}";
     private static final String DEL_MEETINGGROUP = "/{groupId}";
-    private static final String GET_MEETINGGROUP_HOME = "/{userId}";
+    private static final String GET_MEETINGGROUP_HOME = "/home-recommendation";
     private static final String GET_MEETINGGROUP_CATEGORY = "/groupCategory";
     private static final String GET_MEETINGGROUP_TYPE = "/groupType";
     private static final String GET_MEETINGGROUP_ID = "/{groupId}";
@@ -80,20 +82,21 @@ public class MeetingGroupController {
 
     // 단기/정기 모임 필터
     @GetMapping(GET_MEETINGGROUP_TYPE)
-    public ResponseEntity<ResponseDto<List<ResponseGroupDto>>> filterGroupType(@RequestParam GroupTypeCategory groupType) {
-        ResponseDto<List<ResponseGroupDto>> response = meetingGroupService.findByGroupType(groupType);
+    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> filterGroupType(@RequestParam GroupTypeCategory groupType) {
+        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupType(groupType);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status).body(response);
     }
 
-    // 홈화면 카테고리별 추천 모임 (주석 처리된 부분은 그대로 유지)
-//    @GetMapping(GET_MEETINGGROUP_HOME)
-//    public ResponseEntity<ResponseDto<List<ResponseGroupDto>>> getGroupAtHome(@AuthenticationPrincipal @PathVariable String userId, GroupHomeFilterRequestDto dto) {
-//        ResponseDto<List<ResponseGroupDto>> response = meetingGroupService.findGroupByUserId(userId, dto);
-//        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-//        return ResponseEntity.status(status).body(response);
-//    }
-
+//     홈화면 카테고리별 추천 모임
+    @GetMapping(GET_MEETINGGROUP_HOME)
+    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> getGroupAtHome(
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.getGroupAtHome(userId);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
 
     // 모임 id로 단건 조회
     @GetMapping(GET_MEETINGGROUP_ID)

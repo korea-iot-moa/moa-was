@@ -177,9 +177,9 @@ public class AuthServiceImplement implements AuthService {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
         try{
-            Optional<User> userOptional = userRepository.findByNameAndBirthDate(userName, userBirthDate);
+            Optional<User> userOptional = userRepository.findByUserNameAndUserBirthDate(userName, userBirthDate);
 
-            if (userOptional.isEmpty()) {
+            if (userOptional == null) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
             }
             User user = userOptional.get();

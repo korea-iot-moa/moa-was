@@ -22,6 +22,7 @@ public class ResponseMessage {
     // : 중복될 수 없는 값에 대한 응답 메시지
     public static final String DUPLICATED_USER_ID = "Duplicated userID."; // 사용자 ID 중복 시 반환 메시지
     public static final String DUPLICATED_TEL_NICKNAME = "Duplicated NickName."; // 닉네임 중복 시 반환 메시지
+    public static final String DUPLICATED_TEL_USERANSWER = "Duplicated UserAnswer."; // 유저답변 중복 시 반환 메시지
 
     // 인증 및 권한 관련 메시지
     public static final String SIGN_IN_FAIL = "Sign in failed."; // 로그인 실패 시 반환 메시지

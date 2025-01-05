@@ -2,7 +2,6 @@ package com.korit.moa.moa.service.implement;
 
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
-import com.korit.moa.moa.dto.group.request.GroupHomeFilterRequestDto;
 import com.korit.moa.moa.dto.group.request.RequestGroupDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
 import com.korit.moa.moa.dto.group.response.SearchResponseDto;
@@ -10,6 +9,7 @@ import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.meetingGroup.MeetingTypeCategory;
+import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.repository.MeetingGroupRepository;
 import com.korit.moa.moa.service.MeetingGroupService;
 import lombok.RequiredArgsConstructor;
@@ -147,40 +147,40 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     }
 
-//  // 그룹 모임 홈화면 출력 사용자가 카테고리 선택한 경우/안한 경우
-//    @Override
-//    public ResponseDto<List<ResponseGroupDto>> findGroupByUserId(String userId, GroupHomeFilterRequestDto dto) {
-//        List<ResponseGroupDto> data = null;
-//
-//        if(userId == null) {
-//            return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
-//        }
-//
-//        try {
-//            Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findGroupByUserId(userId);
-//
-//            if(optionalMeetingGroups.isPresent()) {
-//                List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
-//
-//                data = meetingGroups.stream()
-//                        .map(ResponseGroupDto::new)
-//                        .collect(Collectors.toList());
-//            } else {
-//                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
-//            }
-//
-//        } catch(Exception e) {
-//            e.printStackTrace();
-//            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
-//        }
-//        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-//
-//    }
-//
+  // 그룹 모임 홈화면 출력 사용자가 카테고리 선택한 경우/안한 경우
+    @Override
+    public ResponseDto<List<SearchResponseDto>> getGroupAtHome(String userId) {
+        List<SearchResponseDto> data = null;
+
+        if(userId == null) {
+            return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
+        }
+
+        try {
+            Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findGroupByUserId(userId);
+
+            if(optionalMeetingGroups.isPresent()) {
+                List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
+
+                data = meetingGroups.stream()
+                        .map(SearchResponseDto::new)
+                        .collect(Collectors.toList());
+            } else {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+
+    }
+
     // 그룹 모임 홈화면 출력 로그아웃
     @Override
-    public ResponseDto<List<ResponseGroupDto>> getGroupAtHomeAuth() {
-        List<ResponseGroupDto> data = null;
+    public ResponseDto<List<SearchResponseDto>> getGroupAtHomeAuth() {
+        List<SearchResponseDto> data = null;
 
         try {
             Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findGroupRandom();
@@ -189,7 +189,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
                 List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
 
                 data = meetingGroups.stream()
-                        .map(ResponseGroupDto::new)
+                        .map(SearchResponseDto::new)
                         .collect(Collectors.toList());
             } else {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
@@ -236,10 +236,10 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     // 단기/정기 필터링
     @Override
-    public ResponseDto<List<ResponseGroupDto>> findByGroupType(GroupTypeCategory groupType) {
+    public ResponseDto<List<SearchResponseDto>> findByGroupType(GroupTypeCategory groupType) {
         String groupTypes  = groupType.toString();
 
-        List<ResponseGroupDto> data = null;
+        List<SearchResponseDto> data = null;
 
         if(groupTypes == null) {
             return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
@@ -252,7 +252,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
                 List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
 
                 data = meetingGroups.stream()
-                        .map(ResponseGroupDto::new)
+                        .map(SearchResponseDto::new)
                         .collect(Collectors.toList());
             }
 

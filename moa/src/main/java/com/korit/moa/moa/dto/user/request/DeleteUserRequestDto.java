@@ -9,11 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeleteUserRequestDto {
-
-    @NotNull
-    private String userId;
-
     @NotNull
     private String password;
-
 }

@@ -5,7 +5,9 @@ import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestDeleteUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestUserAnswerDto;
+import com.korit.moa.moa.dto.user_answer.request.UserAnswerRequestDto;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
+import com.korit.moa.moa.dto.user_answer.response.UserAnswerResponseDto;
 import com.korit.moa.moa.service.UserAnswerService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class UserAnswerController {
     private final UserAnswerService userAnswerService;
     private static final String GET_USER_ANSWER = "/{groupId}";
     private static final String POST_USER_ANSWER = "approved/{groupId}";
+    private static final String GET_USER_ANSWER_DUPLICATION = "/duplication/{groupId}";
 
     //모임 참가
     @PostMapping(GET_USER_ANSWER)
@@ -64,16 +67,26 @@ public class UserAnswerController {
         return ResponseEntity.status(status).body(response);
     }
 
-//    모임참여 신청
-//    @PostMapping
-//    public ResponseEntity<ResponseDto<ResponseUserAnswerDto>> createUserAnswer(
-//            @AuthenticationPrincipal String userId,
-//            @RequestBody RequestUserAnswerDto dto,
-//            Long answerId
-//    ){
-//        ResponseDto<ResponseUserAnswerDto> response = userAnswerService.createUserAnswer(userId, dto, answerId);
-//        HttpStatus status = response.isResult() ? HttpStatus.OK:HttpStatus.BAD_REQUEST;
-//        return  ResponseEntity.status(status).body(response);
-//    }
+    // 모임참여 신청
+    @PostMapping
+    public ResponseEntity<ResponseDto<ResponseUserAnswerDto>> createUserAnswer(
+            @AuthenticationPrincipal String userId,
+            @RequestBody UserAnswerRequestDto dto,
+            Long answerId
+    ){
+        ResponseDto<ResponseUserAnswerDto> response = userAnswerService.createUserAnswer(userId, dto, answerId);
+        HttpStatus status = response.isResult() ? HttpStatus.OK:HttpStatus.BAD_REQUEST;
+        return  ResponseEntity.status(status).body(response);
+    }
 
+    // 모임참여 중복확인
+    @GetMapping(GET_USER_ANSWER_DUPLICATION)
+    public ResponseEntity<ResponseDto<Boolean>> duplicateUserAnswer(
+            @AuthenticationPrincipal String userId,
+            @PathVariable Long groupId
+    ) {
+        ResponseDto<Boolean> response = userAnswerService.duplicateUserAnswer(userId, groupId);
+        HttpStatus status = response.isResult() ? HttpStatus.OK:HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
 }
