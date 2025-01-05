@@ -34,8 +34,10 @@ public class RecommendationController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseDto<List<GetResponseRecommendationDto>>> getRecommendation() {
-        ResponseDto<List<GetResponseRecommendationDto>> response = recommendationService.getRecommendation();
+    public ResponseEntity<ResponseDto<List<GetResponseRecommendationDto>>> getRecommendation(
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseDto<List<GetResponseRecommendationDto>> response = recommendationService.getRecommendation(userId);
         HttpStatus status = response.isResult() ? HttpStatus.OK:HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

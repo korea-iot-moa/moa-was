@@ -4,7 +4,7 @@ import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestDeleteUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestUserAnswerDto;
-import com.korit.moa.moa.dto.user_answer.response.ResponseGetUserAnswer;
+import com.korit.moa.moa.dto.user_answer.request.UserAnswerRequestDto;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.user.User;
@@ -68,13 +68,13 @@ public class UserAnswerServiceImplement implements UserAnswerService {
 
     //참여 요청 조회
     @Override
-    public ResponseDto<List<ResponseGetUserAnswer>> getUserAnswer(Long groupId) {
-        List<ResponseGetUserAnswer> data = null;
+    public ResponseDto<List<ResponseUserAnswerDto>> getUserAnswer(Long groupId) {
+        List<ResponseUserAnswerDto> data = null;
         try {
             List<UserAnswer> userAnswers = userAnswerRepository.findAllByGroupId(groupId);
 
             data = userAnswers.stream()
-                    .map(ResponseGetUserAnswer::new)
+                    .map(ResponseUserAnswerDto::new)
                     .collect(Collectors.toList());
 
         } catch (Exception e) {
@@ -144,48 +144,64 @@ public class UserAnswerServiceImplement implements UserAnswerService {
 
     }
 
-    //    모임참여 답변
-//    @Override
-//    public ResponseDto<ResponseUserAnswerDto> createUserAnswer(String userId, RequestUserAnswerDto dto, Long answerId) {
-//
-//        Long groupId = dto.getGroupId();
-//        String userAnswer = dto.getUserAnswer();
-//
-//
-//        if(userId == null) {
-//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userId");
-//        }
-//
-//        if (userAnswer == null || userAnswer.isEmpty()) {
-//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userAnswer");
-//        }
-//
-//        boolean exists = userAnswerRepository.existsByGroupIdAndUserId(groupId, userId);
-//        if (exists) {
-//            return ResponseDto.setFailed(ResponseMessage.DUPLICATED_USER_ID);
-//        }
-//
-//        try {
-//            UserAnswer userAnswers = UserAnswer.builder()
-//                    .answerId(answerId)
-//                    .groupId(groupId)
-//                    .userId(userId)
-//                    .userAnswer(userAnswer)
-//                    .answerDate(LocalDate.now())
-//                    .isApproved(false)
-//                    .build();
-//            System.out.println(dto);
-//            userAnswerRepository.save(userAnswers);
-//
-//            System.out.println(userAnswerRepository);
-//            ResponseUserAnswerDto data = new ResponseUserAnswerDto(userAnswers);
-//            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
-//        }
-//
-//    }
+    // 모임참여 답변
+    @Override
+    public ResponseDto<ResponseUserAnswerDto> createUserAnswer(String userId, UserAnswerRequestDto dto, Long answerId) {
+
+        Long groupId = dto.getGroupId();
+        String userAnswer = dto.getUserAnswer();
+
+
+        if(userId == null) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userId");
+        }
+
+        if (userAnswer == null || userAnswer.isEmpty()) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userAnswer");
+        }
+
+        boolean exists = userAnswerRepository.existsByGroupIdAndUserId(groupId, userId);
+        if (exists) {
+            return ResponseDto.setFailed(ResponseMessage.DUPLICATED_USER_ID);
+        }
+
+        try {
+            UserAnswer userAnswers = UserAnswer.builder()
+                    .answerId(answerId)
+                    .groupId(groupId)
+                    .userId(userId)
+                    .userAnswer(userAnswer)
+                    .answerDate(LocalDate.now())
+                    .isApproved(2)
+                    .build();
+            System.out.println(dto);
+            userAnswerRepository.save(userAnswers);
+
+            System.out.println(userAnswerRepository);
+            ResponseUserAnswerDto data = new ResponseUserAnswerDto(userAnswers);
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+
+    }
+
+    // 사용자 답장 중복 확인
+    @Override
+    public ResponseDto<Boolean> duplicateUserAnswer(String userId, Long groupId) {
+        try{
+            boolean result = userAnswerRepository.existsByGroupIdAndUserId(groupId, userId);
+
+            if (result) {
+                return ResponseDto.setSuccess(ResponseMessage.DUPLICATED_TEL_USERANSWER, true);
+            }else {
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
 
 }
-
