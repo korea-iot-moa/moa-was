@@ -30,6 +30,8 @@ public class MeetingGroupController {
     private static final String GET_MEETINGGROUP_CATEGORY = "/groupCategory";
     private static final String GET_MEETINGGROUP_TYPE = "/groupType";
     private static final String GET_MEETINGGROUP_ID = "/{groupId}";
+    private static final String EXISTS_CREATOR = "/exists/{groupId}";
+
 
     // 모임 생성
     @PostMapping
@@ -105,4 +107,16 @@ public class MeetingGroupController {
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
+
+    // 모임 관리자 확인
+    @GetMapping(EXISTS_CREATOR)
+    public ResponseEntity<ResponseDto<Boolean>> isCreator(
+            @PathVariable Long groupId,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseDto<Boolean> response = meetingGroupService.isCreator(groupId, userId);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
 }

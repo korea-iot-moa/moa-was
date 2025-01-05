@@ -25,12 +25,14 @@ public class ReviewController {
     public static final String MY_REVIEWS = "/myReview";
     public static final String PUT_REVIEWS = "/{reviewId}";
     public static final String DEL_REVIEWS = "/{reviewId}";
+    public static final String AUTH_REVIEW = "/auth";
+
 
     // 후기 생성
     @PostMapping
     public ResponseEntity<ResponseDto<ReviewResponseDto>> createReview(
             @AuthenticationPrincipal String userId,
-            @RequestBody CreateRequestDto dto
+            @ModelAttribute CreateRequestDto dto
     ) {
         ResponseDto<ReviewResponseDto> response = reviewService.createReview(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
@@ -38,7 +40,7 @@ public class ReviewController {
     }
 
     // 후기 전체 조회
-    @GetMapping
+    @GetMapping(AUTH_REVIEW)
     public ResponseEntity<ResponseDto<List<ReviewResponseDto>>> getAllReviews() {
         ResponseDto<List<ReviewResponseDto>> response = reviewService.getAllReviews();
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;

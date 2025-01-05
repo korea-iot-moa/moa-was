@@ -7,6 +7,7 @@ import com.korit.moa.moa.dto.review.request.UpdateRequestDto;
 import com.korit.moa.moa.dto.review.response.ReviewResponseDto;
 import com.korit.moa.moa.entity.review.Review;
 import com.korit.moa.moa.repository.ReviewRepository;
+import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,22 +22,31 @@ import java.util.stream.Collectors;
 public class ReviewServiceImplement implements ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final ImgFileService imgFileService;
 
     // 리뷰 등록
     @Override
     public ResponseDto<ReviewResponseDto> createReview(String userId, CreateRequestDto dto) {
         ReviewResponseDto data = null;
         Long groupId = dto.getGroupId();
+        String groupName = dto.getGroupName();
         String reviewContent = dto.getReviewContent();
-        String reviewImage = dto.getReviewImage();
         LocalDate reviewDate = LocalDate.now();
 
+        String reviewImgPath = null;
+
+        if (dto.getReviewImage() != null && !dto.getReviewImage().isEmpty()) {
+            reviewImgPath = imgFileService.convertImgFile(dto.getReviewImage(), "reviewImg");
+        }
+
         try{
+
             Review review = Review.builder()
                     .groupId(groupId)
+                    .groupName(groupName)
                     .userId(userId)
                     .reviewContent(reviewContent)
-                    .reviewImage(reviewImage)
+                    .reviewImage(reviewImgPath)
                     .reviewDate(String.valueOf(reviewDate))
                     .build();
             reviewRepository.save(review);

@@ -11,12 +11,14 @@ import java.util.Optional;
 @Repository
 public interface VoteRepository extends JpaRepository<Votes, Long> {
 
-    // 모임 내 투표 조회
+    // 모임 투표 조회
     @Query(
             "SELECT v " +
-            "FROM Votes v JOIN MeetingGroup mg ON v.groupId = mg.groupId " +
-            "WHERE v.groupId = mg.groupId"
+                    "FROM Votes v JOIN MeetingGroup mg ON v.groupId = mg.groupId " +
+                    "WHERE v.groupId = :groupId"
     )
-    Optional<Object> findVoteByGroupId(@Param("groupId") Long groupId);
+    Optional<Votes> findVoteByGroupId(@Param("groupId") Long groupId);
 
+    // 투표 존재 여부 확인
+    Boolean existsByGroupId (Long groupId);
 }

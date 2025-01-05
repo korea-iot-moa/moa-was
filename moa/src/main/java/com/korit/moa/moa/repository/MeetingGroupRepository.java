@@ -87,4 +87,7 @@ SELECT ranked.*
 
     // 단기/정기 모임 필터
     Optional<List<MeetingGroup>> findByGroupType(@Param("groupType") GroupTypeCategory groupType);
+
+    // 사용자가 관리자인지 확인
+    Boolean existsByGroupIdAndCreatorId(Long groupId, String userId);
 }

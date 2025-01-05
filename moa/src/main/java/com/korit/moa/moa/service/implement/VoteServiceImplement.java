@@ -25,20 +25,14 @@ public class VoteServiceImplement implements VoteService {
     public ResponseDto<VoteResponseDto> getMyGroupVote(Long groupId) {
         VoteResponseDto data = null;
 
-        try{
-            Optional<Object> optionalResult = voteRepository.findVoteByGroupId(groupId);
-
-            data = optionalResult
-                    .map(result -> (Votes) result)
-                    .map(VoteResponseDto :: new)
-                    .orElse(null);
-
-
+        try {
+            Optional<Votes> optionalResult = voteRepository.findVoteByGroupId(groupId);
+            data = optionalResult.map(VoteResponseDto::new).orElse(null);
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
-        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
     //투표 등록
@@ -111,6 +105,27 @@ public class VoteServiceImplement implements VoteService {
                 voteRepository.deleteById(voteId);
             }
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseDto<Boolean> existsVote(Long groupId) {
+        Boolean data = null;
+
+        try {
+            data = voteRepository.existsByGroupId(groupId);
+
+            if(data) {
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
+            } else {
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, false);
+            }
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);

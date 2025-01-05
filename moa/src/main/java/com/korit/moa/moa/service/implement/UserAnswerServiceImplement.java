@@ -5,8 +5,8 @@ import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestDeleteUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.UserAnswerRequestDto;
+import com.korit.moa.moa.dto.user_answer.response.ResponseGetUserAnswer;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
-import com.korit.moa.moa.dto.user_answer.response.UserAnswerResponseDto;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.entity.userAnswer.UserAnswer;
@@ -69,13 +69,13 @@ public class UserAnswerServiceImplement implements UserAnswerService {
 
     //참여 요청 조회
     @Override
-    public ResponseDto<List<ResponseUserAnswerDto>> getUserAnswer(Long groupId) {
-        List<ResponseUserAnswerDto> data = null;
+    public ResponseDto<List<ResponseGetUserAnswer>> getUserAnswer(Long groupId) {
+        List<ResponseGetUserAnswer> data = null;
         try {
             List<UserAnswer> userAnswers = userAnswerRepository.findAllByGroupId(groupId);
 
             data = userAnswers.stream()
-                    .map(ResponseUserAnswerDto::new)
+                    .map(ResponseGetUserAnswer::new)
                     .collect(Collectors.toList());
 
         } catch (Exception e) {
@@ -206,4 +206,3 @@ public class UserAnswerServiceImplement implements UserAnswerService {
     }
 
 }
-

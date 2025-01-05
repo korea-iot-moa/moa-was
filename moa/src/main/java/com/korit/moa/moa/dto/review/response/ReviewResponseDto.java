@@ -14,6 +14,8 @@ public class ReviewResponseDto {
 
     private Long groupId;
 
+    private String groupName;
+
     private String userId;
 
     private String reviewContent;
@@ -25,6 +27,7 @@ public class ReviewResponseDto {
     public ReviewResponseDto(Review review) {
         this.reviewId = review.getReviewId();
         this.groupId = review.getGroupId();
+        this.groupName = review.getGroupName();
         this.userId = review.getUserId();
         this.reviewContent = review.getReviewContent();
         this.reviewImage = review.getReviewImage();

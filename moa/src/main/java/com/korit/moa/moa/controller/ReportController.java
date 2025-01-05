@@ -4,6 +4,7 @@ import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.report.request.CreateReportRequestDto;
 import com.korit.moa.moa.dto.report.request.DeleteReportRequestDto;
+import com.korit.moa.moa.dto.report.request.PostReportRequestDto;
 import com.korit.moa.moa.dto.report.response.ReportResponseDto;
 import com.korit.moa.moa.service.ReportService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class ReportController {
     @PostMapping
     public ResponseEntity<ResponseDto<ReportResponseDto>> createReport(
             @AuthenticationPrincipal String userId,
-            @RequestBody CreateReportRequestDto dto
+            @ModelAttribute CreateReportRequestDto dto
     ) {
         ResponseDto<ReportResponseDto> response = reportService.createReport(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
@@ -39,6 +40,7 @@ public class ReportController {
     public  ResponseEntity<ResponseDto<List<ReportResponseDto>>> getReport(
             @PathVariable Long groupId)
     {
+        System.out.println("Group ID: " + groupId);
         ResponseDto<List<ReportResponseDto>> response = reportService.getReport(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
@@ -47,7 +49,9 @@ public class ReportController {
     //신고 처리 - 추방
     @PostMapping(GET_REPORT)
     public  ResponseEntity<ResponseDto<Void>> postReport(
-            @PathVariable Long groupId, @RequestBody DeleteReportRequestDto dto){
+            @PathVariable Long groupId, @RequestBody PostReportRequestDto dto){
+        System.out.println("Group ID: " + groupId);
+        System.out.println("DTO Data: " + dto);
         ResponseDto<Void> response = reportService.postReport(groupId,dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);

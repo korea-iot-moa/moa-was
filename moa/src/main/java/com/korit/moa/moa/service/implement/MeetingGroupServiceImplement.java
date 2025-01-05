@@ -319,4 +319,23 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
+    @Override
+    public ResponseDto<Boolean> isCreator(Long groupId, String userId) {
+        Boolean data = null;
+
+        try{
+            data = meetingGroupRepository.existsByGroupIdAndCreatorId(groupId, userId);
+
+            if (data) {
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
+            } else {
+                return  ResponseDto.setSuccess(ResponseMessage.SUCCESS, false);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
 }

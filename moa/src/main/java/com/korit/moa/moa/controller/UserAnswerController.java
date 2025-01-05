@@ -6,8 +6,8 @@ import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestDeleteUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.UserAnswerRequestDto;
+import com.korit.moa.moa.dto.user_answer.response.ResponseGetUserAnswer;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
-import com.korit.moa.moa.dto.user_answer.response.UserAnswerResponseDto;
 import com.korit.moa.moa.service.UserAnswerService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +29,7 @@ public class UserAnswerController {
     private static final String POST_USER_ANSWER = "approved/{groupId}";
     private static final String GET_USER_ANSWER_DUPLICATION = "/duplication/{groupId}";
 
+
     //모임 참가
     @PostMapping(GET_USER_ANSWER)
     public ResponseEntity<ResponseDto<ResponseUserAnswerDto>> postMeetingGroup(
@@ -41,8 +42,8 @@ public class UserAnswerController {
 
     //참여 요청 조회
     @GetMapping(GET_USER_ANSWER)
-    public ResponseEntity<ResponseDto<List<ResponseUserAnswerDto>>> getUserAnswer(@PathVariable Long groupId){
-        ResponseDto<List<ResponseUserAnswerDto>> response = userAnswerService.getUserAnswer(groupId);
+    public ResponseEntity<ResponseDto<List<ResponseGetUserAnswer>>> getUserAnswer(@PathVariable Long groupId){
+        ResponseDto<List<ResponseGetUserAnswer>> response = userAnswerService.getUserAnswer(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

@@ -24,6 +24,9 @@ public class Review {
     @Column(name = "group_id",nullable = false)
     private Long groupId;
 
+    @Column(name = "group_name", nullable = false)
+    private String groupName;
+
     @Column(name = "review_content", nullable = false, columnDefinition = "TEXT")
     private String reviewContent;
 
@@ -32,6 +35,4 @@ public class Review {
 
     @Column(name = "review_image")
     private String reviewImage;
-
-
 }

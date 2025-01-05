@@ -39,4 +39,6 @@ public interface MeetingGroupService {
 
     // 그룹 단건 조회
     ResponseDto<ResponseGroupDto> getGroupById(Long groupId);
+
+    ResponseDto<Boolean> isCreator(Long groupId, String userId);
 }

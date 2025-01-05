@@ -46,6 +46,7 @@ public class UserController {
         return ResponseEntity.status(status).body(response);
     }
 
+    @CrossOrigin
     @GetMapping("/hobbies")
     public ResponseEntity<ResponseDto<List<Hobby>>> getHobbies() {
         ResponseDto<List<Hobby>> response = authService.getHobbies();
