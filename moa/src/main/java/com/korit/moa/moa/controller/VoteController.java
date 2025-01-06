@@ -31,6 +31,7 @@ public class VoteController {
     public ResponseEntity<ResponseDto<VoteResponseDto>> getMyGroupVote(
             @PathVariable Long groupId
     ) {
+
         ResponseDto<VoteResponseDto> response = voteService.getMyGroupVote(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
