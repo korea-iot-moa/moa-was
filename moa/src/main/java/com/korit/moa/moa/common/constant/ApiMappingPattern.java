@@ -40,4 +40,7 @@ public class ApiMappingPattern {
 
     // 이메일 인증
     public static final String MAIL = "/api/v1/mail";
+
+    // 채팅 관련
+    public static final String CHAT = "/api/v1/chat";
 }
