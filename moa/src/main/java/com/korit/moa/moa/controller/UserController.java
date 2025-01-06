@@ -12,8 +12,10 @@ import com.korit.moa.moa.entity.user.Hobby;
 import com.korit.moa.moa.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -45,6 +47,7 @@ public class UserController {
         return ResponseEntity.status(status).body(response);
     }
 
+    @CrossOrigin
     @GetMapping("/hobbies")
     public ResponseEntity<ResponseDto<List<Hobby>>> getHobbies() {
         ResponseDto<List<Hobby>> response = authService.getHobbies();
@@ -53,10 +56,10 @@ public class UserController {
     }
 
     @GetMapping("/userId")
-    public ResponseEntity<ResponseDto<FindIdResponseDto>> findLoginId(@Valid @RequestBody FindIdRequestDto dto) {
-        String userName = dto.getUserName();
-        Date userBirthDate = dto.getUserBirthDate();
-
+    public ResponseEntity<ResponseDto<FindIdResponseDto>> findLoginId(
+            @Valid @RequestParam String userName,
+            @Valid @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") Date userBirthDate
+    ) {
         ResponseDto<FindIdResponseDto> response = authService.findLoginId(userName, userBirthDate);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
@@ -75,6 +78,8 @@ public class UserController {
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
+
+
 
 
 }

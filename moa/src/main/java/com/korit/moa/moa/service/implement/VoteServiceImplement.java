@@ -4,11 +4,8 @@ import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.vote.request.RequestUpdateVoteDto;
 import com.korit.moa.moa.dto.vote.request.RequestVoteDto;
-import com.korit.moa.moa.dto.vote.response.PostVoteResponseDto;
 import com.korit.moa.moa.dto.vote.response.VoteResponseDto;
-import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.votes.Votes;
-import com.korit.moa.moa.repository.MeetingGroupRepository;
 import com.korit.moa.moa.repository.VoteRepository;
 import com.korit.moa.moa.service.VoteService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +34,10 @@ public class VoteServiceImplement implements VoteService {
                     .map(VoteResponseDto::new)
                     .orElse(null);
             System.out.println(data.getVoteContent());
+        try {
+            Optional<Votes> optionalResult = voteRepository.findVoteByGroupId(groupId);
+            data = optionalResult.map(VoteResponseDto::new).orElse(null);
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
@@ -49,12 +50,19 @@ public class VoteServiceImplement implements VoteService {
     public ResponseDto<PostVoteResponseDto> postMyGroupVote(RequestVoteDto dto) {
         PostVoteResponseDto data = null;
         Long groupId = dto.getGroupId();
+        String createId = dto.getCreateId();
         String voteContent = dto.getVoteContent();
         Date createDate = dto.getCreateDate();
         Date closeDate = dto.getCloseDate();
 
         if (voteContent == null || createDate == null || closeDate == null) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
+        if(createDate == null ){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
+        }
+        if(closeDate == null ){
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
         }
         try {
             Optional<String> optionalCreatorId = meetingGroupRepository.findCreatorIdByGroupId(groupId);
@@ -71,7 +79,6 @@ public class VoteServiceImplement implements VoteService {
                     .createDate(createDate)
                     .closeDate(closeDate)
                     .build();
-
             voteRepository.save(votes);
 
             data = new PostVoteResponseDto(votes);
@@ -88,7 +95,6 @@ public class VoteServiceImplement implements VoteService {
     public ResponseDto<VoteResponseDto> updateMyGroupVote(Long voteId, RequestUpdateVoteDto dto) {
         VoteResponseDto data = null;
         try {
-
             Votes votes = voteRepository.findById(voteId)
                     .orElseThrow(() -> new IllegalAccessException("모임 투표를 찾을수 없습니다" + voteId) );
 
@@ -115,6 +121,27 @@ public class VoteServiceImplement implements VoteService {
                 voteRepository.deleteById(voteId);
             }
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseDto<Boolean> existsVote(Long groupId) {
+        Boolean data = null;
+
+        try {
+            data = voteRepository.existsByGroupId(groupId);
+
+            if(data) {
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
+            } else {
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, false);
+            }
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);

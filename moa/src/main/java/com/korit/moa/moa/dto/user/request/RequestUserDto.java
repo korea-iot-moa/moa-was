@@ -9,8 +9,5 @@ import lombok.NoArgsConstructor;
 public class RequestUserDto {
 
     @NotNull
-    private String userId;
-
-    @NotNull
     private String password;
 }

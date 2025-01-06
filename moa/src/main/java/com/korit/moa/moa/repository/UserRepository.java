@@ -27,6 +27,9 @@ public interface UserRepository extends JpaRepository<User, String> {
             "SELECT u FROM User u" +
                     " WHERE u.userName = :userName AND u.userBirthDate = :userBirthdate "
     )
-    Optional<User> findByNameAndBirthDate(@Param("userName") String userName, @Param("userBirthdate") Date userBirthDate);
+    Optional<User> findByUserNameAndUserBirthDate(@Param("userName") String userName, @Param("userBirthdate") Date userBirthDate);
+
+    // 이메일 인증시 회원 정보 확인
+    boolean existsByUserIdAndUserName(String userId, String userName);
 
 }

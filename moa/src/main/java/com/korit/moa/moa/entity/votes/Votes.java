@@ -18,10 +18,10 @@ public class Votes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long voteId;
 
-    @JoinColumn(name = "group_id", nullable = false)
+    @Column(name = "group_id", nullable = false)
     private Long groupId;
 
-    @JoinColumn(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private String creatorId;
 
     @Column(name = "vote_content", nullable = false)

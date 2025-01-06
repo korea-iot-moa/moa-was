@@ -12,8 +12,7 @@ public class UserAnswerRequestDto {
 
     @NotNull
     private Long groupId;
-    @NotNull
-    private String userId;
+
     @NotNull
     private String userAnswer;
 }

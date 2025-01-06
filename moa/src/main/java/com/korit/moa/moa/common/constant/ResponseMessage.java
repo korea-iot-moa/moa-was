@@ -22,6 +22,7 @@ public class ResponseMessage {
     // : 중복될 수 없는 값에 대한 응답 메시지
     public static final String DUPLICATED_USER_ID = "Duplicated userID."; // 사용자 ID 중복 시 반환 메시지
     public static final String DUPLICATED_TEL_NICKNAME = "Duplicated NickName."; // 닉네임 중복 시 반환 메시지
+    public static final String DUPLICATED_TEL_USERANSWER = "Duplicated UserAnswer."; // 유저답변 중복 시 반환 메시지
 
     // 인증 및 권한 관련 메시지
     public static final String SIGN_IN_FAIL = "Sign in failed."; // 로그인 실패 시 반환 메시지
@@ -36,4 +37,6 @@ public class ResponseMessage {
     // 토큰 및 메시지 관련 에러
     public static final String TOKEN_CREATE_FAIL = "Token creation failed."; // 토큰 생성 실패 시 반환 메시지
     public static final String MESSAGE_SEND_FAIL = "Failed to send authentication number."; // 인증 번호 전송 실패 시 반환 메시지
+    public static final String MESSAGE_TOKEN_SUCCESS = "Success."; // 인증 번호 전송 실패 시 반환 메시지
+
 }

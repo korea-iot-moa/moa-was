@@ -1,5 +1,6 @@
 package com.korit.moa.moa.dto.user_answer.response;
 
+import com.korit.moa.moa.entity.userAnswer.UserAnswer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,11 +24,11 @@ public class UserAnswerResponseDto {
     private boolean isApproved;
 
 
-//    public ResponseUserAnswerDto(UserAnswer userAnswers) {
-//        this.answerId = userAnswers.getAnswerId();
-//        this.groupId = userAnswers.getGroupId();
-//        this.userId = userAnswers.getUserId();
-//        this.userAnswer = userAnswers.getUserAnswer();
-//        this.answerDate = userAnswers.getAnswerDate();
-//    }
+    public UserAnswerResponseDto(UserAnswer userAnswers) {
+        this.answerId = userAnswers.getAnswerId();
+        this.groupId = userAnswers.getGroupId();
+        this.userId = userAnswers.getUserId();
+        this.userAnswer = userAnswers.getUserAnswer();
+        this.answerDate = userAnswers.getAnswerDate();
+    }
 }

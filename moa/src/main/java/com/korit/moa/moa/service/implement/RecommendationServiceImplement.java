@@ -5,6 +5,8 @@ import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.recommendation.request.RequestRecommendationDto;
 import com.korit.moa.moa.dto.recommendation.response.GetResponseRecommendationDto;
 import com.korit.moa.moa.dto.recommendation.response.ResponseRecommendationDto;
+import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
+import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.recommendation.Recommendation;
 import com.korit.moa.moa.entity.recommendation.RecommendationsId;
@@ -17,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -67,11 +68,16 @@ public class RecommendationServiceImplement implements RecommendationService {
     }
 
     @Override
-    public ResponseDto<List<GetResponseRecommendationDto>> getRecommendation() {
+    public ResponseDto<List<GetResponseRecommendationDto>> getRecommendation(String userId) {
 
         List<GetResponseRecommendationDto> data = null;
+
+        if(userId == null || userId.isEmpty()) {
+            return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION + "userId");
+        }
+
         try{
-            List<Object[]> recommendation = recommendationRepository.findAllGroup();
+            List<Object[]> recommendation = recommendationRepository.findByUserId(userId);
 
                data = recommendation.stream()
                         .map(GetResponseRecommendationDto::new)
@@ -83,6 +89,11 @@ public class RecommendationServiceImplement implements RecommendationService {
         }
 
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+    }
+
+    @Override
+    public ResponseDto<List<GetResponseRecommendationDto>> getAllRecommendationGroup() {
+        return null;
     }
 
     @Override
@@ -110,6 +121,5 @@ public class RecommendationServiceImplement implements RecommendationService {
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
     }
-
 
 }

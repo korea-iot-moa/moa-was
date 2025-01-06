@@ -22,5 +22,7 @@ public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
 
     Optional<UserAnswer> findByGroupId(Long groupId);
 
-//    boolean existsByGroupIdAndUserId(Long groupId, String userId);
+    // 사용자 답변 중복 확인
+    boolean existsByGroupIdAndUserId(Long groupId, String userId);
+
 }

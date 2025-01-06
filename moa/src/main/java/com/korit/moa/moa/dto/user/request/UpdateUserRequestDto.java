@@ -15,11 +15,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class UpdateUserRequestDto {
 
-    @NotBlank
     private String userName;
-    @NotBlank
-    private String nickName;
 
+    private String nickName;
 
     private MultipartFile profileImage;
 

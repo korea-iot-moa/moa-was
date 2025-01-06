@@ -11,4 +11,6 @@ public interface VoteService {
     ResponseDto<PostVoteResponseDto> postMyGroupVote(RequestVoteDto dto);
     ResponseDto<VoteResponseDto> updateMyGroupVote(Long voteId, RequestUpdateVoteDto dto);
     ResponseDto<Void> deleteMyGroupVote(Long voteId);
+
+    ResponseDto<Boolean> existsVote(Long groupId);
 }

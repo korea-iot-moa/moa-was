@@ -47,16 +47,16 @@ public class MeetingGroupAuthController {
 
     // 단기/정기 모임 필터
     @GetMapping(GET_GROUP_TYPE)
-    public ResponseEntity<ResponseDto<List<ResponseGroupDto>>> filterGroupType(@RequestParam GroupTypeCategory groupType) {
-        ResponseDto<List<ResponseGroupDto>> response = meetingGroupService.findByGroupType(groupType);
+    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> filterGroupType(@RequestParam GroupTypeCategory groupType) {
+        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupType(groupType);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status).body(response);
     }
 
     // 홈화면 카테고리별 추천 모임
     @GetMapping(GET_GROUP_HOME)
-    public ResponseEntity<ResponseDto<List<ResponseGroupDto>>> getGroupAtHomeAuth() {
-        ResponseDto<List<ResponseGroupDto>> response = meetingGroupService.getGroupAtHomeAuth();
+    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> getGroupAtHomeAuth() {
+        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.getGroupAtHomeAuth();
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

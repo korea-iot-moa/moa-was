@@ -22,6 +22,7 @@ public class VoteController {
     private static final String GET_VOTE = "/{groupId}";
     private static final String PUT_VOTE = "/{voteId}";
     private static final String POST_VOTE = "/{voteId}";
+    private static final String EXIST_VOTE = "existsVote/{groupId}";
 
 
     // 내 그룹 투표 조회
@@ -66,4 +67,11 @@ public class VoteController {
         return ResponseEntity.status(status).body(response);
     }
 
+    // 투표 존재 여부 확인
+    @GetMapping(EXIST_VOTE)
+    public ResponseEntity<ResponseDto<Boolean>> existsVote(@PathVariable Long groupId) {
+        ResponseDto<Boolean> response = voteService.existsVote(groupId);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
 }
