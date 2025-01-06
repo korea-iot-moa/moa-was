@@ -10,6 +10,7 @@ import com.korit.moa.moa.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,11 +39,12 @@ public class VoteController {
     //투표 등록
     @PostMapping
     public ResponseEntity<ResponseDto<PostVoteResponseDto>> postMyGroupVote(
-            @RequestBody RequestVoteDto dto
+            @RequestBody RequestVoteDto dto,
+            @AuthenticationPrincipal String userId
     ){
         System.out.println(dto.getVoteContent());
         System.out.println(dto.getCreatorId());
-        ResponseDto<PostVoteResponseDto> response = voteService.postMyGroupVote(dto);
+        ResponseDto<PostVoteResponseDto> response = voteService.postMyGroupVote(dto, userId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
