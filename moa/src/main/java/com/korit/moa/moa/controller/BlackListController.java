@@ -30,7 +30,6 @@ public class BlackListController {
     @GetMapping(GET_BLACK_LIST)
     public ResponseEntity<ResponseDto<List<ResponseGetBlackListDto>>> getBlackList(@PathVariable Long groupId){
         ResponseDto<List<ResponseGetBlackListDto>> response = blackListService.getBlackList(groupId);
-        System.out.println(response);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
     }
@@ -45,7 +44,6 @@ public class BlackListController {
 
     @DeleteMapping(DEL_BLACK_LIST)
     public ResponseEntity<ResponseDto<Void>> deleteBlackList(@PathVariable Long blackListId) {
-        System.out.println("blackListId 매핑 확인: " + blackListId);
         ResponseDto<Void> response = blackListService.deleteBlackList(blackListId);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);

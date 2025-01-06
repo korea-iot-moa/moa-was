@@ -224,8 +224,6 @@ public class AuthServiceImplement implements AuthService {
     public ResponseDto<Boolean> duplicateNickName(String nickName) {
         try {
             boolean result = userRepository.existsByNickName(nickName);
-            System.out.println(result);
-            System.out.println(nickName);
 
             if (result == true) {
                 return ResponseDto.setSuccess(ResponseMessage.DUPLICATED_USER_ID, result);
