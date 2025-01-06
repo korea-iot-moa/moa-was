@@ -178,10 +178,8 @@ public class UserAnswerServiceImplement implements UserAnswerService {
                     .answerDate(LocalDate.now())
                     .isApproved(2)
                     .build();
-            System.out.println(dto);
             userAnswerRepository.save(userAnswers);
 
-            System.out.println(userAnswerRepository);
             ResponseUserAnswerDto data = new ResponseUserAnswerDto(userAnswers);
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
         } catch (Exception e) {

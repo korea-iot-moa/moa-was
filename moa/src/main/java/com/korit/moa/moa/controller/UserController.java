@@ -33,7 +33,6 @@ public class UserController {
 
     @PostMapping(SIGN_UP_PATH)
     public ResponseEntity<ResponseDto<SignUpResponseDto>> signUp(@ModelAttribute SignUpRequestDto dto) {
-        System.out.println(dto);
         ResponseDto<SignUpResponseDto> response = authService.signUp(dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);

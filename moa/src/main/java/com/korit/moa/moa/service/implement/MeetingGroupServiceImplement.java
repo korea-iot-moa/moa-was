@@ -31,7 +31,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
 
         String creatorId = userId;
-        System.out.println(creatorId);
         String groupTitle = dto.getGroupTitle();
         String groupContent = dto.getGroupContent();
         String groupAddress = dto.getGroupAddress();

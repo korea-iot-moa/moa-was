@@ -54,8 +54,6 @@ public class MailServiceImplement implements MailService {
 
         try {
             // 1. 유저 정보 확인
-            System.out.println("UserId: " + dto.getUserId());
-            System.out.println("UserName: " + dto.getUserName());
             boolean userExists = userRepository.existsByUserIdAndUserName(
                     dto.getUserId(),
                     dto.getUserName()
