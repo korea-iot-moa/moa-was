@@ -3,6 +3,7 @@ package com.korit.moa.moa.controller;
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.vote_result.request.VoteResultRequestDto;
+import com.korit.moa.moa.dto.vote_result.response.VoteResultGetResponseDto;
 import com.korit.moa.moa.dto.vote_result.response.VoteResultResponseDto;
 import com.korit.moa.moa.service.VoteResultService;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +35,8 @@ public class VoteResultController {
 
     @GetMapping(GET_VOTE_RESULT)
     //투표 결과 조회
-    public ResponseEntity<ResponseDto<List<VoteResultResponseDto>>> getVoteResult(@PathVariable Long voteId){
-        ResponseDto<List<VoteResultResponseDto>> response = voteResultService.getVoteResult(voteId);
+    public ResponseEntity<ResponseDto<List<VoteResultGetResponseDto>>> getVoteResult(@PathVariable Long voteId){
+        ResponseDto<List<VoteResultGetResponseDto>> response = voteResultService.getVoteResult(voteId);
         HttpStatus status  = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
     }

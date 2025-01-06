@@ -1,5 +1,6 @@
 package com.korit.moa.moa.dto.vote.request;
 
+import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class RequestVoteDto {
     private Long groupId;
 
     @NotBlank
-    private  String createId;
+    private String creatorId;
 
     @NotBlank
     private String voteContent;

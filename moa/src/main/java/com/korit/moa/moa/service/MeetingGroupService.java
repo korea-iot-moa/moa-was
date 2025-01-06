@@ -17,10 +17,10 @@ public interface MeetingGroupService {
     ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto);
 
     //모임 수정
-    ResponseDto<ResponseGroupDto> updateMeetingGroupId(String userID,Long groupId, RequestGroupDto dto);
+    ResponseDto<ResponseGroupDto> updateMeetingGroupId(Long groupId, RequestGroupDto dto);
 
     //모임 삭제
-    ResponseDto<Void> deleteMeetingGroupId(String userId,Long groupId);
+    ResponseDto<Void> deleteMeetingGroupId(Long groupId);
 
     // 모임이름 검색 필터
     ResponseDto<List<SearchResponseDto>> findByGroupTitle(String keyword);

@@ -11,6 +11,7 @@ import com.korit.moa.moa.entity.userList.UserLevel;
 import com.korit.moa.moa.entity.userList.UserList;
 import com.korit.moa.moa.entity.userList.UserListId;
 import com.korit.moa.moa.repository.UserListRepository;
+import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.UserListService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 public class UserListServiceImplement implements UserListService {
 
     private final UserListRepository userListRepository;
+    private  final UserRepository userRepository;
 
     // 내가 가입한 모임 조회
     @Override
@@ -57,7 +60,10 @@ public class UserListServiceImplement implements UserListService {
             data = results.stream()
                     .map(result -> {
                         User user = (User) result[0];
-                        return  new UserListResponseDto(user.getUserId(), user.getNickName(), user.getProfileImage());
+                        UserList userList = (UserList) result[1];
+                        return  new UserListResponseDto(
+                                user.getUserId(), user.getNickName(), user.getProfileImage(),
+                                userList.getUserLevel());
                     })
                     .collect(Collectors.toList());
         } catch (Exception e) {
@@ -88,12 +94,13 @@ public class UserListServiceImplement implements UserListService {
     @Override
     public ResponseDto<UserLevelResponseDto> putUserLevel(Long groupId, UserLevelRequestDto dto) {
         UserLevelResponseDto data = null;
-
         UserLevel userLevel = dto.getUserLevel();
+        System.out.println(userLevel);
         try{
             UserList userList = userListRepository.findByGroupId(groupId)
                  .orElseThrow(() -> new IllegalArgumentException("유저리스트를 찾을 수 없습니다" + groupId));
             userList.setUserLevel(userLevel);
+
 
             userListRepository.save(userList);
             data = new UserLevelResponseDto(userList);
@@ -108,11 +115,13 @@ public class UserListServiceImplement implements UserListService {
 
     //유저 추방
     @Override
+    @Transactional
     public ResponseDto<Void> deleteUser(Long groupId, String userId) {
         try{
-
-            userListRepository.deleteByUserId(userId);
-
+            Optional<User> userOptional = userRepository.findByUserId(userId);
+           if(userOptional.isPresent()){
+               userListRepository.deleteByUserId(userOptional.get().getUserId());
+           }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
@@ -144,7 +153,7 @@ public class UserListServiceImplement implements UserListService {
         List<MonthRatioResponseDto> data = new ArrayList<>();
         try{
             List<Object[]> results = userListRepository.getQuarterlyData(groupId);
-           data = results.stream()
+            data = results.stream()
                     .map(result -> {
                         String[] parts = result[0].toString().split("-");
                         if (parts.length != 2) {
@@ -166,7 +175,5 @@ public class UserListServiceImplement implements UserListService {
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
     }
-
-
 
 }

@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ResponseGetBlackListDto {
 
+
     @NotBlank
     private String profileImage;
 

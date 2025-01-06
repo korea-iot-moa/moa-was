@@ -3,6 +3,7 @@ package com.korit.moa.moa.service.implement;
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user.request.DeleteUserRequestDto;
+import com.korit.moa.moa.dto.user.request.UpdateUserPasswordRequestDto;
 import com.korit.moa.moa.dto.user.request.UpdateUserRequestDto;
 import com.korit.moa.moa.dto.user.response.ResponseUserDto;
 import com.korit.moa.moa.entity.user.User;
@@ -54,8 +55,6 @@ public class UserServiceImplement implements UserService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR); // 데이터베이스 오류
         }
     }
-
-
 
     // 사용자 정보 수정
     @Override
@@ -144,23 +143,50 @@ public class UserServiceImplement implements UserService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
     }
 
-    // 닉네임 중복 확인
     @Override
-    public ResponseDto<Boolean> duplicationNickName(String nickName) {
+    public ResponseDto<Boolean> resetPassword(String userId, UpdateUserPasswordRequestDto dto) {
+        String newPassword = dto.getNewPassword();
+        // 비밀번호 유효성 검사
+        if (newPassword == null || newPassword.isEmpty()
+                || !newPassword.matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[\\W_])[a-zA-Z\\d\\W_]{8,16}$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
+        System.out.println(newPassword);
         try{
-            boolean result = userRepository.existsByNickName(nickName);
+            Optional<User> optionalUser = userRepository.findByUserId(userId);
 
-            if (result == true) {
-                return ResponseDto.setSuccess(ResponseMessage.DUPLICATED_TEL_NICKNAME, result);
-            }else {
-                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, result);
+            if(optionalUser.isEmpty()) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
             }
-        }catch (Exception e) {
+
+            // 비밀번호 암호화
+            String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
+
+            User user = optionalUser.get();
+            user.setPassword(encodedPassword);  
+            userRepository.save(user);
+
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
-
     }
 
+    // 닉네임 중복 확인
+    @Override
+    public ResponseDto<Boolean> duplicationNickName(String nickName) {
+        try {
+            boolean result = userRepository.existsByNickName(nickName);
 
+            if (result) {
+                return ResponseDto.setSuccess(ResponseMessage.DUPLICATED_TEL_NICKNAME, result);
+            } else {
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
 }

@@ -13,6 +13,7 @@ import com.korit.moa.moa.repository.BlackListRepository;
 import com.korit.moa.moa.repository.MeetingGroupRepository;
 import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.BlackListService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
