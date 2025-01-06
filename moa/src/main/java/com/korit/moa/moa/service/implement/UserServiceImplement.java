@@ -163,7 +163,7 @@ public class UserServiceImplement implements UserService {
             String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
 
             User user = optionalUser.get();
-            user.setPassword(encodedPassword);  
+            user.setPassword(encodedPassword);
             userRepository.save(user);
 
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
