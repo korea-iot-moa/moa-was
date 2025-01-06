@@ -37,4 +37,7 @@ public class ApiMappingPattern {
 
     // 게시판 관련
     public static final String NOTICE = "/api/v1/notices";
+
+    // 이메일 인증
+    public static final String MAIL = "/api/v1/mail";
 }

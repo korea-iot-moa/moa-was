@@ -4,6 +4,7 @@ import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user.request.DeleteUserRequestDto;
 import com.korit.moa.moa.dto.user.request.RequestUserDto;
+import com.korit.moa.moa.dto.user.request.UpdateUserPasswordRequestDto;
 import com.korit.moa.moa.dto.user.request.UpdateUserRequestDto;
 import com.korit.moa.moa.dto.user.response.ResponseUserDto;
 import com.korit.moa.moa.entity.user.User;
@@ -20,9 +21,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserInfoController {
 
+    private static final String RESET_PASSWORD ="/resetPassword";
     private static final String USER_INFO = "/user-id";
     private static final String USER_INFO_PUT = "/user-info";
     private static final String USER_INFO_GET_DUPLICATION = "/duplication/{nickName}";
+
 
     private final UserService userService;
 
@@ -71,6 +74,14 @@ public class UserInfoController {
         return ResponseEntity.status(status).body(response);
     }
 
-
+    @PutMapping(RESET_PASSWORD)
+    public ResponseEntity<ResponseDto<Boolean>> resetPassword(
+            @AuthenticationPrincipal String userId,
+            @RequestBody UpdateUserPasswordRequestDto dto
+    ) {
+        ResponseDto<Boolean> response = userService.resetPassword(userId, dto);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
 
 }
