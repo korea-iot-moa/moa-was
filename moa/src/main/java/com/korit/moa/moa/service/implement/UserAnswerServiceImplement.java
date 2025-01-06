@@ -116,6 +116,8 @@ public class UserAnswerServiceImplement implements UserAnswerService {
                         .id(userListId)
                         .group(meetingGroup)
                         .user(user)
+                        .nickName(user.getNickName())
+                        .profileImage(user.getProfileImage())
                         .userLevel(UserLevel.일반회원)
                         .joinDate(new Date())
                         .build();
