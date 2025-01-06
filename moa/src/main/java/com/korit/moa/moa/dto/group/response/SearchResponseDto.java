@@ -39,6 +39,8 @@ public class SearchResponseDto {
 
     private MeetingTypeCategory meetingType;
 
+    private int recommendationCount;
+
     public SearchResponseDto(MeetingGroup result) {
         this.groupId = result.getGroupId();
         this.creatorId = result.getCreatorId();
@@ -51,6 +53,7 @@ public class SearchResponseDto {
         this.groupQuestion = result.getGroupQuestion();
         this.groupImage = result.getGroupImage();
         this.groupDate = result.getGroupDate();
+        this.recommendationCount = result.getRecommendation().size();
     }
 
 

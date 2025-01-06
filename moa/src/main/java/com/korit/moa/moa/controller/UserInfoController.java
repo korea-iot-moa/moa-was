@@ -22,24 +22,31 @@ import org.springframework.web.bind.annotation.*;
 public class UserInfoController {
 
     private static final String RESET_PASSWORD ="/resetPassword";
-    private static final String USER_INFO_PATH = "/{userId}";
+    private static final String USER_INFO = "/user-id";
+    private static final String USER_INFO_PUT = "/user-info";
+    private static final String USER_INFO_GET_DUPLICATION = "/duplication/{nickName}";
 
 
     private final UserService userService;
 
 
     // 사용자 정보 조회
-    @GetMapping(USER_INFO_PATH)
-    public ResponseEntity<ResponseDto<ResponseUserDto>> findUserInfo(@AuthenticationPrincipal @PathVariable String userId) {
-        ResponseDto<ResponseUserDto> response = userService.findUserInfo(userId);
+    @PostMapping(USER_INFO)
+    public ResponseEntity<ResponseDto<ResponseUserDto>> findUserInfo(
+            @AuthenticationPrincipal String userId,
+            @RequestBody RequestUserDto dto
+    ) {
+        String password = dto.getPassword();
+
+        ResponseDto<ResponseUserDto> response = userService.findUserInfo(userId, password);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
     // 사용자 정보 업데이트
-    @PutMapping(USER_INFO_PATH)
+    @PutMapping(USER_INFO_PUT)
     public ResponseEntity<ResponseDto<ResponseUserDto>> updateUser(
-           @AuthenticationPrincipal @PathVariable String userId,
+           @AuthenticationPrincipal String userId,
             @RequestBody UpdateUserRequestDto dto) {
         ResponseDto<ResponseUserDto> response = userService.updateUser(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
@@ -48,9 +55,21 @@ public class UserInfoController {
 
     // 사용자 탈퇴
     @DeleteMapping("/user")
-    public ResponseEntity<ResponseDto<Void>> deleteUser(@Valid @AuthenticationPrincipal @RequestBody DeleteUserRequestDto dto) {
+    public ResponseEntity<ResponseDto<Void>> deleteUser(
+            @Valid @AuthenticationPrincipal String userId,
+            @RequestBody DeleteUserRequestDto dto) {
 
-        ResponseDto<Void> response = userService.deleteUser(dto);
+        ResponseDto<Void> response = userService.deleteUser(userId, dto);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
+    // 닉네임 중복확인
+    @GetMapping(USER_INFO_GET_DUPLICATION)
+    public ResponseEntity<ResponseDto<Boolean>> duplicationNickName(
+            @PathVariable String nickName
+    ) {
+        ResponseDto<Boolean> response = userService.duplicationNickName(nickName);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
@@ -60,8 +79,6 @@ public class UserInfoController {
             @AuthenticationPrincipal String userId,
             @RequestBody UpdateUserPasswordRequestDto dto
     ) {
-        System.out.println(userId +":" + dto);
-        System.out.println(dto);
         ResponseDto<Boolean> response = userService.resetPassword(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);

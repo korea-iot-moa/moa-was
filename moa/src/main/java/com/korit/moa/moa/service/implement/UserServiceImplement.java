@@ -25,19 +25,35 @@ public class UserServiceImplement implements UserService {
     private final ImgFileService imgFileService;
 
     // 내정보 조회
-    public ResponseDto<ResponseUserDto> findUserInfo(String userId) {
-        ResponseUserDto data = null;
+    public ResponseDto<ResponseUserDto> findUserInfo(String userId, String password) {
+        // 비밀번호 유효성 검사
+        if (password == null || password.isEmpty()) {
+            return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
+        }
 
-        try{
-            Optional<User> optionalUser = userRepository.findById(userId);
+        try {
+            // 사용자 조회
+            Optional<User> optionalUser = userRepository.findByUserId(userId);
+
+            if (optionalUser.isEmpty()) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA); // 사용자 없음
+            }
 
             User user = optionalUser.get();
-            data = new ResponseUserDto(user);
+
+            // 비밀번호 검증
+            if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD); // 비밀번호 불일치
+            }
+
+            // 성공적으로 데이터 설정
+            ResponseUserDto data = new ResponseUserDto(user);
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR); // 데이터베이스 오류
         }
-        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
     // 사용자 정보 수정
@@ -91,8 +107,7 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public ResponseDto<Void> deleteUser(DeleteUserRequestDto dto) {
-        String userId = dto.getUserId();
+    public ResponseDto<Void> deleteUser(String userId, DeleteUserRequestDto dto) {
         String password = dto.getPassword();
 
         // 비밀번호 유효성 검사
@@ -143,7 +158,7 @@ public class UserServiceImplement implements UserService {
             String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
 
             User user = optionalUser.get();
-            user.setPassword(encodedPassword);  // 암호화된 비밀번호로 설정
+            user.setPassword(encodedPassword);  
             userRepository.save(user);
 
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
@@ -153,5 +168,20 @@ public class UserServiceImplement implements UserService {
         }
     }
 
+    // 닉네임 중복 확인
+    @Override
+    public ResponseDto<Boolean> duplicationNickName(String nickName) {
+        try {
+            boolean result = userRepository.existsByNickName(nickName);
 
+            if (result) {
+                return ResponseDto.setSuccess(ResponseMessage.DUPLICATED_TEL_NICKNAME, result);
+            } else {
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
 }
