@@ -19,6 +19,7 @@ import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.UserAnswerService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.apache.bcel.generic.ClassGen;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -41,6 +42,7 @@ public class UserAnswerServiceImplement implements UserAnswerService {
     public ResponseDto<ResponseUserAnswerDto> postMeetingGroup(Long groupId, RequestUserAnswerDto dto) {
         String userId = dto.getUserId();
         String userAnswer = dto.getUserAnswer();
+        String groupTitle =dto.getGroupTitle();
         LocalDate date = LocalDate.now();
 //        if (userAnswer == null || userAnswer.isEmpty()
 //              !userAnswer.matches("^(?!\\s)[가-힣A-Za-z\\s]{9,199}[가-힣A-Za-z\\s!@#$%^&*(),.?\":{}|<>]$\n")

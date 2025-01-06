@@ -2,6 +2,7 @@ package com.korit.moa.moa.service.implement;
 
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
+import com.korit.moa.moa.dto.group.request.GroupHomeFilterRequestDto;
 import com.korit.moa.moa.dto.group.request.RequestGroupDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
 import com.korit.moa.moa.dto.group.response.SearchResponseDto;
@@ -9,7 +10,6 @@ import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.meetingGroup.MeetingTypeCategory;
-import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.repository.MeetingGroupRepository;
 import com.korit.moa.moa.service.MeetingGroupService;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +24,13 @@ import java.util.stream.Collectors;
 public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     public final MeetingGroupRepository meetingGroupRepository;
-
+    public final BlackListRepository blackListRepository;
     // 모임 생성
     @Override
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
+
+        String creatorId = userId;
+        System.out.println(creatorId);
         String groupTitle = dto.getGroupTitle();
         String groupContent = dto.getGroupContent();
         String groupAddress = dto.getGroupAddress();
@@ -39,6 +42,9 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         GroupTypeCategory groupType = dto.getGroupType();
         MeetingTypeCategory meetingType = dto.getMeetingType();
 
+        if(creatorId ==  null || creatorId.isEmpty()){
+            return ResponseDto.setFailed((ResponseMessage.VALIDATION_FAIL));
+        }
         if (groupTitle == null || groupTitle.isEmpty()){
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
         }
@@ -91,11 +97,9 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     // 모임 수정
     @Override
-    public ResponseDto<ResponseGroupDto> updateMeetingGroupId(String userId, Long groupId, RequestGroupDto dto) {
+    public ResponseDto<ResponseGroupDto> updateMeetingGroupId(Long groupId, RequestGroupDto dto) {
         ResponseGroupDto data = null;
-        if(userId == null || userId.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
-        }
+
         if (groupId == null ){
             return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
         }
@@ -126,11 +130,8 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     // 모임 삭제
     @Override
-    public ResponseDto<Void> deleteMeetingGroupId(String userId, Long groupId) {
-
-        if(userId == null || userId.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
-        }
+    @Transactional
+    public ResponseDto<Void> deleteMeetingGroupId( Long groupId) {
         if(groupId == null){
             return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
         }
@@ -236,10 +237,10 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     // 단기/정기 필터링
     @Override
-    public ResponseDto<List<SearchResponseDto>> findByGroupType(GroupTypeCategory groupType) {
+    public ResponseDto<List<ResponseGroupDto>> findByGroupType(GroupTypeCategory groupType) {
         String groupTypes  = groupType.toString();
 
-        List<SearchResponseDto> data = null;
+        List<ResponseGroupDto> data = null;
 
         if(groupTypes == null) {
             return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
@@ -252,7 +253,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
                 List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
 
                 data = meetingGroups.stream()
-                        .map(SearchResponseDto::new)
+                        .map(ResponseGroupDto::new)
                         .collect(Collectors.toList());
             }
 
@@ -317,25 +318,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-    }
-
-    @Override
-    public ResponseDto<Boolean> isCreator(Long groupId, String userId) {
-        Boolean data = null;
-
-        try{
-            data = meetingGroupRepository.existsByGroupIdAndCreatorId(groupId, userId);
-
-            if (data) {
-                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
-            } else {
-                return  ResponseDto.setSuccess(ResponseMessage.SUCCESS, false);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
-        }
     }
 
 }

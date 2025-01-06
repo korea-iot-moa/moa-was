@@ -5,7 +5,6 @@ import com.korit.moa.moa.dto.user_answer.request.RequestDeleteUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.UserAnswerRequestDto;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
-import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
 
 import java.util.List;
 

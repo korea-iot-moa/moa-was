@@ -61,6 +61,10 @@ public class UserServiceImplement implements UserService {
     public ResponseDto<ResponseUserDto> updateUser(String userId, UpdateUserRequestDto dto) {
         ResponseUserDto data = null;
 
+        if (dto.getNickName() == null || dto.getNickName().isEmpty() || !dto.getNickName().matches("^[a-zA-Z가-힣0-9]{1,10}$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
+
         try {
             Optional<User> optionalUser = userRepository.findById(userId);
             if(optionalUser.isEmpty()){
@@ -78,6 +82,7 @@ public class UserServiceImplement implements UserService {
                     userRepository.existsByNickName(dto.getNickName())) {
                 return ResponseDto.setFailed(ResponseMessage.DUPLICATED_TEL_NICKNAME);
             }
+
 
             String profileImgPath = null;
             if (dto.getProfileImage() != null) {

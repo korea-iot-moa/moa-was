@@ -4,6 +4,7 @@ import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.entity.userAnswer.UserAnswer;
 import com.korit.moa.moa.entity.userList.UserList;
 import com.korit.moa.moa.entity.userList.UserListId;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,7 +23,7 @@ public interface UserListRepository extends JpaRepository<UserList, UserListId> 
 
     // 모임 내 유저 조회
     @Query(
-            "SELECT u " +
+            "SELECT u, ul " +
             "FROM User u JOIN UserList ul ON u.userId = ul.user.userId " +
             "WHERE ul.group.groupId = :groupId"
     )
@@ -73,6 +74,7 @@ public interface UserListRepository extends JpaRepository<UserList, UserListId> 
 
     //유저 추방
     @Modifying
+    @Transactional
     @Query("DELETE FROM UserList ul WHERE ul.user.userId = :userId")
     void deleteByUserId(@Param("userId") String userId);
 

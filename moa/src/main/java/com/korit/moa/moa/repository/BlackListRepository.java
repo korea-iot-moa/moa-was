@@ -26,4 +26,5 @@ WHERE bl.groupId = :groupId
 """)
     List<Object[]> findByGroup(@Param("groupId") Long groupId);
 
+    void deleteByGroupId(Long groupId);
 }

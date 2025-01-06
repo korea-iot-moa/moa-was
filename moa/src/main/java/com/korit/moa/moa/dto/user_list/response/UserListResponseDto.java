@@ -1,5 +1,6 @@
 package com.korit.moa.moa.dto.user_list.response;
 
+import com.korit.moa.moa.entity.userList.UserLevel;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,4 +18,7 @@ public class UserListResponseDto {
 
     @NotBlank
     private String profileImage;
+
+    @NotBlank
+    private UserLevel userLevel;
 }
