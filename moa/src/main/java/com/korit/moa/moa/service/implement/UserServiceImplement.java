@@ -3,6 +3,7 @@ package com.korit.moa.moa.service.implement;
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user.request.DeleteUserRequestDto;
+import com.korit.moa.moa.dto.user.request.UpdateUserPasswordRequestDto;
 import com.korit.moa.moa.dto.user.request.UpdateUserRequestDto;
 import com.korit.moa.moa.dto.user.response.ResponseUserDto;
 import com.korit.moa.moa.entity.user.User;
@@ -120,6 +121,36 @@ public class UserServiceImplement implements UserService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
+    }
+
+    @Override
+    public ResponseDto<Boolean> resetPassword(String userId, UpdateUserPasswordRequestDto dto) {
+        String newPassword = dto.getNewPassword();
+        // 비밀번호 유효성 검사
+        if (newPassword == null || newPassword.isEmpty()
+                || !newPassword.matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[\\W_])[a-zA-Z\\d\\W_]{8,16}$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
+        System.out.println(newPassword);
+        try{
+            Optional<User> optionalUser = userRepository.findByUserId(userId);
+
+            if(optionalUser.isEmpty()) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+            }
+
+            // 비밀번호 암호화
+            String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
+
+            User user = optionalUser.get();
+            user.setPassword(encodedPassword);  // 암호화된 비밀번호로 설정
+            userRepository.save(user);
+
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
     }
 
 
