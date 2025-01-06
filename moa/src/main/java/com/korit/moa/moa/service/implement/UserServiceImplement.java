@@ -151,7 +151,6 @@ public class UserServiceImplement implements UserService {
                 || !newPassword.matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[\\W_])[a-zA-Z\\d\\W_]{8,16}$")) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
-        System.out.println(newPassword);
         try{
             Optional<User> optionalUser = userRepository.findByUserId(userId);
 
@@ -163,7 +162,7 @@ public class UserServiceImplement implements UserService {
             String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
 
             User user = optionalUser.get();
-            user.setPassword(encodedPassword);  
+            user.setPassword(encodedPassword);
             userRepository.save(user);
 
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);

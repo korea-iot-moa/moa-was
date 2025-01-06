@@ -56,12 +56,10 @@ public class BlackListServiceImplement implements BlackListService {
     // 블랙 리스트 등록
     public ResponseDto<ResponseBlackListDto> postBlackList(Long groupId, String userId) {
         ResponseBlackListDto data = null;
-        System.out.println(userId);
         try {
             if (!userRepository.existsByUserId(userId)) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
             }
-            System.out.println(userId);
             if (blackListRepository.existsByUserId(userId)) {
                 return ResponseDto.setFailed(ResponseMessage.DUPLICATED_USER_ID);
             }
@@ -82,7 +80,6 @@ public class BlackListServiceImplement implements BlackListService {
     @Override
     //블랙 리스트 삭제
     public ResponseDto<Void> deleteBlackList(Long blackListId) {
-        System.out.println(blackListId);
         try {
             Optional<BlackList> optionalBlackList = blackListRepository.findById(blackListId);
             if(optionalBlackList.isPresent()){

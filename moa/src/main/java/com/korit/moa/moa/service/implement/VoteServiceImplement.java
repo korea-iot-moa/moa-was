@@ -37,7 +37,7 @@ public class VoteServiceImplement implements VoteService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
     }
-
+    
     //투표 등록
     @Override
     public ResponseDto<PostVoteResponseDto> postMyGroupVote(RequestVoteDto dto, String userId) {
@@ -129,8 +129,6 @@ public class VoteServiceImplement implements VoteService {
             } else {
                 return ResponseDto.setSuccess(ResponseMessage.SUCCESS, false);
             }
-
-
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -116,6 +116,8 @@ public class UserAnswerServiceImplement implements UserAnswerService {
                         .id(userListId)
                         .group(meetingGroup)
                         .user(user)
+                        .nickName(user.getNickName())
+                        .profileImage(user.getProfileImage())
                         .userLevel(UserLevel.일반회원)
                         .joinDate(new Date())
                         .build();
@@ -176,10 +178,8 @@ public class UserAnswerServiceImplement implements UserAnswerService {
                     .answerDate(LocalDate.now())
                     .isApproved(2)
                     .build();
-            System.out.println(dto);
             userAnswerRepository.save(userAnswers);
 
-            System.out.println(userAnswerRepository);
             ResponseUserAnswerDto data = new ResponseUserAnswerDto(userAnswers);
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
         } catch (Exception e) {

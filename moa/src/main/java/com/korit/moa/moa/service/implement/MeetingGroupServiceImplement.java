@@ -2,7 +2,6 @@ package com.korit.moa.moa.service.implement;
 
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
-import com.korit.moa.moa.dto.group.request.GroupHomeFilterRequestDto;
 import com.korit.moa.moa.dto.group.request.RequestGroupDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
 import com.korit.moa.moa.dto.group.response.SearchResponseDto;
@@ -10,8 +9,10 @@ import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.meetingGroup.MeetingTypeCategory;
+import com.korit.moa.moa.repository.BlackListRepository;
 import com.korit.moa.moa.repository.MeetingGroupRepository;
 import com.korit.moa.moa.service.MeetingGroupService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
 
         String creatorId = userId;
-        System.out.println(creatorId);
         String groupTitle = dto.getGroupTitle();
         String groupContent = dto.getGroupContent();
         String groupAddress = dto.getGroupAddress();
@@ -237,10 +237,10 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     // 단기/정기 필터링
     @Override
-    public ResponseDto<List<ResponseGroupDto>> findByGroupType(GroupTypeCategory groupType) {
+    public ResponseDto<List<SearchResponseDto>> findByGroupType(GroupTypeCategory groupType) {
         String groupTypes  = groupType.toString();
 
-        List<ResponseGroupDto> data = null;
+        List<SearchResponseDto> data = null;
 
         if(groupTypes == null) {
             return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
@@ -253,7 +253,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
                 List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
 
                 data = meetingGroups.stream()
-                        .map(ResponseGroupDto::new)
+                        .map(SearchResponseDto::new)
                         .collect(Collectors.toList());
             }
 
@@ -318,6 +318,25 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+    }
+
+    @Override
+    public ResponseDto<Boolean> isCreator(Long groupId, String userId) {
+        Boolean data = null;
+
+        try{
+            data = meetingGroupRepository.existsByGroupIdAndCreatorId(groupId, userId);
+
+            if (data) {
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
+            } else {
+                return  ResponseDto.setSuccess(ResponseMessage.SUCCESS, false);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
     }
 
 }

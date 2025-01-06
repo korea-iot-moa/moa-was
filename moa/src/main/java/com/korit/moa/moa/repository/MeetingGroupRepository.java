@@ -16,8 +16,8 @@ import java.util.Optional;
 @Repository
 public interface MeetingGroupRepository extends JpaRepository<MeetingGroup,Long> {
 
-       // 그룹 모임 홈화면 출력 사용자가 카테고리 선택한 경우/선택 안한 경우
-       @Query(value = """
+    // 그룹 모임 홈화면 출력 사용자가 카테고리 선택한 경우/선택 안한 경우
+    @Query(value = """
 SELECT ranked.*
 FROM (
     SELECT mg.*,
@@ -44,7 +44,7 @@ FROM (
 WHERE ranked.rn <= 3
 ORDER BY ranked.group_category, RAND();
 """, nativeQuery = true)
-       Optional<List<MeetingGroup>> findGroupByUserId(@Param("userId") String userId);
+    Optional<List<MeetingGroup>> findGroupByUserId(@Param("userId") String userId);
 
     // 그룹 모임 홈화면 출력 비로그인 상태
     @Query(value = """
@@ -82,8 +82,8 @@ SELECT ranked.*
     // 모임 취미카테고리,지역칸테고리 필터링
     @Query("SELECT m FROM MeetingGroup m " +
             "WHERE m.groupCategory = :groupCategory " +
-    "AND m.groupAddress Like CONCAT('%', :region, '%') " +
-    "ORDER BY m.groupId ")
+            "AND m.groupAddress Like CONCAT('%', :region, '%') " +
+            "ORDER BY m.groupId ")
     Optional<List<MeetingGroup>> findByGroupCategoryAndRegion(@Param("groupCategory")GroupCategory groupCategory, @Param("region") String region);
 
     // 단기/정기 모임 필터
@@ -91,4 +91,6 @@ SELECT ranked.*
 
     // 사용자가 관리자인지 확인
     Boolean existsByGroupIdAndCreatorId(Long groupId, String userId);
+
+    Optional<String> findCreatorIdByGroupId(Long groupId);
 }
