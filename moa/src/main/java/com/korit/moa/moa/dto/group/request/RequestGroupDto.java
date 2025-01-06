@@ -15,9 +15,6 @@ import lombok.NoArgsConstructor;
 public class RequestGroupDto {
 
     @NotBlank
-    private String creatorId;
-
-    @NotBlank
     private String groupTitle;
 
     @NotBlank

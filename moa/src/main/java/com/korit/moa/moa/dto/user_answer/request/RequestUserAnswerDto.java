@@ -12,6 +12,8 @@ public class RequestUserAnswerDto {
 
     @NotBlank
     private  String userId;
+    @NotBlank
+    private String groupTitle;
 
     @NotBlank
     private String userAnswer;

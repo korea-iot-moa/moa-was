@@ -2,7 +2,9 @@ package com.korit.moa.moa.service.implement;
 
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
+import com.korit.moa.moa.dto.user_list.response.UserGenderRatioResponseDto;
 import com.korit.moa.moa.dto.vote_result.request.VoteResultRequestDto;
+import com.korit.moa.moa.dto.vote_result.response.VoteResultGetResponseDto;
 import com.korit.moa.moa.dto.vote_result.response.VoteResultResponseDto;
 import com.korit.moa.moa.entity.voteResult.VoteAnswer;
 import com.korit.moa.moa.entity.voteResult.VoteResult;
@@ -11,6 +13,7 @@ import com.korit.moa.moa.service.VoteResultService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -50,18 +53,20 @@ public class VoteResultServiceImplement implements VoteResultService {
 
     @Override
     //결과 조회
-    public ResponseDto<List<VoteResultResponseDto>> getVoteResult(Long voteId) {
-        List<VoteResultResponseDto> data = null;
+    public ResponseDto<List<VoteResultGetResponseDto>> getVoteResult(Long voteId) {
+        List<VoteResultGetResponseDto> data = new ArrayList<>();
         try {
-            List<VoteResult> voteResults=  voteResultRepository.findByVoteId(voteId);
-            data =  voteResults.stream()
-                    .map(VoteResultResponseDto:: new)
+            List<Object[]> results = voteResultRepository.findByVoteId(voteId);
+            int total = results.stream().mapToInt(result -> ((Long) result[1]).intValue()).sum();
+            data = results.stream()
+                    .map(result -> new VoteResultGetResponseDto
+                            (result[0].toString(), (Long) result[1], (double) ((Long) result[1]) / total * 100))
                     .collect(Collectors.toList());
-            return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
     }
 
     @Override

@@ -10,9 +10,12 @@ import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.meetingGroup.MeetingTypeCategory;
+import com.korit.moa.moa.repository.BlackListRepository;
 import com.korit.moa.moa.repository.MeetingGroupRepository;
 import com.korit.moa.moa.service.MeetingGroupService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.apache.bcel.generic.ClassGen;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,10 +27,13 @@ import java.util.stream.Collectors;
 public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     public final MeetingGroupRepository meetingGroupRepository;
-
+    public final BlackListRepository blackListRepository;
     // 모임 생성
     @Override
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
+
+        String creatorId = userId;
+        System.out.println(creatorId);
         String groupTitle = dto.getGroupTitle();
         String groupContent = dto.getGroupContent();
         String groupAddress = dto.getGroupAddress();
@@ -39,6 +45,9 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         GroupTypeCategory groupType = dto.getGroupType();
         MeetingTypeCategory meetingType = dto.getMeetingType();
 
+        if(creatorId ==  null || creatorId.isEmpty()){
+            return ResponseDto.setFailed((ResponseMessage.VALIDATION_FAIL));
+        }
         if (groupTitle == null || groupTitle.isEmpty()){
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
         }
@@ -91,11 +100,9 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     // 모임 수정
     @Override
-    public ResponseDto<ResponseGroupDto> updateMeetingGroupId(String userId, Long groupId, RequestGroupDto dto) {
+    public ResponseDto<ResponseGroupDto> updateMeetingGroupId(Long groupId, RequestGroupDto dto) {
         ResponseGroupDto data = null;
-        if(userId == null || userId.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
-        }
+
         if (groupId == null ){
             return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
         }
@@ -126,15 +133,13 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     // 모임 삭제
     @Override
-    public ResponseDto<Void> deleteMeetingGroupId(String userId, Long groupId) {
-
-        if(userId == null || userId.isEmpty()){
-            return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
-        }
+    @Transactional
+    public ResponseDto<Void> deleteMeetingGroupId( Long groupId) {
         if(groupId == null){
             return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
         }
         try {
+            blackListRepository.deleteByGroupId(groupId);
             Optional<MeetingGroup> optionalMeetingGroup = meetingGroupRepository.findById(groupId);
             if(optionalMeetingGroup.isPresent()){
                 meetingGroupRepository.deleteById(groupId);

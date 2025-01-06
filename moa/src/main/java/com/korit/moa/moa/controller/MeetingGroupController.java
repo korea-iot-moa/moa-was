@@ -34,6 +34,8 @@ public class MeetingGroupController {
     public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(
             @AuthenticationPrincipal String userId, @RequestBody RequestGroupDto dto
     ) {
+        System.out.println("UserId: " + userId);
+        System.out.println("Request Body: " + dto);
         ResponseDto<ResponseGroupDto> response = meetingGroupService.createGroupMeeting(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
@@ -42,19 +44,17 @@ public class MeetingGroupController {
     // 모임 수정
     @PutMapping(UPD_MEETINGGROUP)
     public ResponseEntity<ResponseDto<ResponseGroupDto>> updateMeetingGroupId(
-            @AuthenticationPrincipal String userId, @PathVariable Long groupId, @RequestBody RequestGroupDto dto
+            @PathVariable Long groupId, @RequestBody RequestGroupDto dto
     ) {
-        ResponseDto<ResponseGroupDto> response = meetingGroupService.updateMeetingGroupId(userId, groupId, dto);
+        ResponseDto<ResponseGroupDto> response = meetingGroupService.updateMeetingGroupId(groupId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
     // 모임 삭제
     @DeleteMapping(DEL_MEETINGGROUP)
-    public ResponseEntity<ResponseDto<Void>> deleteMeetingGroupId(
-            @AuthenticationPrincipal String userId, @PathVariable Long groupId
-    ) {
-        ResponseDto<Void> response = meetingGroupService.deleteMeetingGroupId(userId, groupId);
+    public ResponseEntity<ResponseDto<Void>> deleteMeetingGroupId(@PathVariable Long groupId) {
+        ResponseDto<Void> response = meetingGroupService.deleteMeetingGroupId(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

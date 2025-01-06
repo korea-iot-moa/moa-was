@@ -3,6 +3,7 @@ package com.korit.moa.moa.repository;
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -90,4 +91,11 @@ ORDER BY ranked.group_category, RAND();
 
     // 단기/정기 모임 필터
     Optional<List<MeetingGroup>> findByGroupType(@Param("groupType") GroupTypeCategory groupType);
+
+    @Query("select mg.creatorId " +
+            "from MeetingGroup mg " +
+            "where mg.groupId = :groupId")
+    Optional<String> findCreatorIdByGroupId(@Param("groupId") Long groupId);
+
+
 }

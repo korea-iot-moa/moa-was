@@ -4,6 +4,7 @@ import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.vote.request.RequestUpdateVoteDto;
 import com.korit.moa.moa.dto.vote.request.RequestVoteDto;
+import com.korit.moa.moa.dto.vote.response.PostVoteResponseDto;
 import com.korit.moa.moa.dto.vote.response.VoteResponseDto;
 import com.korit.moa.moa.service.VoteService;
 import lombok.RequiredArgsConstructor;
@@ -28,16 +29,19 @@ public class VoteController {
     public ResponseEntity<ResponseDto<VoteResponseDto>> getMyGroupVote(
             @PathVariable Long groupId
     ) {
+
         ResponseDto<VoteResponseDto> response = voteService.getMyGroupVote(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
     //투표 등록
     @PostMapping
-    public ResponseEntity<ResponseDto<VoteResponseDto>> postMyGroupVote(
+    public ResponseEntity<ResponseDto<PostVoteResponseDto>> postMyGroupVote(
             @RequestBody RequestVoteDto dto
     ){
-        ResponseDto<VoteResponseDto> response = voteService.postMyGroupVote(dto);
+        System.out.println(dto.getVoteContent());
+        System.out.println(dto.getCreatorId());
+        ResponseDto<PostVoteResponseDto> response = voteService.postMyGroupVote(dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
