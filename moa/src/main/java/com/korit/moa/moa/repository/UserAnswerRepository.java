@@ -17,8 +17,8 @@ public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM UserAnswer ua WHERE ua.userId = :userId")
-    void deleteByUserId(@Param("userId") String userId);
+    @Query("DELETE  FROM UserAnswer ua WHERE ua.userId = :userId  and ua.groupId = :groupId  ")
+    void deleteByUserId(@Param("userId") String userId , @Param("groupId") Long groupId);
 
     Optional<UserAnswer> findByGroupId(Long groupId);
 
