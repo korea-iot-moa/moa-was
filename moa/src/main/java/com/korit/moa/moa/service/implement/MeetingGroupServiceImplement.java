@@ -31,7 +31,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
 
         String creatorId = userId;
-        System.out.println(creatorId);
         String groupTitle = dto.getGroupTitle();
         String groupContent = dto.getGroupContent();
         String groupAddress = dto.getGroupAddress();
@@ -321,7 +320,10 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
     @Override
     public ResponseDto<Boolean> isCreator(Long groupId, String userId) {
         Boolean data = null;

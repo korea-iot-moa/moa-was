@@ -39,11 +39,9 @@ public class VoteController {
     //투표 등록
     @PostMapping
     public ResponseEntity<ResponseDto<PostVoteResponseDto>> postMyGroupVote(
-            @AuthenticationPrincipal String userId,
-            @RequestBody RequestVoteDto dto
+            @RequestBody RequestVoteDto dto,
+            @AuthenticationPrincipal String userId
     ){
-        System.out.println(dto.getVoteContent());
-        System.out.println(dto.getCreatorId());
         ResponseDto<PostVoteResponseDto> response = voteService.postMyGroupVote(dto, userId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
