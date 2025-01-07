@@ -36,6 +36,7 @@ public class BlackListServiceImplement implements BlackListService {
         List<ResponseGetBlackListDto> data = null;
         try {
             List<Object[]> blackLists = blackListRepository.findByGroup(groupId);
+
             data = blackLists.stream()
                     .map(result -> new ResponseGetBlackListDto(
                             result[0].toString(),
