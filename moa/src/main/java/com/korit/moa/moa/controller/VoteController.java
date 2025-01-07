@@ -42,6 +42,7 @@ public class VoteController {
             @RequestBody RequestVoteDto dto,
             @AuthenticationPrincipal String userId
     ){
+
         ResponseDto<PostVoteResponseDto> response = voteService.postMyGroupVote(dto, userId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);

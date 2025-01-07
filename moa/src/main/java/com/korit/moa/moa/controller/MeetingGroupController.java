@@ -29,7 +29,6 @@ public class MeetingGroupController {
     private static final String GET_MEETINGGROUP_HOME = "/home-recommendation";
     private static final String GET_MEETINGGROUP_CATEGORY = "/groupCategory";
     private static final String GET_MEETINGGROUP_TYPE = "/groupType";
-    private static final String GET_MEETINGGROUP_ID = "/{groupId}";
     private static final String EXISTS_CREATOR = "/exists/{groupId}";
 
 
@@ -94,14 +93,6 @@ public class MeetingGroupController {
             @AuthenticationPrincipal String userId
     ) {
         ResponseDto<List<SearchResponseDto>> response = meetingGroupService.getGroupAtHome(userId);
-        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-        return ResponseEntity.status(status).body(response);
-    }
-
-    // 모임 id로 단건 조회
-    @GetMapping(GET_MEETINGGROUP_ID)
-    public ResponseEntity<ResponseDto<ResponseGroupDto>> getGroupById(@PathVariable Long groupId) {
-        ResponseDto<ResponseGroupDto> response = meetingGroupService.getGroupById(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
