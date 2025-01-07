@@ -17,4 +17,6 @@ public interface UserListService {
     ResponseDto<Void> deleteUser(Long groupId, String userId);
     ResponseDto<List<UserGenderRatioResponseDto>> getUserListGender(Long groupId);
     ResponseDto<List<MonthRatioResponseDto>> getMonthUserList(Long groupId);
+
+    ResponseDto<Boolean> duplicateUserId(String userId, Long groupId);
 }

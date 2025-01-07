@@ -25,6 +25,8 @@ public class MeetingGroupAuthController {
     private static final String GET_GROUP_CATEGORY = "/meeting-group/groupCategory";
     private static final String GET_GROUP_TYPE = "/meeting-group/groupType";
     private static final String GET_GROUP_HOME = "/meeting-group/group";
+    private static final String GET_MEETING_GROUP_ID = "/meeting-group/{groupId}";
+
 
     // 모임이름 검색 필터링
     @GetMapping(GET_GROUP)
@@ -57,6 +59,14 @@ public class MeetingGroupAuthController {
     @GetMapping(GET_GROUP_HOME)
     public ResponseEntity<ResponseDto<List<SearchResponseDto>>> getGroupAtHomeAuth() {
         ResponseDto<List<SearchResponseDto>> response = meetingGroupService.getGroupAtHomeAuth();
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
+    // 모임 id로 단건 조회
+    @GetMapping(GET_MEETING_GROUP_ID)
+    public ResponseEntity<ResponseDto<ResponseGroupDto>> getGroupById(@PathVariable Long groupId) {
+        ResponseDto<ResponseGroupDto> response = meetingGroupService.getGroupById(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
