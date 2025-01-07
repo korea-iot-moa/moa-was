@@ -30,6 +30,7 @@ public class UserListController {
     public static final String USER_LEVEL = "/userLevel/{groupId}";
     public static final String GENDER_CHART_PAGE = "/genderChart/{groupId}";
     public static final String USER_CHART_PAGE = "/userChart/{groupId}";
+    public static final String USER_LIST_GET= "/user-list-in/{groupId}";
 
 
 //     내 모임 조회
@@ -93,6 +94,17 @@ public class UserListController {
     @GetMapping(USER_CHART_PAGE)
     public ResponseEntity<ResponseDto<List<MonthRatioResponseDto>>> getMonthUserList(@PathVariable Long groupId){
         ResponseDto<List<MonthRatioResponseDto>> response = userListService.getMonthUserList(groupId);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
+
+    @GetMapping(USER_LIST_GET)
+    public ResponseEntity<ResponseDto<Boolean>> duplicateUserId(
+            @AuthenticationPrincipal String userId,
+            @PathVariable Long groupId
+    ) {
+        ResponseDto<Boolean> response = userListService.duplicateUserId(userId, groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

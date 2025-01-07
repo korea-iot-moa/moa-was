@@ -91,4 +91,6 @@ SELECT ranked.*
 
     // 사용자가 관리자인지 확인
     Boolean existsByGroupIdAndCreatorId(Long groupId, String userId);
+
+    Optional<String> findCreatorIdByGroupId(Long groupId);
 }
