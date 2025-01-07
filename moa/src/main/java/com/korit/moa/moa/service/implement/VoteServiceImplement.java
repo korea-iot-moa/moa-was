@@ -40,10 +40,9 @@ public class VoteServiceImplement implements VoteService {
 
     //투표 등록
     @Override
-    public ResponseDto<PostVoteResponseDto> postMyGroupVote(RequestVoteDto dto) {
+    public ResponseDto<PostVoteResponseDto> postMyGroupVote(RequestVoteDto dto, String userId) {
         PostVoteResponseDto data = null;
         Long groupId = dto.getGroupId();
-        String createId = dto.getCreatorId();
         String voteContent = dto.getVoteContent();
         Date createDate = dto.getCreateDate();
         Date closeDate = dto.getCloseDate();
@@ -58,23 +57,20 @@ public class VoteServiceImplement implements VoteService {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
         }
         try {
-            Optional<String> optionalCreatorId = meetingGroupRepository.findCreatorIdByGroupId(groupId);
-            System.out.println(optionalCreatorId);
-            if (optionalCreatorId.isEmpty()) {
-                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
+            Boolean optionalCreatorId = meetingGroupRepository.existsByGroupIdAndCreatorId(groupId, userId);
+            if (optionalCreatorId) {
+
+                Votes votes = Votes.builder()
+                        .groupId(groupId)
+                        .creatorId(userId)
+                        .voteContent(voteContent)
+                        .createDate(createDate)
+                        .closeDate(closeDate)
+                        .build();
+                voteRepository.save(votes);
+
+                data = new PostVoteResponseDto(votes);
             }
-
-            String creatorId = optionalCreatorId.get();
-            Votes votes = Votes.builder()
-                    .groupId(groupId)
-                    .creatorId(creatorId)
-                    .voteContent(voteContent)
-                    .createDate(createDate)
-                    .closeDate(closeDate)
-                    .build();
-            voteRepository.save(votes);
-
-            data = new PostVoteResponseDto(votes);
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
 
         } catch (Exception e) {
@@ -82,6 +78,7 @@ public class VoteServiceImplement implements VoteService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
     }
+
 
     @Override
     //투표  수정

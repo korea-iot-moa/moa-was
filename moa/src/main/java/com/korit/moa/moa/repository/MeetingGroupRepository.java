@@ -93,4 +93,6 @@ SELECT ranked.*
     Boolean existsByGroupIdAndCreatorId(Long groupId, String userId);
 
     Optional<String> findCreatorIdByGroupId(Long groupId);
+
+
 }
