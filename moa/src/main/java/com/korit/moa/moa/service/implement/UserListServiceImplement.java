@@ -181,7 +181,7 @@ public class UserListServiceImplement implements UserListService {
             Optional<UserList> userListOptional = userListRepository.findByUserIdAndGroupId(userId, groupId);
 
             if (userListOptional.isEmpty()) {
-                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, false);
             }
 
             UserList userList = userListOptional.get();
