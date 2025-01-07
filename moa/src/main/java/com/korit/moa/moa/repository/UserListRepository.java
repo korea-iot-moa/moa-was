@@ -78,6 +78,11 @@ public interface UserListRepository extends JpaRepository<UserList, UserListId> 
     @Query("DELETE FROM UserList ul WHERE ul.user.userId = :userId")
     void deleteByUserId(@Param("userId") String userId);
 
-
+//    // 그룹 아이디에 유저 존재 여부
+@Query("SELECT ul FROM UserList ul " +
+        "JOIN ul.user u " +
+        "JOIN ul.group mg " +
+        "WHERE u.userId = :userId AND mg.groupId = :groupId")
+Optional<UserList> findByUserIdAndGroupId(@Param("userId") String userId, @Param("groupId") Long groupId);
 
 }
