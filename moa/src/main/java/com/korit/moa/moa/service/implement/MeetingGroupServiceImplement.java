@@ -320,7 +320,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-
     @Override
     public ResponseDto<Boolean> isCreator(Long groupId, String userId) {
         Boolean data = null;
