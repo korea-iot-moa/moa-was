@@ -2,6 +2,7 @@ package com.korit.moa.moa.service.implement;
 
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
+import com.korit.moa.moa.dto.user_answer.response.ResponseGetUserAnswer;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
 import com.korit.moa.moa.dto.user_list.request.UserLevelRequestDto;
 import com.korit.moa.moa.dto.user_list.response.*;
@@ -95,12 +96,10 @@ public class UserListServiceImplement implements UserListService {
     public ResponseDto<UserLevelResponseDto> putUserLevel(Long groupId, UserLevelRequestDto dto) {
         UserLevelResponseDto data = null;
         UserLevel userLevel = dto.getUserLevel();
-        System.out.println(userLevel);
         try{
             UserList userList = userListRepository.findByGroupId(groupId)
                  .orElseThrow(() -> new IllegalArgumentException("유저리스트를 찾을 수 없습니다" + groupId));
             userList.setUserLevel(userLevel);
-
 
             userListRepository.save(userList);
             data = new UserLevelResponseDto(userList);
@@ -175,5 +174,45 @@ public class UserListServiceImplement implements UserListService {
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
     }
+
+    @Override
+    public ResponseDto<Boolean> duplicateUserId(String userId, Long groupId) {
+        try{
+            Optional<UserList> userListOptional = userListRepository.findByUserIdAndGroupId(userId, groupId);
+
+            if (userListOptional.isEmpty()) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+            }
+
+            UserList userList = userListOptional.get();
+            userListRepository.save(userList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
+    }
+
+    // 그룹 아이디 유저리스트에 유저 존재여부
+//    @Override
+//    public ResponseDto<ResponseGetUserIdDto> getUserIdUserList(String userId, Long groupId) {
+//        ResponseGetUserIdDto data = null;
+//
+//        try{
+//            Optional<UserList> userListOptional = userListRepository.findByUserIdAndGroupId(userId, groupId);
+//            if (userListOptional.isEmpty()) {
+//                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+//            }
+//
+//            UserList userList = userListOptional.get();
+//            data = new ResponseGetUserIdDto(userList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+//        }
+//        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+//    }
+
+
 
 }

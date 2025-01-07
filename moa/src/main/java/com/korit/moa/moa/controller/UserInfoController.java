@@ -47,7 +47,7 @@ public class UserInfoController {
     @PutMapping(USER_INFO_PUT)
     public ResponseEntity<ResponseDto<ResponseUserDto>> updateUser(
            @AuthenticationPrincipal String userId,
-           @ModelAttribute @RequestBody UpdateUserRequestDto dto) {
+           @ModelAttribute UpdateUserRequestDto dto) {
         ResponseDto<ResponseUserDto> response = userService.updateUser(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);

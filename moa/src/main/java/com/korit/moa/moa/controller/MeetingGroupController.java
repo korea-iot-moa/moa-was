@@ -37,8 +37,6 @@ public class MeetingGroupController {
     public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(
             @AuthenticationPrincipal String userId, @RequestBody RequestGroupDto dto
     ) {
-        System.out.println("UserId: " + userId);
-        System.out.println("Request Body: " + dto);
         ResponseDto<ResponseGroupDto> response = meetingGroupService.createGroupMeeting(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
