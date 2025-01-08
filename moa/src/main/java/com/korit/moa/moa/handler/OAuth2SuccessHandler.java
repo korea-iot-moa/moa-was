@@ -1,6 +1,7 @@
 package com.korit.moa.moa.handler;
 
 import com.korit.moa.moa.common.object.CustomOAuth2User;
+import com.korit.moa.moa.provider.JwtProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,6 +16,12 @@ import java.util.Map;
 @Component
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    private final JwtProvider jwtProvider;
+
+    public OAuth2SuccessHandler(JwtProvider jwtProvider) {
+        this.jwtProvider = jwtProvider;
+    }
+
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request,
@@ -28,7 +35,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         // 회원가입 O
         if (existed) {
-            String accessToken = (String) attributes.get("accessToken");
+            String accessToken = jwtProvider.generateJwtToken(customOAuth2User.getName(),"","");
             response.sendRedirect("http://localhost:3000/sns-success?accessToken=" + accessToken + "&expiration=36000000");
         }
         // 회원가입 X
