@@ -1,9 +1,11 @@
 package com.korit.moa.moa.handler;
 
 import com.korit.moa.moa.common.object.CustomOAuth2User;
+import com.korit.moa.moa.provider.JwtProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -13,7 +15,10 @@ import java.util.Map;
 
 // OAuth2 유저 서비스 작업이 성공했을 때 처리
 @Component
+@RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    private final JwtProvider jwtProvider;
 
     @Override
     public void onAuthenticationSuccess(
@@ -28,8 +33,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         // 회원가입 O
         if (existed) {
-            String accessToken = (String) attributes.get("accessToken");
-            response.sendRedirect("http://localhost:3000/sns-success?accessToken=" + accessToken + "&expiration=36000000");
+            String accessToken = jwtProvider.generateJwtToken(customOAuth2User.getName(), "", "");
+            int expirTime = jwtProvider.getExpiration();
+            response.sendRedirect("http://localhost:3000/sns-success?accessToken=" + accessToken + "&expiration= + " + expirTime);
         }
         // 회원가입 X
         else {
