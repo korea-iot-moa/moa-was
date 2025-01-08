@@ -9,13 +9,20 @@ import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.meetingGroup.MeetingTypeCategory;
-import com.korit.moa.moa.repository.BlackListRepository;
+import com.korit.moa.moa.entity.user.User;
+import com.korit.moa.moa.entity.userList.UserLevel;
+import com.korit.moa.moa.entity.userList.UserList;
+import com.korit.moa.moa.entity.userList.UserListId;
 import com.korit.moa.moa.repository.MeetingGroupRepository;
+import com.korit.moa.moa.repository.UserListRepository;
+import com.korit.moa.moa.repository.UserRepository;
+import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.MeetingGroupService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,7 +32,9 @@ import java.util.stream.Collectors;
 public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     public final MeetingGroupRepository meetingGroupRepository;
-    public final BlackListRepository blackListRepository;
+    public final UserListRepository userListRepository;
+    public final UserRepository userRepository;
+    private final ImgFileService imgFileService;
     // 모임 생성
     @Override
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
@@ -34,7 +43,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         String groupTitle = dto.getGroupTitle();
         String groupContent = dto.getGroupContent();
         String groupAddress = dto.getGroupAddress();
-        String groupImage = dto.getGroupImage();
         String groupSupplies = dto.getGroupSupplies();
         String groupDate = dto.getGroupDate();
         String groupQuestion = dto.getGroupQuestion();
@@ -66,15 +74,21 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         if (meetingType == null){
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL );
         }
+        if(meetingGroupRepository.existsByGroupTitle(dto.getGroupTitle())){
+            return ResponseDto.setFailed(ResponseMessage.EXIST_DATA);
+        }
 
         try{
-
+            String profileImgPath = null;
+            if(dto.getGroupImage() != null) {
+                profileImgPath = imgFileService.convertImgFile(dto.getGroupImage(), "profile");
+            }
             MeetingGroup meetingGroup = MeetingGroup.builder()
                     .creatorId(userId)
                     .groupTitle(groupTitle)
                     .groupContent(groupContent)
                     .groupAddress(groupAddress)
-                    .groupImage(groupImage)
+                    .groupImage(profileImgPath)
                     .groupSupplies(groupSupplies)
                     .groupDate(groupDate)
                     .groupQuestion(groupQuestion)
@@ -85,7 +99,23 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
             meetingGroupRepository.save(meetingGroup);
 
-            ResponseGroupDto data = new ResponseGroupDto(meetingGroup);
+
+            UserListId userListId = new UserListId();
+            userListId.setGroupId(meetingGroup.getGroupId());
+            userListId.setUserId(creatorId);
+
+            String nickName =  userRepository.findByUserNickName(userId);
+            UserList userList =  UserList.builder()
+                    .id(userListId)
+                    .user(User.builder().userId(creatorId).build())
+                    .group(meetingGroup)
+                    .userLevel(UserLevel.관리자)
+                    .nickName(nickName)
+                    .joinDate(new Date())
+                    .profileImage(profileImgPath)
+                    .build();
+            userListRepository.save(userList);
+            ResponseGroupDto data =  new ResponseGroupDto(meetingGroup);
 
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
         } catch (Exception e) {
@@ -107,11 +137,15 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         try {
             MeetingGroup meetingGroup =  meetingGroupRepository.findById(groupId)
                     .orElseThrow(() ->  new IllegalAccessException("모임을 찾을수 없습니다" + groupId));
+            String profileImgPath = null;
+            if (dto.getGroupImage() != null) {
+                profileImgPath = imgFileService.convertImgFile(dto.getGroupImage(), "profile");
+            }
 
             meetingGroup.setGroupTitle(dto.getGroupTitle());
             meetingGroup.setGroupContent(dto.getGroupContent());
             meetingGroup.setGroupAddress(dto.getGroupAddress());
-            meetingGroup.setGroupImage(dto.getGroupImage());
+            meetingGroup.setGroupImage(profileImgPath);
             meetingGroup.setGroupSupplies(dto.getGroupSupplies());
             meetingGroup.setGroupCategory(dto.getGroupCategory());
             meetingGroup.setGroupType(dto.getGroupType());

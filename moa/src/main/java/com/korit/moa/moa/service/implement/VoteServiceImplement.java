@@ -6,6 +6,7 @@ import com.korit.moa.moa.dto.vote.request.RequestUpdateVoteDto;
 import com.korit.moa.moa.dto.vote.request.RequestVoteDto;
 import com.korit.moa.moa.dto.vote.response.PostVoteResponseDto;
 import com.korit.moa.moa.dto.vote.response.VoteResponseDto;
+import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.votes.Votes;
 import com.korit.moa.moa.repository.MeetingGroupRepository;
 import com.korit.moa.moa.repository.VoteRepository;
@@ -78,7 +79,6 @@ public class VoteServiceImplement implements VoteService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
     }
-
 
     @Override
     //투표  수정
