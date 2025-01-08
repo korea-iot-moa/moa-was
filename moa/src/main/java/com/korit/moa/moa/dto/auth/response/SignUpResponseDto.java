@@ -1,5 +1,6 @@
 package com.korit.moa.moa.dto.auth.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.korit.moa.moa.entity.user.Gender;
 import com.korit.moa.moa.entity.user.Region;
 import com.korit.moa.moa.entity.user.User;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SignUpResponseDto {
 
     private String userId;
@@ -34,6 +36,10 @@ public class SignUpResponseDto {
 
     private Region region;
 
+    private String joinPath;
+
+    private String snsId;
+
     public SignUpResponseDto(User user) {
         this.userId = user.getUserId();
         this.password = user.getPassword();
@@ -44,5 +50,7 @@ public class SignUpResponseDto {
         this.profileImage = user.getProfileImage();
         this.hobbies = user.getHobbies();
         this.region = user.getRegion();
+        this.joinPath = user.getJoinPath();
+        this.snsId = user.getSnsId();
     }
 }
