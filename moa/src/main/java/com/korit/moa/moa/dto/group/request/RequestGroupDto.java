@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class RequestGroupDto {
     @NotBlank
     private String groupAddress;
 
-    private String  groupImage;
+    private MultipartFile groupImage;
 
     private String groupSupplies;
 

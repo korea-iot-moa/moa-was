@@ -10,6 +10,10 @@ import com.korit.moa.moa.repository.ReviewRepository;
 import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -53,24 +57,6 @@ public class ReviewServiceImplement implements ReviewService {
 
             data = new ReviewResponseDto(review);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
-        }
-        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-    }
-
-    // 리뷰 전체 조회
-    @Override
-    public ResponseDto<List<ReviewResponseDto>> getAllReviews() {
-        List<ReviewResponseDto> data = null;
-
-        try{
-            List<Review> reviews = reviewRepository.findAll();
-
-            data = reviews.stream()
-                    .map(ReviewResponseDto :: new)
-                    .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
@@ -180,4 +166,25 @@ public class ReviewServiceImplement implements ReviewService {
         };
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
     }
+
+    // 리뷰 전체 조회
+    @Override
+    public ResponseDto<List<ReviewResponseDto>> getAllReviews(int page, int size) {
+        List<ReviewResponseDto> data;
+
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "reviewDate"));
+            Page<Review> reviews = reviewRepository.findAll(pageable);
+
+            data = reviews.stream()
+                    .map(ReviewResponseDto::new)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+    }
+
 }

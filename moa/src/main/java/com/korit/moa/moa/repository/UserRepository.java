@@ -1,6 +1,7 @@
 package com.korit.moa.moa.repository;
 
 import com.korit.moa.moa.dto.auth.request.FindIdRequestDto;
+import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.user.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,4 +33,13 @@ public interface UserRepository extends JpaRepository<User, String> {
     // 이메일 인증시 회원 정보 확인
     boolean existsByUserIdAndUserName(String userId, String userName);
 
+    @Query("""
+     select u.nickName
+     from User u
+     where u.userId = :userId
+""")
+    //모임 생성 후 생성자의 닉네임을 유저리스트에 등록
+    String findByUserNickName(@Param("userId") String userId);
+
+    User findBySnsIdAndJoinPath(String snsId, String registration);
 }

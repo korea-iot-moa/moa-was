@@ -49,6 +49,8 @@ public class AuthServiceImplement implements AuthService {
         String userBirthdate = dto.getUserBirthDate();
         Region region = dto.getRegion();
         Set<Long> hobbiesData = dto.getHobbies();
+        String joinPath = dto.getJoinPath();
+        String snsId = dto.getSnsId();
 
         // 아이디 유효성 검사
         if (userId == null || userId.isEmpty() || !userId.matches("^[a-zA-Z0-9]{8,14}$")) {
@@ -92,6 +94,14 @@ public class AuthServiceImplement implements AuthService {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
+        if (joinPath == null || joinPath.isEmpty()) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
+
+        if (snsId == null || snsId.isEmpty()) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
+
         try {
             String profileImgPath = null;
             if(dto.getProfileImage() != null) {
@@ -108,6 +118,8 @@ public class AuthServiceImplement implements AuthService {
                     .nickName(nickName)
                     .profileImage(profileImgPath)
                     .region(region)
+                    .joinPath(joinPath)
+                    .snsId(snsId)
                     .build();
 
             User saveUser = userRepository.save(user);

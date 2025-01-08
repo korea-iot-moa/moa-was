@@ -21,7 +21,7 @@ public class Votes {
     @Column(name = "group_id", nullable = false)
     private Long groupId;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "creator_id", nullable = false)
     private String creatorId;
 
     @Column(name = "vote_content", nullable = false)
