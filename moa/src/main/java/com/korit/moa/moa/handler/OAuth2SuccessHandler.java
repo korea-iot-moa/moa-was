@@ -1,7 +1,10 @@
 package com.korit.moa.moa.handler;
 
 import com.korit.moa.moa.common.object.CustomOAuth2User;
+import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.provider.JwtProvider;
+import com.korit.moa.moa.repository.UserRepository;
+import com.korit.moa.moa.service.AuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 // OAuth2 유저 서비스 작업이 성공했을 때 처리
 @Component
@@ -19,6 +23,7 @@ import java.util.Map;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtProvider jwtProvider;
+    private final UserRepository userRepository;
 
     @Override
     public void onAuthenticationSuccess(
@@ -33,7 +38,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         // 회원가입 O
         if (existed) {
-            String accessToken = jwtProvider.generateJwtToken(customOAuth2User.getName(), "", "");
+            Optional<User> optionalUser = userRepository.findById(customOAuth2User.getName());
+            User user = optionalUser.get();
+
+            String accessToken = jwtProvider.generateJwtToken(customOAuth2User.getName(), user.getNickName(),user.getProfileImage());
             int expirTime = jwtProvider.getExpiration();
             response.sendRedirect("http://localhost:3000/sns-success?accessToken=" + accessToken + "&expiration= + " + expirTime);
         }
