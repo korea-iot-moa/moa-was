@@ -92,7 +92,13 @@ SELECT ranked.*
     // 사용자가 관리자인지 확인
     Boolean existsByGroupIdAndCreatorId(Long groupId, String userId);
 
-    Optional<String> findCreatorIdByGroupId(Long groupId);
+    //같은 제목 모임 생성 중복 방지
+    boolean existsByGroupTitle(String groupTitle);
+
+
+//    //특정 모임 생성자 찾기
+//    @Query("SELECT mg.creatorId FROM MeetingGroup mg WHERE mg.groupId = :groupId")
+//    String findByGroupId(@Param("groupId") Long groupId);
 
 
 }

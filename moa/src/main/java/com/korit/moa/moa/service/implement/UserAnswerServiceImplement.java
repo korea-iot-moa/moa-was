@@ -123,7 +123,7 @@ public class UserAnswerServiceImplement implements UserAnswerService {
                         .build();
                 userListRepository.save(userList);
 
-                userAnswerRepository.deleteByUserId(dto.getUserId());
+                userAnswerRepository.deleteByUserId(dto.getUserId(),groupId);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,7 +138,7 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         int isApproved = dto.getIsApproved();
         try {
             if (isApproved == 0) {
-                userAnswerRepository.deleteByUserId(dto.getUserId());
+                userAnswerRepository.deleteByUserId(dto.getUserId(),groupId);
             }
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
         } catch (Exception e) {
