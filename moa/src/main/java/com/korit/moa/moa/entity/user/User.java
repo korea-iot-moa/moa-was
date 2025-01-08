@@ -50,4 +50,17 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Recommendation> recommendation = new ArrayList<>();
+
+    @Column(nullable = false, length = 5, columnDefinition = "VARCHAR(5) COMMENT '가입 경로 (HOME, KAKAO, NAVER)'")
+    private String joinPath;
+
+    @Column(nullable = true, columnDefinition = "VARCHAR(255) COMMENT 'OAuth2 사용자 아이디'")
+    private String snsId;
+
+    @PrePersist
+    private void setDefaultValues() {
+        if (this.joinPath == null) {
+            this.joinPath = "HOME"; // 기본값 설정
+        }
+    }
 }

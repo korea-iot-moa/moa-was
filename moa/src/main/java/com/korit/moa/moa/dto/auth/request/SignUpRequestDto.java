@@ -5,6 +5,7 @@ package com.korit.moa.moa.dto.auth.request;
 import com.korit.moa.moa.entity.user.Gender;
 import com.korit.moa.moa.entity.user.Region;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,4 +45,9 @@ public class SignUpRequestDto {
     private MultipartFile profileImage ;
 
     private Region region;
+
+    @NotBlank
+    @Pattern(regexp="^(home|kakao|naver)$")
+    private String joinPath;
+    private String snsId;
 }
