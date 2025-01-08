@@ -41,8 +41,11 @@ public class ReviewController {
 
     // 후기 전체 조회
     @GetMapping(AUTH_REVIEW)
-    public ResponseEntity<ResponseDto<List<ReviewResponseDto>>> getAllReviews() {
-        ResponseDto<List<ReviewResponseDto>> response = reviewService.getAllReviews();
+    public ResponseEntity<ResponseDto<List<ReviewResponseDto>>> getAllReviews(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+        ResponseDto<List<ReviewResponseDto>> response = reviewService.getAllReviews(page, size);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
