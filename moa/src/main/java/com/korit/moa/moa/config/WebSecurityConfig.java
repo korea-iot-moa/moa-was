@@ -2,6 +2,8 @@ package com.korit.moa.moa.config;
 
 import com.korit.moa.moa.filter.JwtAuthenticationFilter;
 
+import com.korit.moa.moa.handler.OAuth2SuccessHandler;
+import com.korit.moa.moa.service.implement.OAuth2UserServiceImplement;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,8 @@ public class WebSecurityConfig {
     @Lazy
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2UserServiceImplement oAuth2Service;
 
     @Bean
     public CorsFilter corsFilter() {
@@ -66,12 +70,17 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/hobbies/**"),
                                 new AntPathRequestMatcher("/api/v1/reviews/auth"),
                                 new AntPathRequestMatcher("/api/v1/mail/**"),
-                                new AntPathRequestMatcher("/api/v1/notices/**")
-
+                                new AntPathRequestMatcher("/api/v1/notices/**"),
+                                new AntPathRequestMatcher("/oauth2/callback/*")
                         )
                         .permitAll()
                         .anyRequest().authenticated())
-
+                .oauth2Login(oauth2 -> oauth2
+                        .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+                        .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/sns-sign-in"))
+                        .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2Service))
+                        .successHandler(oAuth2SuccessHandler)
+                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

@@ -32,4 +32,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     // 이메일 인증시 회원 정보 확인
     boolean existsByUserIdAndUserName(String userId, String userName);
 
+    //
+    User findBySnsIdAndJoinPath(String snsId, String registration);
 }
