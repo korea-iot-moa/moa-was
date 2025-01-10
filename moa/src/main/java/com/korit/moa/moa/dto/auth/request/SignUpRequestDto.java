@@ -50,4 +50,10 @@ public class SignUpRequestDto {
     @Pattern(regexp="^(home|kakao|naver)$")
     private String joinPath;
     private String snsId;
+
+    @NotBlank
+    private String phoneNumber;
+
+    @NotBlank
+    private String email;
 }

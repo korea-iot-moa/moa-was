@@ -3,6 +3,7 @@ package com.korit.moa.moa.service.implement;
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.mail.SendMailRequestDto;
+import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.provider.JwtProvider;
 import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.MailService;
@@ -18,6 +19,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,18 +56,20 @@ public class MailServiceImplement implements MailService {
 
         try {
             // 1. 유저 정보 확인
-            boolean userExists = userRepository.existsByUserIdAndUserName(
+            Optional<User> userResult = userRepository.findByUserIdAndUserName(
                     dto.getUserId(),
                     dto.getUserName()
             );
 
-            if (!userExists) {
+            User user = userResult.get();
+
+            if (userResult.isEmpty()) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
             }
 
             String token = jwtProvider.generateEmailValidToken(dto.getUserId());
 
-            MimeMessage message = createMail(dto.getEmail(), token);
+            MimeMessage message = createMail(user.getEmail(), token);
             try {
                 javaMailSender.send(message);
                 return ResponseDto.setSuccess(ResponseMessage.MESSAGE_TOKEN_SUCCESS, token);

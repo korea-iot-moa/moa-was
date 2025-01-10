@@ -5,8 +5,12 @@ import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestDeleteUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.UserAnswerRequestDto;
+import com.korit.moa.moa.dto.user_answer.response.ParticipationStatusResponseDto;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
+import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
+import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
+import com.korit.moa.moa.entity.meetingGroup.MeetingTypeCategory;
 import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.entity.userAnswer.UserAnswer;
 import com.korit.moa.moa.entity.userList.UserLevel;
@@ -19,7 +23,6 @@ import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.UserAnswerService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.apache.bcel.generic.ClassGen;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -91,6 +94,7 @@ public class UserAnswerServiceImplement implements UserAnswerService {
     @Transactional(rollbackOn = Exception.class)
     public ResponseDto<Void> approveUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto) {
         int isApproved = dto.getIsApproved();
+        UserAnswer updateData = null;
         try {
             List<UserAnswer> userAnswers = userAnswerRepository.findAllByGroupId(groupId);
 
@@ -122,7 +126,9 @@ public class UserAnswerServiceImplement implements UserAnswerService {
                         .build();
                 userListRepository.save(userList);
 
-                userAnswerRepository.deleteByUserId(dto.getUserId(),groupId);
+                updateData = userAnswerRepository.findByGroupIdAndUserId(groupId, dto.getUserId());
+                updateData.setIsApproved(1);
+                userAnswerRepository.save(updateData);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,13 +139,16 @@ public class UserAnswerServiceImplement implements UserAnswerService {
 
     //참여 요청 거절
     @Override
-    public ResponseDto<Void> deleteUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto) {
+    public ResponseDto<Boolean> refuseRequestUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto) {
         int isApproved = dto.getIsApproved();
+        UserAnswer updateData = null;
         try {
             if (isApproved == 0) {
-                userAnswerRepository.deleteByUserId(dto.getUserId(),groupId);
+                updateData = userAnswerRepository.findByGroupIdAndUserId(groupId, dto.getUserId());
+                updateData.setIsApproved(0);
+                userAnswerRepository.save(updateData);
             }
-            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
@@ -205,4 +214,51 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         }
     }
 
+    @Override
+    public ResponseDto<List<ParticipationStatusResponseDto>> findParticipationStatus(String userId) {
+        List<ParticipationStatusResponseDto> data = null;
+
+        try {
+            List<Object[]> results = userAnswerRepository.findParticipationStatus(userId);
+            data = results.stream()
+                    .map(result -> {
+                        Long groupId = (Long) result[0];
+                        String groupTitle = (String) result[1];
+                        GroupTypeCategory groupType = (GroupTypeCategory) result[2];
+                        MeetingTypeCategory meetingType = (MeetingTypeCategory) result[3];
+                        GroupCategory groupCategory = (GroupCategory) result[4];
+                        String groupImage = (String) result[5];
+                        Long answerId = (Long) result[6];
+                        LocalDate answerDate = (LocalDate) result[7];
+                        int isApproved = (int) result[8];
+
+                        return new ParticipationStatusResponseDto(
+                                groupId,
+                                groupTitle,
+                                groupType,
+                                meetingType,
+                                groupCategory,
+                                groupImage,
+                                answerId,
+                                answerDate,isApproved
+                        );
+                    })
+                    .toList();
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseDto<Boolean> deleteAnswer(Long answerId) {
+        try {
+            userAnswerRepository.deleteById(answerId);
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
 }
