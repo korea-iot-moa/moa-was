@@ -51,6 +51,8 @@ public class AuthServiceImplement implements AuthService {
         Set<Long> hobbiesData = dto.getHobbies();
         String joinPath = dto.getJoinPath();
         String snsId = dto.getSnsId();
+        String phoneNumber = dto.getPhoneNumber();
+        String email = dto.getEmail();
 
         // 아이디 유효성 검사
         if (userId == null || userId.isEmpty() || !userId.matches("^[a-zA-Z0-9]{8,14}$")) {
@@ -84,6 +86,14 @@ public class AuthServiceImplement implements AuthService {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
+        if (phoneNumber == null || phoneNumber.isEmpty() || !phoneNumber.matches("^01[016789]\\d{7,8}$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
+
+        if (email == null || email.isEmpty() || !email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        }
+
         // 생년월일 유효성 검사
         if (userBirthdate == null) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
@@ -98,9 +108,7 @@ public class AuthServiceImplement implements AuthService {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
-        if (snsId == null || snsId.isEmpty()) {
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
-        }
+
 
         try {
             String profileImgPath = null;
@@ -120,8 +128,9 @@ public class AuthServiceImplement implements AuthService {
                     .region(region)
                     .joinPath(joinPath)
                     .snsId(snsId)
+                    .phoneNumber(phoneNumber)
+                    .email(email)
                     .build();
-
             User saveUser = userRepository.save(user);
 
             Set<UserHobbies> hobbies = dto.getHobbies().stream().map(hobbyId ->
@@ -209,10 +218,6 @@ public class AuthServiceImplement implements AuthService {
     public ResponseDto<List<Hobby>> getHobbies() {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, hobbyRepository.findAll());
     }
-
-
-
-
 
     // 회원가입 아이디 중복 확인
     @Override

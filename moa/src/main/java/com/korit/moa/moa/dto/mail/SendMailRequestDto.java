@@ -14,6 +14,4 @@ public class SendMailRequestDto {
     private String userId;
 
     private String userName;
-
-    private String email;
 }

@@ -31,7 +31,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByUserNameAndUserBirthDate(@Param("userName") String userName, @Param("userBirthdate") Date userBirthDate);
 
     // 이메일 인증시 회원 정보 확인
-    boolean existsByUserIdAndUserName(String userId, String userName);
+    Optional<User>  findByUserIdAndUserName(String userId, String userName);
 
     @Query("""
      select u.nickName
