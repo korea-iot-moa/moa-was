@@ -1,10 +1,7 @@
 package com.korit.moa.moa.entity.userAnswer;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -12,6 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name = "User_Answers")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
