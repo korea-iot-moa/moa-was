@@ -18,6 +18,7 @@ import com.korit.moa.moa.repository.UserListRepository;
 import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.MeetingGroupService;
+import io.lettuce.core.ScriptOutputType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
     public final UserListRepository userListRepository;
     public final UserRepository userRepository;
     private final ImgFileService imgFileService;
+
     // 모임 생성
     @Override
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {

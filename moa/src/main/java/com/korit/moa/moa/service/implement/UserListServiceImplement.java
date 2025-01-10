@@ -2,7 +2,6 @@ package com.korit.moa.moa.service.implement;
 
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
-import com.korit.moa.moa.dto.user_answer.response.ResponseGetUserAnswer;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
 import com.korit.moa.moa.dto.user_list.request.UserLevelRequestDto;
 import com.korit.moa.moa.dto.user_list.response.*;

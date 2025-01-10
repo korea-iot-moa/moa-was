@@ -98,7 +98,7 @@ public class AuthServiceImplement implements AuthService {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
-        if (snsId == null || snsId.isEmpty()) {
+        if (snsId.isEmpty()) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 

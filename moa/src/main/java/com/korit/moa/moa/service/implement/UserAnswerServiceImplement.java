@@ -43,11 +43,11 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         String userId = dto.getUserId();
         String userAnswer = dto.getUserAnswer();
         LocalDate date = LocalDate.now();
-        if (userAnswer == null || userAnswer.isEmpty() ||
-              !userAnswer.matches("^(?!\\s)[가-힣A-Za-z\\s]{9,199}[가-힣A-Za-z\\s!@#$%^&*(),.?\":{}|<>]$\n")
-        ) {
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
-        }
+//        if (userAnswer == null || userAnswer.isEmpty() ||
+//              !userAnswer.matches("^(?!\\s)[가-힣A-Za-z\\s]{9,199}[가-힣A-Za-z\\s!@#$%^&*(),.?\":{}|<>]$\n")
+//        ) {
+//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+//        }
         try {
                 meetingGroupRepository.findById(groupId);
             UserAnswer newUserAnswer = UserAnswer.builder()
