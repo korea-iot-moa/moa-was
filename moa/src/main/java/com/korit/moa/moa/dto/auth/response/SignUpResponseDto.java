@@ -40,6 +40,10 @@ public class SignUpResponseDto {
 
     private String snsId;
 
+    private String phoneNumber;
+
+    private String email;
+
     public SignUpResponseDto(User user) {
         this.userId = user.getUserId();
         this.password = user.getPassword();
@@ -52,5 +56,7 @@ public class SignUpResponseDto {
         this.region = user.getRegion();
         this.joinPath = user.getJoinPath();
         this.snsId = user.getSnsId();
+        this.phoneNumber = user.getPhoneNumber();
+        this.email = user.getEmail();
     }
 }

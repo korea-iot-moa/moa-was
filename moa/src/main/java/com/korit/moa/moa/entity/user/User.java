@@ -63,4 +63,10 @@ public class User {
             this.joinPath = "HOME"; // 기본값 설정
         }
     }
+
+    @Column(name = "user_phone_number",nullable = false)
+    private String phoneNumber;
+
+    @Column(name = "user_mail" , nullable = false)
+    private String email;
 }

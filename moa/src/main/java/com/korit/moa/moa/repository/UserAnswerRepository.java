@@ -1,7 +1,9 @@
 package com.korit.moa.moa.repository;
 
+import com.korit.moa.moa.dto.user_answer.response.ParticipationStatusResponseDto;
 import com.korit.moa.moa.entity.userAnswer.UserAnswer;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,9 +22,16 @@ public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
     @Query("DELETE  FROM UserAnswer ua WHERE ua.userId = :userId  and ua.groupId = :groupId  ")
     void deleteByUserId(@Param("userId") String userId , @Param("groupId") Long groupId);
 
-    Optional<UserAnswer> findByGroupId(Long groupId);
-
     // 사용자 답변 중복 확인
     boolean existsByGroupIdAndUserId(Long groupId, String userId);
 
+    // 모임 신청 내역 확인
+    @Query("SELECT mg.groupId, mg.groupTitle, mg.groupType, mg.meetingType, " +
+            "mg.groupCategory, mg.groupImage, ua.answerId, ua.answerDate, ua.isApproved " +
+            "FROM UserAnswer ua JOIN MeetingGroup mg ON ua.groupId = mg.groupId " +
+            "WHERE ua.userId = :userId " +
+            "ORDER BY ua.answerDate DESC")
+    List<Object[]> findParticipationStatus(@Param("userId") String userId);
+
+    UserAnswer findByGroupIdAndUserId(Long groupId, @NotBlank String userId);
 }
