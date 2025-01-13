@@ -9,8 +9,10 @@ import lombok.Data;
 public class FindIdResponseDto {
 
     private String userId;
+    private String userName;
 
     public FindIdResponseDto(User user) {
         this.userId = user.getUserId();
+        this.userName = user.getUserName();
     }
 }
