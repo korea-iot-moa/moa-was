@@ -38,9 +38,10 @@ public interface UserRepository extends JpaRepository<User, String> {
      from User u
      where u.userId = :userId
 """)
-        //모임 생성 후 생성자의 닉네임을 유저리스트에 등록
+    //모임 생성 후 생성자의 닉네임을 유저리스트에 등록
     String findByUserNickName(@Param("userId") String userId);
 
     User findBySnsIdAndJoinPath(String snsId, String registration);
 
+    boolean getByProfileImage(String profileImage);
 }

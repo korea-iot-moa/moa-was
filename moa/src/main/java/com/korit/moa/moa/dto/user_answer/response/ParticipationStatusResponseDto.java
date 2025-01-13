@@ -25,4 +25,3 @@ public class ParticipationStatusResponseDto {
     private LocalDate answerDate;
     private int isApproved;
 }
-
