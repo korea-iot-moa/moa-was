@@ -1,6 +1,5 @@
 package com.korit.moa.moa.controller;
 
-
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestDeleteUserAnswerDto;
@@ -93,7 +92,6 @@ public class UserAnswerController {
         HttpStatus status = response.isResult() ? HttpStatus.OK:HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
-
     // 모임 신청 내역 확인
     @GetMapping(GROUP_PARTICIPATION_STATUS)
     public ResponseEntity<ResponseDto<List<ParticipationStatusResponseDto>>> findParticipationStatus(
@@ -103,6 +101,7 @@ public class UserAnswerController {
         HttpStatus status = response.isResult() ? HttpStatus.OK:HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
+
 
     // 모임 신청 취소
     @DeleteMapping(DELETE_USER_ANSWER)

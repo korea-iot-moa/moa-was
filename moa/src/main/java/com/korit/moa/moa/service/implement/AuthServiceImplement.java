@@ -108,13 +108,11 @@ public class AuthServiceImplement implements AuthService {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
-<<<<<<< HEAD
+
         if (snsId.isEmpty()) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
-=======
 
->>>>>>> develop
 
         try {
             String profileImgPath = null;

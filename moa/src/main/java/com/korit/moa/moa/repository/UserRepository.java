@@ -42,4 +42,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     String findByUserNickName(@Param("userId") String userId);
 
     User findBySnsIdAndJoinPath(String snsId, String registration);
+
+    boolean getByProfileImage(String profileImage);
 }

@@ -35,7 +35,7 @@ public class MeetingGroupController {
     // 모임 생성
     @PostMapping
     public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(
-            @AuthenticationPrincipal String userId, @RequestBody RequestGroupDto dto
+            @AuthenticationPrincipal String userId, @ModelAttribute RequestGroupDto dto
     ) {
         ResponseDto<ResponseGroupDto> response = meetingGroupService.createGroupMeeting(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
@@ -45,7 +45,7 @@ public class MeetingGroupController {
     // 모임 수정
     @PutMapping(UPD_MEETINGGROUP)
     public ResponseEntity<ResponseDto<ResponseGroupDto>> updateMeetingGroupId(
-            @PathVariable Long groupId, @RequestBody RequestGroupDto dto
+            @PathVariable Long groupId, @ModelAttribute RequestGroupDto dto
     ) {
         ResponseDto<ResponseGroupDto> response = meetingGroupService.updateMeetingGroupId(groupId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;

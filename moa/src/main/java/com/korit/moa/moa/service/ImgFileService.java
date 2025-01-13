@@ -40,6 +40,7 @@ public class ImgFileService {
         } catch (IOException e) {
             throw new RuntimeException("Failed to save file: " + e.getMessage(), e);
         }
+        System.out.println("Saving file to: " + uploadPath.toString());
         return filePath;
     }
 }
