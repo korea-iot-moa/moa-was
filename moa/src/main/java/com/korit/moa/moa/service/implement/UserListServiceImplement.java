@@ -117,12 +117,11 @@ public class UserListServiceImplement implements UserListService {
 
     //유저 추방
     @Override
-    @Transactional
     public ResponseDto<Void> deleteUser(Long groupId, String userId) {
         try{
             Optional<User> userOptional = userRepository.findByUserId(userId);
            if(userOptional.isPresent()){
-               userListRepository.deleteByUserId(userOptional.get().getUserId());
+               userListRepository.deleteByUserIdAndGroupId(userOptional.get().getUserId(),groupId);
            }
         } catch (Exception e) {
             e.printStackTrace();
