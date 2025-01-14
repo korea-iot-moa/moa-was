@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class VoteServiceImplement implements VoteService {
+public class  VoteServiceImplement implements VoteService {
 
     private final VoteRepository voteRepository;
     private final MeetingGroupRepository meetingGroupRepository;
