@@ -30,6 +30,12 @@ public class ResponseUserDto {
 
     private Region region;
 
+    private String phoneNumber;
+
+    private String email;
+
+    private String joinPath;
+
     public ResponseUserDto(User user) {
         this.userId = user.getUserId();
         this.userBirthDate = user.getUserBirthDate();
@@ -38,6 +44,8 @@ public class ResponseUserDto {
         this.nickName = user.getNickName();
         this.profileImage = user.getProfileImage();
         this.region = user.getRegion();
-
+        this.phoneNumber = user.getPhoneNumber();
+        this.email = user.getEmail();
+        this.joinPath = user.getJoinPath();
     }
 }

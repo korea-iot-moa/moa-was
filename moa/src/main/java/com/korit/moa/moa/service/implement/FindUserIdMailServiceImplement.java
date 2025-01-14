@@ -2,6 +2,7 @@ package com.korit.moa.moa.service.implement;
 
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
+import com.korit.moa.moa.dto.auth.response.FindIdResponseDto;
 import com.korit.moa.moa.dto.mail.FindUserIdMailRequestDto;
 import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.provider.JwtProvider;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +42,7 @@ public class FindUserIdMailServiceImplement implements FindUserIdMailService {
 
         String body = "";
         body += "<h2> 이메일 인증 링크 입니다.</h2>";
-        body += "<a href=\"http://localhost:3000/findUserId/verify-find-userId?token" + token + "\">여기를 클릭해 인중해주세요.</a>";
+        body += "<a href=\"http://localhost:3000/findUserId/verify-find-userId?token=" + token + "\">여기를 클릭해 인중해주세요.</a>";
         body += "<p>이용해주셔서 감사합니다.</p>";
 
         message.setText(body, "UTF-8", "html");
@@ -51,38 +53,57 @@ public class FindUserIdMailServiceImplement implements FindUserIdMailService {
     // 메일 보내기
     @Override
     public ResponseDto<String> sendMessage(FindUserIdMailRequestDto dto) throws MessagingException {
-//        String mobileNumber = dto.getMobileNumber();
-//        String userName = dto.getUserName();
-//        String mail = dto.getEmail();
-//
-//        try {
-//            boolean userExists = userRepository.existsByUserNameAndMobileNumber(userName, mobileNumber);
-//            System.out.println(userExists);
-//            if (!userExists) {
-//                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
-//            }
-//
-//            String token = jwtProvider.generateEmailValidTokenFindUserId(userName);
-//
-//            MimeMessage message = createMail(mail, token);
-//            try{
-//                javaMailSender.send(message);
-//                return ResponseDto.setSuccess(ResponseMessage.MESSAGE_TOKEN_SUCCESS, token);
-//            } catch (MailException e) {
-//                e.printStackTrace();
-//                return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
-//            }
-//
-//        } catch (MailException e) {
-//            e.printStackTrace();
-//            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
-//        }
-        return null;
+        String phoneNumber = dto.getPhoneNumber();
+        String userName = dto.getUserName();
+
+        try {
+            Optional<User> userData = userRepository.findByUserNameAndUserBirthDate(userName, phoneNumber);
+            System.out.println(userData);
+
+            if (userData.isEmpty()) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+            }
+
+            User user = userData.get();
+
+            String token = jwtProvider.generateEmailValidTokenFindId(userName, phoneNumber);
+
+            MimeMessage message = createMail(user.getEmail(), token);
+            try{
+                javaMailSender.send(message);
+                return ResponseDto.setSuccess(ResponseMessage.MESSAGE_TOKEN_SUCCESS, token);
+            } catch (MailException e) {
+                e.printStackTrace();
+                return ResponseDto.setFailed(ResponseMessage.MESSAGE_SEND_FAIL);
+            }
+
+        } catch (MailException e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
     }
 
 
     @Override
-    public ResponseDto<String> verityEmail(String token) {
-        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, token);
+    public ResponseDto<FindIdResponseDto> verifyEmail(String token) {
+        FindIdResponseDto data = null;
+
+        String userName = jwtProvider.getUserNameFromJwt(token);
+        String phoneNumber = jwtProvider.getPhoneNumberFromJwt(token);
+
+        try{
+            Optional<User> userOptional = userRepository.findByUserNameAndUserBirthDate(userName, phoneNumber);
+
+            if (userOptional.isEmpty()) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+            }
+            User user = userOptional.get();
+            data = new FindIdResponseDto(user);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 }

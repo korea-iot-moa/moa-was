@@ -12,9 +12,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class FindUserIdMailRequestDto {
 
-    private String mobileNumber;
+    private String phoneNumber;
 
     private String userName;
 
-    private String email;
 }

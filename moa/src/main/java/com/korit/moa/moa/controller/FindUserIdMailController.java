@@ -2,6 +2,7 @@ package com.korit.moa.moa.controller;
 
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
+import com.korit.moa.moa.dto.auth.response.FindIdResponseDto;
 import com.korit.moa.moa.dto.mail.FindUserIdMailRequestDto;
 import com.korit.moa.moa.service.FindUserIdMailService;
 import jakarta.mail.MessagingException;
@@ -25,8 +26,8 @@ public class FindUserIdMailController {
     }
 
     @GetMapping("/verify-find-userId")
-    public ResponseEntity<ResponseDto<String>> verityEmail(@RequestParam String token) {
-        ResponseDto<String> response = findUserIdMailService.verityEmail(token);
+    public ResponseEntity<ResponseDto<FindIdResponseDto>> findLoginId(@RequestParam String token) {
+        ResponseDto<FindIdResponseDto> response = findUserIdMailService.verifyEmail(token);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

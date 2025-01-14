@@ -41,4 +41,6 @@ public interface MeetingGroupService {
     ResponseDto<ResponseGroupDto> getGroupById(Long groupId);
 
     ResponseDto<Boolean> isCreator(Long groupId, String userId);
+
+    ResponseDto<ResponseGroupDto> findGroup(Long groupId);
 }

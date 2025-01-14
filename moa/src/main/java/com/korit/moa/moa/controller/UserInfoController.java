@@ -56,7 +56,7 @@ public class UserInfoController {
     // 사용자 탈퇴
     @DeleteMapping("/user")
     public ResponseEntity<ResponseDto<Void>> deleteUser(
-            @Valid @AuthenticationPrincipal String userId,
+            @AuthenticationPrincipal String userId,
             @RequestBody DeleteUserRequestDto dto) {
 
         ResponseDto<Void> response = userService.deleteUser(userId, dto);
