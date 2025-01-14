@@ -29,6 +29,7 @@ public class BlackListServiceImplement implements BlackListService {
 
     private final BlackListRepository blackListRepository;
     private final UserRepository userRepository;
+    private final MeetingGroupRepository meetingGroupRepository;
 
     // 블랙 리스트 조회
     @Override
@@ -63,6 +64,9 @@ public class BlackListServiceImplement implements BlackListService {
             }
             if (blackListRepository.existsByUserId(userId)) {
                 return ResponseDto.setFailed(ResponseMessage.DUPLICATED_USER_ID);
+            }
+            if(meetingGroupRepository.existsByGroupIdAndCreatorId(groupId,userId)){
+                return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
             }
 
             BlackList blackList = BlackList.builder()

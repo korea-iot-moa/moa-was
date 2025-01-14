@@ -27,15 +27,14 @@ public class MeetingGroupController {
     private static final String UPD_MEETINGGROUP = "/{groupId}";
     private static final String DEL_MEETINGGROUP = "/{groupId}";
     private static final String GET_MEETINGGROUP_HOME = "/home-recommendation";
-    private static final String GET_MEETINGGROUP_CATEGORY = "/groupCategory";
-    private static final String GET_MEETINGGROUP_TYPE = "/groupType";
     private static final String EXISTS_CREATOR = "/exists/{groupId}";
+    private static final String GET_MEETING_GROUP = "/{groupId}";
 
 
     // 모임 생성
     @PostMapping
     public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(
-            @AuthenticationPrincipal String userId, @RequestBody RequestGroupDto dto
+            @AuthenticationPrincipal String userId, @ModelAttribute RequestGroupDto dto
     ) {
         ResponseDto<ResponseGroupDto> response = meetingGroupService.createGroupMeeting(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
@@ -45,7 +44,7 @@ public class MeetingGroupController {
     // 모임 수정
     @PutMapping(UPD_MEETINGGROUP)
     public ResponseEntity<ResponseDto<ResponseGroupDto>> updateMeetingGroupId(
-            @PathVariable Long groupId, @RequestBody RequestGroupDto dto
+            @PathVariable Long groupId, @ModelAttribute RequestGroupDto dto
     ) {
         ResponseDto<ResponseGroupDto> response = meetingGroupService.updateMeetingGroupId(groupId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
@@ -60,34 +59,7 @@ public class MeetingGroupController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 모임이름 검색 필터링
-    @GetMapping
-    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> SearchGroupKeyword(@RequestParam("keyword") String groupTitle) {
-        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupTitle(groupTitle);
-        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-        return ResponseEntity.status(status).body(response);
-    }
-
-    // 모임 취미카테고리,지역칸테고리 필터링
-    @GetMapping(GET_MEETINGGROUP_CATEGORY)
-    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> findByGroupCategoryAndRegion(
-            @RequestParam GroupCategory groupCategory,
-            @RequestParam String region
-    ) {
-        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupCategoryAndRegion(groupCategory, region);
-        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-        return ResponseEntity.status(status).body(response);
-    }
-
-    // 단기/정기 모임 필터
-    @GetMapping(GET_MEETINGGROUP_TYPE)
-    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> filterGroupType(@RequestParam GroupTypeCategory groupType) {
-        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupType(groupType);
-        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-        return ResponseEntity.status(status).body(response);
-    }
-
-//     홈화면 카테고리별 추천 모임
+    // 홈화면 카테고리별 추천 모임
     @GetMapping(GET_MEETINGGROUP_HOME)
     public ResponseEntity<ResponseDto<List<SearchResponseDto>>> getGroupAtHome(
             @AuthenticationPrincipal String userId
@@ -104,6 +76,14 @@ public class MeetingGroupController {
             @AuthenticationPrincipal String userId
     ) {
         ResponseDto<Boolean> response = meetingGroupService.isCreator(groupId, userId);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
+    // 모임 단건 조회
+    @GetMapping(GET_MEETING_GROUP)
+    public ResponseEntity<ResponseDto<ResponseGroupDto>> findGroup(@PathVariable Long groupId) {
+        ResponseDto<ResponseGroupDto> response = meetingGroupService.findGroup(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

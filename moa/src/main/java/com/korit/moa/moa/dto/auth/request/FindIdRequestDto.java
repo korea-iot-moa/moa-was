@@ -16,6 +16,8 @@ public class FindIdRequestDto {
     private String userName;
 
     @NotNull
-    private Date userBirthDate;
+    private String phoneNumber;
 
+    @NotNull
+    private String email;
 }

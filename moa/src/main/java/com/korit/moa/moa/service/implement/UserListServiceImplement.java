@@ -2,7 +2,6 @@ package com.korit.moa.moa.service.implement;
 
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
-import com.korit.moa.moa.dto.user_answer.response.ResponseGetUserAnswer;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
 import com.korit.moa.moa.dto.user_list.request.UserLevelRequestDto;
 import com.korit.moa.moa.dto.user_list.response.*;
@@ -96,6 +95,10 @@ public class UserListServiceImplement implements UserListService {
     public ResponseDto<UserLevelResponseDto> putUserLevel(Long groupId, UserLevelRequestDto dto) {
         UserLevelResponseDto data = null;
         UserLevel userLevel = dto.getUserLevel();
+
+        if(userLevel .equals("관리자")) {
+            return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
+        }
         try{
             UserList userList = userListRepository.findByGroupId(groupId)
                  .orElseThrow(() -> new IllegalArgumentException("유저리스트를 찾을 수 없습니다" + groupId));
