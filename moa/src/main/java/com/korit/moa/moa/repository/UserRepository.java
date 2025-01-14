@@ -26,9 +26,9 @@ public interface UserRepository extends JpaRepository<User, String> {
     // 아이디 찾기
     @Query(
             "SELECT u FROM User u" +
-                    " WHERE u.userName = :userName AND u.userBirthDate = :userBirthdate "
+                    " WHERE u.userName = :userName AND u.phoneNumber = :phoneNumber "
     )
-    Optional<User> findByUserNameAndUserBirthDate(@Param("userName") String userName, @Param("userBirthdate") Date userBirthDate);
+    Optional<User> findByUserNameAndUserBirthDate(@Param("userName") String userName, @Param("phoneNumber") String phoneNumber);
 
     // 이메일 인증시 회원 정보 확인
     Optional<User>  findByUserIdAndUserName(String userId, String userName);
@@ -42,6 +42,11 @@ public interface UserRepository extends JpaRepository<User, String> {
     String findByUserNickName(@Param("userId") String userId);
 
     User findBySnsIdAndJoinPath(String snsId, String registration);
+    
+    // 회원탈퇴
+    @Modifying
+    @Query("DELETE FROM User u WHERE u.userId = :userId")
+    void deleteUser(@Param("userId") String userId);
 
     boolean getByProfileImage(String profileImage);
 }

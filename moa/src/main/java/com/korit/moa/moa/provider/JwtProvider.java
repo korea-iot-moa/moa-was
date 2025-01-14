@@ -55,6 +55,16 @@ public class JwtProvider {
                 .compact();
     }
 
+    public String generateEmailValidTokenFindId(String userName, String phoneNumber) {
+        return Jwts.builder()
+                .claim("userName", userName)
+                .claim("phoneNumber", phoneNumber)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtEmailExpirationMs))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     public String removeBearer(String bearerToken) {
         if (bearerToken == null || !bearerToken.startsWith("Bearer ")) {
             throw new RuntimeException("Invalid JWT token format");
@@ -72,6 +82,18 @@ public class JwtProvider {
         Claims claims = getClaims(token);
 
         return claims.get("nickName", String.class);
+    }
+
+    public String getUserNameFromJwt(String token) {
+        Claims claims = getClaims(token);
+
+        return claims.get("userName", String.class);
+    }
+
+    public String getPhoneNumberFromJwt(String token) {
+        Claims claims = getClaims(token);
+
+        return claims.get("phoneNumber", String.class);
     }
 
     public String getProfileImageFromJwt(String token) {

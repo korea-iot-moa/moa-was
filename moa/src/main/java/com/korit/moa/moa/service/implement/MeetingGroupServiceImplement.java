@@ -390,4 +390,24 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         }
     }
 
+    @Override
+    public ResponseDto<ResponseGroupDto> findGroup(Long groupId) {
+        ResponseGroupDto data = null;
+
+        try{
+            Optional<MeetingGroup> optionalGroup = meetingGroupRepository.findById(groupId);
+            if(optionalGroup.isEmpty()) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+            }
+
+            MeetingGroup meetingGroup = optionalGroup.get();
+            data = new ResponseGroupDto(meetingGroup);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+    }
+
 }
