@@ -149,7 +149,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
             if (dto.getGroupImage() != null) {
                 groupImgPath = imgFileService.convertImgFile(dto.getGroupImage(), "groupImg");
             }
-            System.out.println(groupImgPath);
+
             meetingGroup.setGroupTitle(dto.getGroupTitle() != null ?
                     dto.getGroupTitle() : meetingGroup.getGroupTitle());
             meetingGroup.setGroupContent(dto.getGroupContent() != null ?
