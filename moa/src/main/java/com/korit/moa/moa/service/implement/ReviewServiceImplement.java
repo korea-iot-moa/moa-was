@@ -97,7 +97,7 @@ public class ReviewServiceImplement implements ReviewService {
                     .collect(Collectors.toList());
 
             if(data == null || data.isEmpty()) {
-                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+                return ResponseDto.setSuccess(ResponseMessage.NOT_EXIST_DATA, data);
             }
 
         } catch (Exception e) {
