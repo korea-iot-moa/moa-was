@@ -20,7 +20,7 @@ public interface UserAnswerService {
     // 모임참여신청 중복 확인
     ResponseDto<Boolean> duplicateUserAnswer(String userId, Long groupId);
 
-    ResponseDto<List<ParticipationStatusResponseDto>> findParticipationStatus(String userId);
+    ResponseDto<List<ParticipationStatusResponseDto >> findParticipationStatus(String userId);
 
     ResponseDto<Boolean> deleteAnswer(Long answerId);
 }

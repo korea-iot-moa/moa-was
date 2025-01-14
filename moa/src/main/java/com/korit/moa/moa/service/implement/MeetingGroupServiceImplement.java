@@ -18,6 +18,7 @@ import com.korit.moa.moa.repository.UserListRepository;
 import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.MeetingGroupService;
+import io.lettuce.core.ScriptOutputType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
     public final UserListRepository userListRepository;
     public final UserRepository userRepository;
     private final ImgFileService imgFileService;
+
     // 모임 생성
     @Override
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
@@ -79,16 +81,17 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         }
 
         try{
-            String profileImgPath = null;
+            String groupImgPath = null;
             if(dto.getGroupImage() != null) {
-                profileImgPath = imgFileService.convertImgFile(dto.getGroupImage(), "profile");
+                groupImgPath = imgFileService.convertImgFile(dto.getGroupImage(), "groupImg");
             }
+
             MeetingGroup meetingGroup = MeetingGroup.builder()
                     .creatorId(userId)
                     .groupTitle(groupTitle)
                     .groupContent(groupContent)
                     .groupAddress(groupAddress)
-                    .groupImage(profileImgPath)
+                    .groupImage(groupImgPath)
                     .groupSupplies(groupSupplies)
                     .groupDate(groupDate)
                     .groupQuestion(groupQuestion)
@@ -99,6 +102,10 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
             meetingGroupRepository.save(meetingGroup);
 
+
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+            String profileImgPath = user.getProfileImage();
 
             UserListId userListId = new UserListId();
             userListId.setGroupId(meetingGroup.getGroupId());
@@ -137,19 +144,29 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         try {
             MeetingGroup meetingGroup =  meetingGroupRepository.findById(groupId)
                     .orElseThrow(() ->  new IllegalAccessException("모임을 찾을수 없습니다" + groupId));
-            String profileImgPath = null;
-            if (dto.getGroupImage() != null) {
-                profileImgPath = imgFileService.convertImgFile(dto.getGroupImage(), "profile");
-            }
 
-            meetingGroup.setGroupTitle(dto.getGroupTitle());
-            meetingGroup.setGroupContent(dto.getGroupContent());
-            meetingGroup.setGroupAddress(dto.getGroupAddress());
-            meetingGroup.setGroupImage(profileImgPath);
-            meetingGroup.setGroupSupplies(dto.getGroupSupplies());
-            meetingGroup.setGroupCategory(dto.getGroupCategory());
-            meetingGroup.setGroupType(dto.getGroupType());
-            meetingGroup.setMeetingType(dto.getMeetingType());
+            String groupImgPath = null;
+            if (dto.getGroupImage() != null) {
+                groupImgPath = imgFileService.convertImgFile(dto.getGroupImage(), "groupImg");
+            }
+            System.out.println(groupImgPath);
+            meetingGroup.setGroupTitle(dto.getGroupTitle() != null ?
+                    dto.getGroupTitle() : meetingGroup.getGroupTitle());
+            meetingGroup.setGroupContent(dto.getGroupContent() != null ?
+                    dto.getGroupContent() : meetingGroup.getGroupContent());
+            meetingGroup.setGroupAddress(dto.getGroupAddress() != null ?
+                    dto.getGroupAddress() : meetingGroup.getGroupAddress());
+            meetingGroup.setGroupImage(groupImgPath != null ?
+                    groupImgPath : meetingGroup.getGroupImage());
+            meetingGroup.setGroupSupplies(dto.getGroupSupplies() != null ?
+                    dto.getGroupSupplies() : meetingGroup.getGroupSupplies());
+            meetingGroup.setGroupCategory(dto.getGroupCategory() != null ?
+                    dto.getGroupCategory() : meetingGroup.getGroupCategory());
+            meetingGroup.setGroupType(dto.getGroupType() != null ?
+                    dto.getGroupType() : meetingGroup.getGroupType());
+            meetingGroup.setMeetingType(dto.getMeetingType() != null ?
+                    dto.getMeetingType() : meetingGroup.getMeetingType());
+
 
             meetingGroupRepository.save(meetingGroup);
             data = new ResponseGroupDto(meetingGroup);
