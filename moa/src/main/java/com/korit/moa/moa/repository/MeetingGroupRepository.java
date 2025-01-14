@@ -100,5 +100,4 @@ SELECT ranked.*
 //    @Query("SELECT mg.creatorId FROM MeetingGroup mg WHERE mg.groupId = :groupId")
 //    String findByGroupId(@Param("groupId") Long groupId);
 
-
 }
