@@ -16,8 +16,10 @@ import com.korit.moa.moa.service.BlackListService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,12 +40,19 @@ public class BlackListServiceImplement implements BlackListService {
         try {
             List<Object[]> blackLists = blackListRepository.findByGroup(groupId);
 
+            blackLists.forEach(result -> System.out.println(Arrays.toString(result)));
+
             data = blackLists.stream()
-                    .map(result -> new ResponseGetBlackListDto(
-                            result[0].toString(),
-                            result[1].toString(),
-                            result[2].toString()
-                    ))
+                    .map(result -> {
+                        Long blackListId = result[0] != null ? Long.valueOf(result[0].toString()) : null;
+                        String userId = result[1] != null ? result[1].toString() : null;
+                        String profileImage = result[2] != null ? result[2].toString() : null;
+                        String nickName = result[3] != null ? result[3].toString() : null;
+
+                        return new ResponseGetBlackListDto(blackListId, userId,
+                                profileImage, nickName);
+                    })
+                    .distinct()
                     .collect(Collectors.toList());
 
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
@@ -53,8 +62,8 @@ public class BlackListServiceImplement implements BlackListService {
         }
     }
 
-
     @Override
+    @Transactional
     // 블랙 리스트 등록
     public ResponseDto<ResponseBlackListDto> postBlackList(Long groupId, String userId) {
         ResponseBlackListDto data = null;
@@ -62,14 +71,12 @@ public class BlackListServiceImplement implements BlackListService {
             if (!userRepository.existsByUserId(userId)) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
             }
-            if (blackListRepository.existsByUserId(userId)) {
+            boolean alreadyExists = blackListRepository.existsByUserIdAndGroupId(userId, groupId);
+            if (alreadyExists) {
                 return ResponseDto.setFailed(ResponseMessage.DUPLICATED_USER_ID);
             }
-            if(meetingGroupRepository.existsByGroupIdAndCreatorId(groupId,userId)){
-                return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
-            }
 
-            BlackList blackList = BlackList.builder()
+            BlackList blackList =  BlackList.builder()
                     .groupId(groupId)
                     .userId(userId)
                     .build();
@@ -83,13 +90,15 @@ public class BlackListServiceImplement implements BlackListService {
     }
 
     @Override
+    @Transactional
     //블랙 리스트 삭제
-    public ResponseDto<Void> deleteBlackList(Long blackListId) {
+    public ResponseDto<Void> deleteBlackList(Long groupId, String userId) {
         try {
-            Optional<BlackList> optionalBlackList = blackListRepository.findById(blackListId);
-            if(optionalBlackList.isPresent()){
-                blackListRepository.deleteById(blackListId);
+            Optional<BlackList> blackList = blackListRepository.findByGroupIdAndUserId(groupId, userId);
+            if (blackList.isEmpty()) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
             }
+            blackListRepository.delete(blackList.get());
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS,null);
         } catch (Exception e) {
             e.printStackTrace();
