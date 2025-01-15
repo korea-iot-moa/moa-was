@@ -7,6 +7,7 @@ import com.korit.moa.moa.dto.user_answer.request.RequestUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.UserAnswerRequestDto;
 import com.korit.moa.moa.dto.user_answer.response.ParticipationStatusResponseDto;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
+import com.korit.moa.moa.dto.user_answer.response.UserAnswerGetReponseDto;
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
@@ -72,22 +73,26 @@ public class UserAnswerServiceImplement implements UserAnswerService {
 
     //참여 요청 조회
     @Override
-    public ResponseDto<List<ResponseUserAnswerDto>> getUserAnswer(Long groupId) {
-        List<ResponseUserAnswerDto> data = null;
-        try {
-            List<UserAnswer> userAnswers = userAnswerRepository.findAllByGroupId(groupId);
+    public ResponseDto<List<UserAnswerGetReponseDto>> getUserAnswer(Long groupId) {
+        if (groupId == null) {
+            return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
+        }
 
-            data = userAnswers.stream()
-                    .map(ResponseUserAnswerDto::new)
+        try {
+            List<Object[]> userAnswers = userAnswerRepository.findByGroupIdWithTitle(groupId);
+
+            // Object[] 데이터를 DTO로 변환
+            List<UserAnswerGetReponseDto> data = userAnswers.stream()
+                    .map(UserAnswerGetReponseDto::new)
                     .collect(Collectors.toList());
 
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
-        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-
     }
+
 
     //참여 승인
     @Override
