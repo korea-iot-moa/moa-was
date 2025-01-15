@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
+  
     List<UserAnswer> findAllByGroupId(Long groupId);
 
     @Modifying
@@ -34,4 +35,12 @@ public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
     List<Object[]> findParticipationStatus(@Param("userId") String userId);
 
     UserAnswer findByGroupIdAndUserId(Long groupId, @NotBlank String userId);
+
+    @Query("""
+    SELECT ua.groupId, mg.groupTitle, ua.userId, ua.isApproved
+    FROM UserAnswer ua
+    JOIN MeetingGroup mg ON ua.groupId = mg.groupId
+    WHERE ua.groupId = :groupId
+""")
+    List<Object[]> findByGroupIdWithTitle(@Param("groupId") Long groupId);
 }

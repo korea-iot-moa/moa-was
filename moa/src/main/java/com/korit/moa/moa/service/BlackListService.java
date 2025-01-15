@@ -17,7 +17,7 @@ public interface BlackListService {
     ResponseDto<ResponseBlackListDto> postBlackList(Long groupId,String userId);
 
     //블랙 리스트 삭제
-    ResponseDto<Void> deleteBlackList(Long blackListId);
+    ResponseDto<Void> deleteBlackList(Long groupId , String userId);
 
 
 }
