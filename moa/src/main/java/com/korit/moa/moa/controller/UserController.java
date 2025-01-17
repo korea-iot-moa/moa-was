@@ -29,7 +29,7 @@ public class UserController {
     private final AuthService authService ;
 
     private static final String SIGN_UP_PATH ="/signUp";
-    private static final String LOGIN_PATH ="/login";
+    private static final String LOGIN_PATH ="/signIn";
 
     @PostMapping(SIGN_UP_PATH)
     public ResponseEntity<ResponseDto<SignUpResponseDto>> signUp(@ModelAttribute SignUpRequestDto dto) {
