@@ -95,13 +95,15 @@ public class UserListServiceImplement implements UserListService {
     public ResponseDto<UserLevelResponseDto> putUserLevel(Long groupId, UserLevelRequestDto dto) {
         UserLevelResponseDto data = null;
         UserLevel userLevel = dto.getUserLevel();
-
+        String userId =  dto.getUserId();
         if(userLevel .equals("관리자")) {
             return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
         }
         try{
-            UserList userList = userListRepository.findByGroupId(groupId)
-                 .orElseThrow(() -> new IllegalArgumentException("유저리스트를 찾을 수 없습니다" + groupId));
+            UserList userList = userListRepository.findByGroupIdAndUserId(groupId,userId)
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "유저리스트를 찾을 수 없습니다. groupId: " + groupId + ", userId: " + userId)
+                    );
             userList.setUserLevel(userLevel);
 
             userListRepository.save(userList);

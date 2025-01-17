@@ -26,4 +26,5 @@ public class ResponseUserAnswerDto {
         this.userId = userAnswer.getUserId();
         this.isApproved = userAnswer.getIsApproved();
     }
+
 }
