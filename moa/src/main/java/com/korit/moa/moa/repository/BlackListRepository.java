@@ -13,10 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface BlackListRepository extends JpaRepository<BlackList, Long> {
-    //회원 중복 검사
-    @Query("SELECT COUNT(bl) > 0 FROM BlackList bl WHERE bl.userId = :userId")
-    boolean existsByUserId(@Param("userId") String userId);
-
     //블랙 리스트 조회
     @Query("""
  select distinct  bl.blackListId
@@ -29,8 +25,7 @@ WHERE bl.groupId = :groupId
 """)
     List<Object[]> findByGroup(@Param("groupId") Long groupId);
 
-    void deleteByGroupId(Long groupId);
-
+    //그룹아이디, 유저 아이디 존재 여부 확인
     boolean existsByUserIdAndGroupId(String userId, Long groupId);
 
     //블랙 리스트 삭제

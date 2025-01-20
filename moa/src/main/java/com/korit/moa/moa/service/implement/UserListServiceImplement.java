@@ -121,6 +121,7 @@ public class UserListServiceImplement implements UserListService {
     @Override
     public ResponseDto<Void> deleteUser(Long groupId, String userId) {
         try{
+
             Optional<User> userOptional = userRepository.findByUserId(userId);
            if(userOptional.isPresent()){
                userListRepository.deleteByUserIdAndGroupId(userOptional.get().getUserId(),groupId);
@@ -158,18 +159,18 @@ public class UserListServiceImplement implements UserListService {
             List<Object[]> results = userListRepository.getQuarterlyData(groupId);
             data = results.stream()
                     .map(result -> {
-                        String[] parts = result[0].toString().split("-");
-                        if (parts.length != 2) {
-                            throw new IllegalArgumentException("Invalid date format: " + result[0]);
-                        }
-                        int year = Integer.parseInt(parts[0]);
-                        int quarter = Integer.parseInt(parts[1]);
-                        long userCount = Long.parseLong(result[1].toString());
-                        double ratio = Double.parseDouble(result[2].toString());
+                                String[] parts = result[0].toString().split("-");
+                                if (parts.length != 2) {
+                                    throw new IllegalArgumentException("Invalid date format: " + result[0]);
+                                }
+                                int year = Integer.parseInt(parts[0]);
+                                int quarter = Integer.parseInt(parts[1]);
+                                long userCount = Long.parseLong(result[1].toString());
+                                double ratio = Double.parseDouble(result[2].toString());
 
-                        return new MonthRatioResponseDto(quarter, userCount, ratio);
+                                return new MonthRatioResponseDto(quarter, userCount, ratio);
 
-                        }
+                            }
                     )
                     .collect(Collectors.toList());
         } catch (Exception e) {
