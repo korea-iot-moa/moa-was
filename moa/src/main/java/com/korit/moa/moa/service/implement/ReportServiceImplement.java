@@ -71,6 +71,7 @@ public class ReportServiceImplement implements ReportService {
     }
 
     @Override
+    //신고 정보 조회
     public ResponseDto<List<ReportResponseDto>> getReport(Long groupId) {
 
         List<ReportResponseDto> data = null;
