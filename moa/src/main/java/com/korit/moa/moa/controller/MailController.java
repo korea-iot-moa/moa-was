@@ -17,14 +17,14 @@ public class MailController {
 
     private final MailService mailService;
 
-    @PostMapping("/send")
+    @PostMapping
     public ResponseEntity<ResponseDto<String>> sendEmail(@RequestBody SendMailRequestDto dto) throws MessagingException {
         ResponseDto<String> response = mailService.sendMessage(dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
-    @GetMapping("/verify")
+    @GetMapping("/verification/password")
     public ResponseEntity<ResponseDto<String>> verifyEmail(@RequestParam String token) {
         ResponseDto<String> response = mailService.verifyEmail(token);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;

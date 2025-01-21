@@ -10,7 +10,7 @@ import jakarta.validation.Valid;
 
 public interface UserService {
 
-    ResponseDto<ResponseUserDto> findUserInfo(@Valid String userId, String password);
+    ResponseDto<ResponseUserDto> findUserInfo(@Valid String userId);
 
     ResponseDto<ResponseUserDto> updateUser(String userId, UpdateUserRequestDto dto);
 
@@ -19,4 +19,6 @@ public interface UserService {
     ResponseDto<Void> deleteUser(@Valid String userId, DeleteUserRequestDto dto);
 
     ResponseDto<Boolean> duplicationNickName(String nickName);
+
+    ResponseDto<Boolean> matchPassword(String userId, RequestUserDto dto);
 }

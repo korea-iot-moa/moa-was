@@ -3,6 +3,7 @@ package com.korit.moa.moa.controller;
 
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
+import com.korit.moa.moa.dto.group.response.HomeGroupResponseDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
 import com.korit.moa.moa.dto.group.response.SearchResponseDto;
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
@@ -22,8 +23,8 @@ public class MeetingGroupAuthController {
 
     private final MeetingGroupService meetingGroupService;
     private static final String GET_GROUP = "/meeting-group";
-    private static final String GET_GROUP_CATEGORY = "/meeting-group/groupCategory";
-    private static final String GET_GROUP_TYPE = "/meeting-group/groupType";
+    private static final String GET_GROUP_CATEGORY = "/meeting-group/group-category";
+    private static final String GET_GROUP_TYPE = "/meeting-group/group-type";
     private static final String GET_GROUP_HOME = "/meeting-group/group";
     private static final String GET_MEETING_GROUP_ID = "/meeting-group/{groupId}";
 
@@ -57,8 +58,8 @@ public class MeetingGroupAuthController {
 
     // 홈화면 카테고리별 추천 모임
     @GetMapping(GET_GROUP_HOME)
-    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> getGroupAtHomeAuth() {
-        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.getGroupAtHomeAuth();
+    public ResponseEntity<ResponseDto<List<HomeGroupResponseDto>>> getGroupAtHomeAuth() {
+        ResponseDto<List<HomeGroupResponseDto>> response = meetingGroupService.getGroupAtHomeAuth();
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

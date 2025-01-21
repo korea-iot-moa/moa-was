@@ -6,25 +6,33 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseUserAnswerDto {
 
-    @NotBlank
+    private Long answerId;
+
     private Long groupId;
 
-    @NotBlank
     private String userId;
 
-    @NotBlank
     private int isApproved = 2;
 
+    private String userAnswer;
+
+    private LocalDate answerDate;
+
     public ResponseUserAnswerDto(UserAnswer userAnswer) {
+        this.answerId = userAnswer.getAnswerId();
         this.groupId = userAnswer.getGroupId();
         this.userId = userAnswer.getUserId();
         this.isApproved = userAnswer.getIsApproved();
+        this.userAnswer = userAnswer.getUserAnswer();
+        this.answerDate = userAnswer.getAnswerDate();
     }
 
 }

@@ -23,7 +23,7 @@ public class VoteController {
     private static final String GET_VOTE = "/{groupId}";
     private static final String PUT_VOTE = "/{voteId}";
     private static final String POST_VOTE = "/{voteId}";
-    private static final String EXIST_VOTE = "existsVote/{groupId}";
+    private static final String EXIST_VOTE = "exists-vote/{groupId}";
 
 
     // 내 그룹 투표 조회
