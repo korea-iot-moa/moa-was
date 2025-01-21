@@ -3,6 +3,7 @@ package com.korit.moa.moa.controller;
 
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
+import com.korit.moa.moa.dto.group.response.HomeGroupResponseDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
 import com.korit.moa.moa.dto.group.response.SearchResponseDto;
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
@@ -57,8 +58,8 @@ public class MeetingGroupAuthController {
 
     // 홈화면 카테고리별 추천 모임
     @GetMapping(GET_GROUP_HOME)
-    public ResponseEntity<ResponseDto<List<SearchResponseDto>>> getGroupAtHomeAuth() {
-        ResponseDto<List<SearchResponseDto>> response = meetingGroupService.getGroupAtHomeAuth();
+    public ResponseEntity<ResponseDto<List<HomeGroupResponseDto>>> getGroupAtHomeAuth() {
+        ResponseDto<List<HomeGroupResponseDto>> response = meetingGroupService.getGroupAtHomeAuth();
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

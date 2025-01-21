@@ -3,6 +3,7 @@ package com.korit.moa.moa.service.implement;
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.group.request.RequestGroupDto;
+import com.korit.moa.moa.dto.group.response.HomeGroupResponseDto;
 import com.korit.moa.moa.dto.group.response.ResponseGroupDto;
 import com.korit.moa.moa.dto.group.response.SearchResponseDto;
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
@@ -201,8 +202,8 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
   // 그룹 모임 홈화면 출력 사용자가 카테고리 선택한 경우/안한 경우
     @Override
-    public ResponseDto<List<SearchResponseDto>> getGroupAtHome(String userId) {
-        List<SearchResponseDto> data = null;
+    public ResponseDto<List<HomeGroupResponseDto>> getGroupAtHome(String userId) {
+        List<HomeGroupResponseDto> data = null;
 
         if(userId == null) {
             return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
@@ -215,7 +216,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
                 List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
 
                 data = meetingGroups.stream()
-                        .map(SearchResponseDto::new)
+                        .map(HomeGroupResponseDto::new)
                         .collect(Collectors.toList());
             } else {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
@@ -231,8 +232,8 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     // 그룹 모임 홈화면 출력 로그아웃
     @Override
-    public ResponseDto<List<SearchResponseDto>> getGroupAtHomeAuth() {
-        List<SearchResponseDto> data = null;
+    public ResponseDto<List<HomeGroupResponseDto>> getGroupAtHomeAuth() {
+        List<HomeGroupResponseDto> data = null;
 
         try {
             Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findGroupRandom();
@@ -241,7 +242,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
                 List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
 
                 data = meetingGroups.stream()
-                        .map(SearchResponseDto::new)
+                        .map(HomeGroupResponseDto::new)
                         .collect(Collectors.toList());
             } else {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
@@ -317,10 +318,11 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     // 취미카테고리/지역카테고리
     @Override
-    public ResponseDto<List<SearchResponseDto>> findByGroupCategoryAndRegion(GroupCategory groupCategory, String region) {
+    public ResponseDto<List<SearchResponseDto>> findByGroupCategoryAndRegion(
+            GroupCategory groupCategory, String region) {
         List<SearchResponseDto> data = null;
 
-        if (groupCategory == null || groupCategory.toString().isEmpty()) {
+        if (groupCategory == null) {
             return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
         }
         if (region == null || region.toString().trim().isEmpty()) {
@@ -328,7 +330,8 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         }
 
         try {
-            Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository.findByGroupCategoryAndRegion(groupCategory, region);
+            Optional<List<MeetingGroup>> optionalMeetingGroups = meetingGroupRepository
+                    .findByGroupCategoryAndRegion(groupCategory, region);
 
             if(optionalMeetingGroups.isPresent()) {
                 List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();

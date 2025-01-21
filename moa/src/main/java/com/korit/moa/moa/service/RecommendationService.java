@@ -16,6 +16,4 @@ public interface RecommendationService {
     ResponseDto<Void> deleteRecommendation(String userId, RequestRecommendationDto dto);
 
     ResponseDto<List<GetResponseRecommendationDto>> getRecommendation(String userId);
-
-    ResponseDto<List<GetResponseRecommendationDto>> getAllRecommendationGroup();
 }

@@ -91,10 +91,6 @@ public class RecommendationServiceImplement implements RecommendationService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-    @Override
-    public ResponseDto<List<GetResponseRecommendationDto>> getAllRecommendationGroup() {
-        return null;
-    }
 
     @Override
     public ResponseDto<Void> deleteRecommendation(String userId, RequestRecommendationDto dto) {

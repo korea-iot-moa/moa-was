@@ -190,34 +190,6 @@ public class AuthServiceImplement implements AuthService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-//    @Override
-//    // 아이디 찾기
-//    public ResponseDto<FindIdResponseDto> findLoginId(String userName, Date userBirthDate) {
-//        FindIdResponseDto data = null;
-//
-//        if (userName == null || userName.isEmpty()) {
-//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
-//        }
-//
-//        if (userBirthDate == null) {
-//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
-//        }
-//        try{
-//            Optional<User> userOptional = userRepository.findByUserNameAndUserBirthDate(userName, userBirthDate);
-//
-//            if (userOptional == null) {
-//                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
-//            }
-//            User user = userOptional.get();
-//            data = new FindIdResponseDto(user);
-//
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
-//        }
-//        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-//    }
-
     // 회원가입 시 취미 렌더링
     @Override
     public ResponseDto<List<Hobby>> getHobbies() {

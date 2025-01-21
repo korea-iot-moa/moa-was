@@ -25,20 +25,19 @@ public class UserInfoController {
     private static final String USER_INFO = "/user-id";
     private static final String USER_INFO_PUT = "/user-info";
     private static final String USER_INFO_GET_DUPLICATION = "/duplication/{nickName}";
+    private static final String USER_INFO_POST_PASSWORD = "/isPassword";
 
 
     private final UserService userService;
 
 
     // 사용자 정보 조회
-    @PostMapping(USER_INFO)
+    @GetMapping(USER_INFO)
     public ResponseEntity<ResponseDto<ResponseUserDto>> findUserInfo(
-            @AuthenticationPrincipal String userId,
-            @RequestBody RequestUserDto dto
+            @AuthenticationPrincipal String userId
     ) {
-        String password = dto.getPassword();
 
-        ResponseDto<ResponseUserDto> response = userService.findUserInfo(userId, password);
+        ResponseDto<ResponseUserDto> response = userService.findUserInfo(userId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
@@ -80,6 +79,17 @@ public class UserInfoController {
             @RequestBody UpdateUserPasswordRequestDto dto
     ) {
         ResponseDto<Boolean> response = userService.resetPassword(userId, dto);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
+    // 비밀번호 일치 확인(내정보 조회시 사용)
+    @PostMapping(USER_INFO_POST_PASSWORD)
+    public ResponseEntity<ResponseDto<Boolean>> matchPassword(
+            @AuthenticationPrincipal String userId,
+            @RequestBody RequestUserDto dto
+    ) {
+        ResponseDto<Boolean> response = userService.matchPassword(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

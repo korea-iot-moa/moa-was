@@ -29,7 +29,7 @@ public class UserController {
     private final AuthService authService ;
 
     private static final String SIGN_UP_PATH ="/signUp";
-    private static final String LOGIN_PATH ="/login";
+    private static final String SIGN_IN_PATH ="/signIn";
 
     @PostMapping(SIGN_UP_PATH)
     public ResponseEntity<ResponseDto<SignUpResponseDto>> signUp(@ModelAttribute SignUpRequestDto dto) {
@@ -39,7 +39,7 @@ public class UserController {
     }
 
 
-    @PostMapping(LOGIN_PATH)
+    @PostMapping(SIGN_IN_PATH)
     public ResponseEntity<ResponseDto<SignInResponseDto>> signIn (@Valid @RequestBody SignInRequestDto dto){
         ResponseDto<SignInResponseDto> response = authService.signIn(dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
@@ -53,16 +53,6 @@ public class UserController {
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
-
-//    @GetMapping("/userId")
-//    public ResponseEntity<ResponseDto<FindIdResponseDto>> findLoginId(
-//            @Valid @RequestParam String userName,
-//            @Valid @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") Date userBirthDate
-//    ) {
-//        ResponseDto<FindIdResponseDto> response = authService.findLoginId(userName, userBirthDate);
-//        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-//        return ResponseEntity.status(status).body(response);
-//    }
 
     @GetMapping("/duplicateId/{userId}")
     public ResponseEntity<ResponseDto<Boolean>> duplicateId(@Valid @PathVariable String userId){

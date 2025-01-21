@@ -17,7 +17,6 @@ import java.util.List;
 public interface AuthService {
     ResponseDto<SignUpResponseDto> signUp (SignUpRequestDto dto);
     ResponseDto<SignInResponseDto> signIn (SignInRequestDto dto);
-//    ResponseDto<FindIdResponseDto> findLoginId(String userName, Date userBirthDate);
     ResponseDto<List<Hobby>> getHobbies();
     ResponseDto<Boolean> duplicateId(@Valid String userId);
     ResponseDto<Boolean> duplicateNickName(@Valid String nickName);
