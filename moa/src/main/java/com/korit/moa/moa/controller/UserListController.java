@@ -27,9 +27,9 @@ public class UserListController {
     public static final String USER_LIST = "/{groupId}";
     public static final String LEAVE_GROUP = "/leave/{groupId}";
     public static final String USER_DEL = "/van/{groupId}";
-    public static final String USER_LEVEL = "/userLevel/{groupId}";
-    public static final String GENDER_CHART_PAGE = "/genderChart/{groupId}";
-    public static final String USER_CHART_PAGE = "/userChart/{groupId}";
+    public static final String USER_LEVEL = "/user-level/{groupId}";
+    public static final String GENDER_CHART_PAGE = "/gender-chart/{groupId}";
+    public static final String USER_CHART_PAGE = "/user-chart/{groupId}";
     public static final String USER_LIST_GET= "/user-list-in/{groupId}";
 
 

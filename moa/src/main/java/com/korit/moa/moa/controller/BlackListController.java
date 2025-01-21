@@ -28,7 +28,7 @@ public class BlackListController {
 
 
     @GetMapping(GET_BLACK_LIST)
-    public ResponseEntity<ResponseDto<List<ResponseGetBlackListDto>>> getBlackList(@PathVariable Long groupId){
+    public ResponseEntity<ResponseDto<List<ResponseGetBlackListDto>>> getBlackList(@PathVariable Long groupId) {
         ResponseDto<List<ResponseGetBlackListDto>> response = blackListService.getBlackList(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
@@ -36,8 +36,8 @@ public class BlackListController {
 
     @PostMapping(POST_BLACK_LIST)
     public ResponseEntity<ResponseDto<ResponseBlackListDto>> postBlackList(
-            @PathVariable Long groupId, @RequestBody Map<String, String> reqBody) {
-        System.out.println("Map reBdoy"+ reqBody);
+            @PathVariable Long groupId, @RequestBody Map<String, String> reqBody
+    ) {
         ResponseDto<ResponseBlackListDto> response = blackListService.postBlackList(groupId, reqBody.get("userId"));
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
@@ -46,8 +46,8 @@ public class BlackListController {
     @DeleteMapping
     public ResponseEntity<ResponseDto<Void>> deleteBlackList(
             @RequestParam  Long groupId,
-            @RequestParam String userId)
-    {
+            @RequestParam String userId
+    ) {
         ResponseDto<Void> response = blackListService.deleteBlackList(groupId, userId);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);

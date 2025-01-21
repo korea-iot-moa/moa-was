@@ -22,7 +22,6 @@ public class ReportController {
 
     private final ReportService reportService;
     private static final String GET_REPORT = "/{groupId}";
-    private static final String DEL_REPORT = "/{reportId}";
 
     // 신고 등록
     @PostMapping
