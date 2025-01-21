@@ -28,7 +28,7 @@ public class UserAnswerController {
     private static final String GET_USER_ANSWER = "/{groupId}";
     private static final String PUT_REFUSE_REQUEST = "/{groupId}";
     private static final String DELETE_USER_ANSWER = "/{answerId}";
-    private static final String POST_USER_ANSWER = "approved/{groupId}";
+    private static final String PUT_APPROVE_REQUEST = "approved/{groupId}";
     private static final String GET_USER_ANSWER_DUPLICATION = "/duplication/{groupId}";
     private static final String GROUP_PARTICIPATION_STATUS = "/participation-status";
 
@@ -62,7 +62,7 @@ public class UserAnswerController {
     }
 
     //참여 승인
-    @PostMapping(POST_USER_ANSWER)
+    @PutMapping(PUT_APPROVE_REQUEST)
     public ResponseEntity<ResponseDto<Void>> approveUserAnswer(
             @PathVariable Long groupId, @RequestBody RequestDeleteUserAnswerDto dto)
     {

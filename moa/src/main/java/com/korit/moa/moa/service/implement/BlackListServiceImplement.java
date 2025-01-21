@@ -40,8 +40,6 @@ public class BlackListServiceImplement implements BlackListService {
         try {
             List<Object[]> blackLists = blackListRepository.findByGroup(groupId);
 
-            blackLists.forEach(result -> System.out.println(Arrays.toString(result)));
-
             data = blackLists.stream()
                     .map(result -> {
                         Long blackListId = result[0] != null ? Long.valueOf(result[0].toString()) : null;
@@ -52,7 +50,6 @@ public class BlackListServiceImplement implements BlackListService {
                         return new ResponseGetBlackListDto(blackListId, userId,
                                 profileImage, nickName);
                     })
-                    .distinct()
                     .collect(Collectors.toList());
 
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);

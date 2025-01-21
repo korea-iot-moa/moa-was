@@ -53,17 +53,17 @@ public interface UserListRepository extends JpaRepository<UserList, UserListId> 
 
     //모임내 유입율 차트
     @Query(value = """
-        SELECT 
+        SELECT
             CONCAT(YEAR(ul.join_date), '-', CEIL(MONTH(ul.join_date) / 3)) AS quarter,
             COUNT(*) AS user_count,
             (COUNT(*) * 1.0 / (SELECT COUNT(*) FROM User_List WHERE group_id = :groupId)) * 100 AS ratio
-        FROM 
+        FROM
             User_List ul
         WHERE
             ul.group_id = :groupId
         GROUP BY
             CONCAT(YEAR(ul.join_date), '-', CEIL(MONTH(ul.join_date) / 3))
-        ORDER BY 
+        ORDER BY
             quarter ASC
         """, nativeQuery = true)
     List<Object[]> getQuarterlyData(@Param("groupId") Long groupId);
