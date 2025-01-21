@@ -84,7 +84,9 @@ SELECT ranked.*
             "WHERE m.groupCategory = :groupCategory " +
             "AND m.groupAddress Like CONCAT('%', :region, '%') " +
             "ORDER BY m.groupId ")
-    Optional<List<MeetingGroup>> findByGroupCategoryAndRegion(@Param("groupCategory")GroupCategory groupCategory, @Param("region") String region);
+    Optional<List<MeetingGroup>> findByGroupCategoryAndRegion(
+            @Param("groupCategory")GroupCategory groupCategory,
+            @Param("region") String region);
 
     // 단기/정기 모임 필터
     Optional<List<MeetingGroup>> findByGroupType(@Param("groupType") GroupTypeCategory groupType);

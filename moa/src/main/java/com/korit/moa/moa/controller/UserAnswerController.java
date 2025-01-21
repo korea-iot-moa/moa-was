@@ -93,6 +93,7 @@ public class UserAnswerController {
         HttpStatus status = response.isResult() ? HttpStatus.OK:HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
+    
     // 모임 신청 내역 확인
     @GetMapping(GROUP_PARTICIPATION_STATUS)
     public ResponseEntity<ResponseDto<List<ParticipationStatusResponseDto>>> findParticipationStatus(

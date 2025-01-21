@@ -1,9 +1,6 @@
 package com.korit.moa.moa.repository;
 
-import com.korit.moa.moa.dto.auth.request.FindIdRequestDto;
-import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.user.User;
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,7 +25,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             "SELECT u FROM User u" +
                     " WHERE u.userName = :userName AND u.phoneNumber = :phoneNumber "
     )
-    Optional<User> findByUserNameAndUserBirthDate(@Param("userName") String userName, @Param("phoneNumber") String phoneNumber);
+    Optional<User> findByUserNameAndUserPhoneNumber(@Param("userName") String userName, @Param("phoneNumber") String phoneNumber);
 
     // 이메일 인증시 회원 정보 확인
     Optional<User>  findByUserIdAndUserName(String userId, String userName);
@@ -49,4 +46,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     void deleteUser(@Param("userId") String userId);
 
     boolean getByProfileImage(String profileImage);
+
+
+
 }
