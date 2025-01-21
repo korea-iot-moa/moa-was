@@ -57,8 +57,7 @@ public class FindUserIdMailServiceImplement implements FindUserIdMailService {
         String userName = dto.getUserName();
 
         try {
-            Optional<User> userData = userRepository.findByUserNameAndUserBirthDate(userName, phoneNumber);
-            System.out.println(userData);
+            Optional<User> userData = userRepository.findByUserNameAndUserPhoneNumber(userName, phoneNumber);
 
             if (userData.isEmpty()) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
@@ -92,7 +91,7 @@ public class FindUserIdMailServiceImplement implements FindUserIdMailService {
         String phoneNumber = jwtProvider.getPhoneNumberFromJwt(token);
 
         try{
-            Optional<User> userOptional = userRepository.findByUserNameAndUserBirthDate(userName, phoneNumber);
+            Optional<User> userOptional = userRepository.findByUserNameAndUserPhoneNumber(userName, phoneNumber);
 
             if (userOptional.isEmpty()) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);

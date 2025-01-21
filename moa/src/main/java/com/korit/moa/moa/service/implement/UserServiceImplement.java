@@ -3,15 +3,16 @@ package com.korit.moa.moa.service.implement;
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user.request.DeleteUserRequestDto;
+import com.korit.moa.moa.dto.user.request.RequestUserDto;
 import com.korit.moa.moa.dto.user.request.UpdateUserPasswordRequestDto;
 import com.korit.moa.moa.dto.user.request.UpdateUserRequestDto;
 import com.korit.moa.moa.dto.user.response.ResponseUserDto;
 import com.korit.moa.moa.entity.user.User;
-import com.korit.moa.moa.entity.user.UserHobbies;
 import com.korit.moa.moa.repository.UserHobbiesRepository;
 import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.UserService;
+import com.zaxxer.hikari.HikariConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,11 +30,7 @@ public class UserServiceImplement implements UserService {
     private final UserHobbiesRepository userHobbiesRepository;
 
     // 내정보 조회
-    public ResponseDto<ResponseUserDto> findUserInfo(String userId, String password) {
-        // 비밀번호 유효성 검사
-        if (password == null || password.isEmpty()) {
-            return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
-        }
+    public ResponseDto<ResponseUserDto> findUserInfo(String userId ) {
 
         try {
             // 사용자 조회
@@ -44,11 +41,6 @@ public class UserServiceImplement implements UserService {
             }
 
             User user = optionalUser.get();
-
-            // 비밀번호 검증
-            if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
-                return ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD); // 비밀번호 불일치
-            }
 
             // 성공적으로 데이터 설정
             ResponseUserDto data = new ResponseUserDto(user);
@@ -65,9 +57,22 @@ public class UserServiceImplement implements UserService {
         ResponseUserDto data = null;
 
         // 1. 닉네임 유효성 검사
-        if (dto.getNickName() == null || dto.getNickName().isEmpty() ||
-                !dto.getNickName().matches("^[a-zA-Z가-힣0-9]{1,10}$")) {
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
+        if (dto.getNickName() != null && !dto.getNickName().matches("^[a-zA-Z가-힣0-9]{1,10}$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "nickName");
+        }
+        // 2. 이름 유효성 검사
+        if (dto.getUserName() != null && !dto.getUserName().matches("^[a-zA-Z가-힣]+$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userName");
+        }
+
+        // 3. email 유효성 검사
+        if (dto.getEmail() != null && !dto.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "email");
+        }
+
+        // 4. 휴대폰번호 유효성 검사
+        if (dto.getPhoneNumber() != null && !dto.getPhoneNumber().matches("^01[016789]\\d{7,8}$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "phoneNumber");
         }
 
         try {
@@ -124,11 +129,7 @@ public class UserServiceImplement implements UserService {
 
         // 비밀번호 유효성 검사
         if (password == null || password.isEmpty()) {
-            return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
-        }
-        // 아이디 유효성 검사
-        if (userId == null || userId.isEmpty()) {
-            return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
         try {
@@ -193,6 +194,38 @@ public class UserServiceImplement implements UserService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
+    // 비밀번호 일치여부 확인
+    @Override
+    public ResponseDto<Boolean> matchPassword(String userId, RequestUserDto dto) {
+        String password = dto.getPassword();
+
+        // 비밀번호 유효성 검사
+        if (password == null || password.isEmpty()) {
+            return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
+        }
+
+        try {
+                Optional<User> optionalUser = userRepository.findByUserId(userId);
+
+                if (optionalUser.isEmpty()) {
+                    return ResponseDto.setSuccess(ResponseMessage.NOT_EXIST_DATA, false);
+                }
+
+                User user = optionalUser.get();
+
+                boolean isMatch = bCryptPasswordEncoder.matches(password, user.getPassword());
+
+                if (!isMatch) {
+                    return ResponseDto.setSuccess(ResponseMessage.NOT_MATCH_PASSWORD, false);
+                }
+
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
+
+        } catch (Exception e) {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
     }

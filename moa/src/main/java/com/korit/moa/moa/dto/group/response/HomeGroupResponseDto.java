@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SearchResponseDto {
+public class HomeGroupResponseDto {
 
 
     private Long groupId;
@@ -25,14 +25,17 @@ public class SearchResponseDto {
 
     private String groupDate;
 
+    private GroupCategory groupCategory;
+
     private int recommendationCount;
 
-    public SearchResponseDto(MeetingGroup result) {
+    public HomeGroupResponseDto(MeetingGroup result) {
         this.groupId = result.getGroupId();
         this.groupTitle = result.getGroupTitle();
         this.groupAddress = result.getGroupAddress();
         this.groupImage = result.getGroupImage();
         this.groupDate = result.getGroupDate();
+        this.groupCategory = result.getGroupCategory();
         this.recommendationCount = result.getRecommendation().size();
     }
 

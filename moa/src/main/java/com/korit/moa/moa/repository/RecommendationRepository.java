@@ -16,20 +16,6 @@ import java.util.Optional;
 @Repository
 public interface RecommendationRepository extends JpaRepository<Recommendation, RecommendationsId> {
 
-
-//    // 추천순 제목
-//    @Query(value= """
-//SELECT DISTINCT mg.group_id, mg.creator_id, mg.group_title, mg.group_content, mg.group_address,
-//                       mg.group_image, mg.group_supplies, mg.group_date, mg.group_category,
-//                       mg.group_type, mg.meeting_type, count(reco.user_id) As Recommendation_count
-//FROM meeting_groups mg
-//LEFT JOIN Recommendations reco ON mg.group_id = reco.group_id
-//LEFT JOIN Users u ON reco.user_id = u.user_id
-//GROUP BY mg.group_id
-//ORDER BY Recommendation_count DESC;
-//""", nativeQuery = true)
-//    List<Object[]> findAllGroup();
-
     @Query(value= """
 SELECT mg.group_id, u.user_id, mg.group_title, mg.group_content, mg.group_address,
        mg.group_image, mg.group_supplies, mg.group_date, mg.group_category,
