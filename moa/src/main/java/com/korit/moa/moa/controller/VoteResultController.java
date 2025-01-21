@@ -20,7 +20,7 @@ import java.util.List;
 public class VoteResultController {
 
     private final VoteResultService voteResultService;
-    private static final String EXIST_VOTE_ANSWER = "existAnswer/{voteId}";
+    private static final String EXIST_VOTE_ANSWER = "exist-answer/{voteId}";
     private static final String GET_VOTE_RESULT = "/{voteId}";
 
     @PostMapping

@@ -2,83 +2,94 @@ package com.korit.moa.moa.controller;
 
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
-import com.korit.moa.moa.dto.auth.request.FindIdRequestDto;
-import com.korit.moa.moa.dto.auth.request.SignInRequestDto;
-import com.korit.moa.moa.dto.auth.request.SignUpRequestDto;
-import com.korit.moa.moa.dto.auth.response.FindIdResponseDto;
-import com.korit.moa.moa.dto.auth.response.SignInResponseDto;
-import com.korit.moa.moa.dto.auth.response.SignUpResponseDto;
-import com.korit.moa.moa.entity.user.Hobby;
-import com.korit.moa.moa.service.AuthService;
-import jakarta.validation.Valid;
+import com.korit.moa.moa.dto.user.request.DeleteUserRequestDto;
+import com.korit.moa.moa.dto.user.request.RequestUserDto;
+import com.korit.moa.moa.dto.user.request.UpdateUserPasswordRequestDto;
+import com.korit.moa.moa.dto.user.request.UpdateUserRequestDto;
+import com.korit.moa.moa.dto.user.response.ResponseUserDto;
+import com.korit.moa.moa.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-
 @RestController
-@RequestMapping(ApiMappingPattern.AUTH)
+@RequestMapping(ApiMappingPattern.USER)
 @RequiredArgsConstructor
 public class UserController {
 
-    private final AuthService authService ;
+    private static final String RESET_PASSWORD ="/password";
+    private static final String USER_INFO = "/user-id";
+    private static final String USER_INFO_PUT = "/user-info";
+    private static final String USER_INFO_GET_DUPLICATION = "/duplication/{nickName}";
+    private static final String USER_INFO_POST_PASSWORD = "/password";
 
-    private static final String SIGN_UP_PATH ="/signUp";
-    private static final String SIGN_IN_PATH ="/signIn";
 
-    @PostMapping(SIGN_UP_PATH)
-    public ResponseEntity<ResponseDto<SignUpResponseDto>> signUp(@ModelAttribute SignUpRequestDto dto) {
-        ResponseDto<SignUpResponseDto> response = authService.signUp(dto);
+    private final UserService userService;
+
+
+    // 사용자 정보 조회
+    @GetMapping(USER_INFO)
+    public ResponseEntity<ResponseDto<ResponseUserDto>> findUserInfo(
+            @AuthenticationPrincipal String userId
+    ) {
+
+        ResponseDto<ResponseUserDto> response = userService.findUserInfo(userId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
-
-    @PostMapping(SIGN_IN_PATH)
-    public ResponseEntity<ResponseDto<SignInResponseDto>> signIn (@Valid @RequestBody SignInRequestDto dto){
-        ResponseDto<SignInResponseDto> response = authService.signIn(dto);
-        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
-        return ResponseEntity.status(status).body(response);
-    }
-
-    @CrossOrigin
-    @GetMapping("/hobbies")
-    public ResponseEntity<ResponseDto<List<Hobby>>> getHobbies() {
-        ResponseDto<List<Hobby>> response = authService.getHobbies();
+    // 사용자 정보 업데이트
+    @PutMapping(USER_INFO_PUT)
+    public ResponseEntity<ResponseDto<ResponseUserDto>> updateUser(
+           @AuthenticationPrincipal String userId,
+           @ModelAttribute UpdateUserRequestDto dto) {
+        ResponseDto<ResponseUserDto> response = userService.updateUser(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
-//    @GetMapping("/userId")
-//    public ResponseEntity<ResponseDto<FindIdResponseDto>> findLoginId(
-//            @Valid @RequestParam String userName,
-//            @Valid @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") Date userBirthDate
-//    ) {
-//        ResponseDto<FindIdResponseDto> response = authService.findLoginId(userName, userBirthDate);
-//        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-//        return ResponseEntity.status(status).body(response);
-//    }
+    // 사용자 탈퇴
+    @DeleteMapping("/user")
+    public ResponseEntity<ResponseDto<Void>> deleteUser(
+            @AuthenticationPrincipal String userId,
+            @RequestBody DeleteUserRequestDto dto) {
 
-    @GetMapping("/duplicateId/{userId}")
-    public ResponseEntity<ResponseDto<Boolean>> duplicateId(@Valid @PathVariable String userId){
-        ResponseDto<Boolean> response = authService.duplicateId(userId);
+        ResponseDto<Void> response = userService.deleteUser(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
-    @GetMapping("/duplicateNickName/{nickName}")
-    public ResponseEntity<ResponseDto<Boolean>> duplicateNickName(@Valid @PathVariable String nickName){
-        ResponseDto<Boolean> response = authService.duplicateNickName(nickName);
+    // 닉네임 중복확인
+    @GetMapping(USER_INFO_GET_DUPLICATION)
+    public ResponseEntity<ResponseDto<Boolean>> duplicationNickName(
+            @PathVariable String nickName
+    ) {
+        ResponseDto<Boolean> response = userService.duplicationNickName(nickName);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
+    @PutMapping(RESET_PASSWORD)
+    public ResponseEntity<ResponseDto<Boolean>> resetPassword(
+            @AuthenticationPrincipal String userId,
+            @RequestBody UpdateUserPasswordRequestDto dto
+    ) {
+        ResponseDto<Boolean> response = userService.resetPassword(userId, dto);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
 
-
+    // 비밀번호 일치 확인(내정보 조회시 사용)
+    @PostMapping(USER_INFO_POST_PASSWORD)
+    public ResponseEntity<ResponseDto<Boolean>> matchPassword(
+            @AuthenticationPrincipal String userId,
+            @RequestBody RequestUserDto dto
+    ) {
+        ResponseDto<Boolean> response = userService.matchPassword(userId, dto);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
 
 }

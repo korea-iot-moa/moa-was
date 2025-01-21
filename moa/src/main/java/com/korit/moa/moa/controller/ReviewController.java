@@ -22,7 +22,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     public static final String GET_REVIEW = "/path/{reviewId}";
-    public static final String MY_REVIEWS = "/myReview";
+    public static final String MY_REVIEWS = "/my-review";
     public static final String PUT_REVIEWS = "/{reviewId}";
     public static final String DEL_REVIEWS = "/{reviewId}";
     public static final String AUTH_REVIEW = "/auth";
