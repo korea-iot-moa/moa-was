@@ -3,7 +3,6 @@ package com.korit.moa.moa.service.implement;
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestDeleteUserAnswerDto;
-import com.korit.moa.moa.dto.user_answer.request.RequestUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.UserAnswerRequestDto;
 import com.korit.moa.moa.dto.user_answer.response.ParticipationStatusResponseDto;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
@@ -37,6 +36,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(rollbackOn = Exception.class)
 public class UserAnswerServiceImplement implements UserAnswerService {
+
     private final UserRepository userRepository;
     private final UserListRepository userListRepository;
     private final UserAnswerRepository userAnswerRepository;

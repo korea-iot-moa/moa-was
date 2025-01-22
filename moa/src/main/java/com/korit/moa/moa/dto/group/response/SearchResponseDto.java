@@ -2,6 +2,7 @@ package com.korit.moa.moa.dto.group.response;
 
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,4 @@ public class SearchResponseDto {
         this.groupDate = result.getGroupDate();
         this.recommendationCount = result.getRecommendation().size();
     }
-
-
 }

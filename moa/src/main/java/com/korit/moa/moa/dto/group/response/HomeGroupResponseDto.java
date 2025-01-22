@@ -2,6 +2,7 @@ package com.korit.moa.moa.dto.group.response;
 
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HomeGroupResponseDto {
-
 
     private Long groupId;
 
@@ -35,6 +35,4 @@ public class HomeGroupResponseDto {
         this.groupCategory = result.getGroupCategory();
         this.recommendationCount = result.getRecommendation().size();
     }
-
-
 }

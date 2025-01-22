@@ -19,5 +19,4 @@ public class GroupResponseDto {
     @NotBlank
     private String groupImage;
 
-
 }
