@@ -15,10 +15,6 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -32,14 +28,12 @@ public class MailServiceImplement implements MailService {
     @Value("${spring.mail.username}")
     private static String senderEmail;
 
-
-    // 메일 내용을 생성
     @Override
     public MimeMessage createMail(String mail, String token) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
-        message.setFrom(senderEmail); // 발신자 설정
-        message.setRecipients(MimeMessage.RecipientType.TO, mail); // 수신자 설정
-        message.setSubject("MOA 이메일 인증"); // 이메일 제목
+        message.setFrom(senderEmail);
+        message.setRecipients(MimeMessage.RecipientType.TO, mail);
+        message.setSubject("MOA 이메일 인증");
 
         String body = "";
         body += "<h2> 이메일 인증 링크 입니다 </h2>";
@@ -55,7 +49,6 @@ public class MailServiceImplement implements MailService {
     public ResponseDto<String> sendMessage(SendMailRequestDto dto) throws MessagingException {
 
         try {
-            // 1. 유저 정보 확인
             Optional<User> userResult = userRepository.findByUserIdAndUserName(
                     dto.getUserId(),
                     dto.getUserName()

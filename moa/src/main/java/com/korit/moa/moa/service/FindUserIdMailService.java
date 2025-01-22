@@ -7,7 +7,10 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
 public interface FindUserIdMailService {
+
     MimeMessage createMail(String mail, String token) throws MessagingException;
+
     ResponseDto<String> sendMessage(FindUserIdMailRequestDto dto) throws MessagingException;
+
     ResponseDto<FindIdResponseDto> verifyEmail(String token);
 }

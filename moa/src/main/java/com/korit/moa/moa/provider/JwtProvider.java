@@ -20,7 +20,6 @@ public class JwtProvider {
     @Value("${jwt.expiration}")
     private int jwtExpirationMs;
 
-    // 이메일 토큰 만료 시간
     @Value("${mail.auth-code-expiration-millis}")
     private int jwtEmailExpirationMs;
 

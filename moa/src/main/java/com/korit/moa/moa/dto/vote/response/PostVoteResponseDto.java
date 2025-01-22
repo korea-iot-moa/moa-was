@@ -1,6 +1,5 @@
 package com.korit.moa.moa.dto.vote.response;
 
-import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.votes.Votes;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -13,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostVoteResponseDto {
+
     @NotBlank
     private Long voteId;
 

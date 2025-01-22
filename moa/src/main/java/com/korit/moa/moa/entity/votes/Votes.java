@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class Votes {
+
     @Id
     @Column(name = "vote_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,7 +1,6 @@
 package com.korit.moa.moa.dto.user.response;
 
 import com.korit.moa.moa.entity.user.Gender;
-import com.korit.moa.moa.entity.user.Hobby;
 import com.korit.moa.moa.entity.user.Region;
 import com.korit.moa.moa.entity.user.User;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor

@@ -1,8 +1,5 @@
 package com.korit.moa.moa.dto.recommendation.response;
 
-import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
-import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
-import com.korit.moa.moa.entity.meetingGroup.MeetingTypeCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

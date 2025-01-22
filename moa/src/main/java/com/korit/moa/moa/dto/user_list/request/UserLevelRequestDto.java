@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserLevelRequestDto {
+
     @NotBlank
     private String userId;
 

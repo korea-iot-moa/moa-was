@@ -2,9 +2,7 @@ package com.korit.moa.moa.entity.userAnswer;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "User_Answers")
@@ -14,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class UserAnswer {
+
     @Id
     @Column(name = "answer_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
