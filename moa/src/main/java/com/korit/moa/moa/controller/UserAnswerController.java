@@ -33,17 +33,6 @@ public class UserAnswerController {
     private static final String GET_USER_ANSWER_DUPLICATION = "/duplication/{groupId}";
     private static final String GROUP_PARTICIPATION_STATUS = "/participation-status";
 
-
-    @PostMapping(GET_USER_ANSWER)
-    public ResponseEntity<ResponseDto<ResponseUserAnswerDto>> postMeetingGroup(
-            @PathVariable Long groupId,
-            @RequestBody RequestUserAnswerDto dto
-    ) {
-        ResponseDto<ResponseUserAnswerDto> response = userAnswerService.postMeetingGroup(groupId, dto);
-        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-        return ResponseEntity.status(status).body(response);
-    }
-
     @GetMapping(GET_USER_ANSWER)
     public ResponseEntity<ResponseDto<List<UserAnswerGetResponseDto>>> getUserAnswer(@PathVariable Long groupId) {
         ResponseDto<List<UserAnswerGetResponseDto>> response = userAnswerService.getUserAnswer(groupId);
@@ -91,7 +80,7 @@ public class UserAnswerController {
         HttpStatus status = response.isResult() ? HttpStatus.OK:HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
-    
+
     @GetMapping(GROUP_PARTICIPATION_STATUS)
     public ResponseEntity<ResponseDto<List<ParticipationStatusResponseDto>>> findParticipationStatus(
             @AuthenticationPrincipal String userId

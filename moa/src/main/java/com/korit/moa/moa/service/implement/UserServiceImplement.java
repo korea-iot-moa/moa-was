@@ -54,6 +54,7 @@ public class UserServiceImplement implements UserService {
         if (dto.getNickName() != null && !dto.getNickName().matches("^[a-zA-Z가-힣0-9]{1,10}$")) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "nickName");
         }
+
         if (dto.getUserName() != null && !dto.getUserName().matches("^[a-zA-Z가-힣]+$")) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userName");
         }
@@ -67,6 +68,7 @@ public class UserServiceImplement implements UserService {
         }
 
         try {
+
             Optional<User> optionalUser = userRepository.findById(userId);
             if (optionalUser.isEmpty()) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
@@ -120,6 +122,7 @@ public class UserServiceImplement implements UserService {
             if (user == null) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
             }
+
             if(!bCryptPasswordEncoder.matches(password, user.getPassword())) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD);
             }

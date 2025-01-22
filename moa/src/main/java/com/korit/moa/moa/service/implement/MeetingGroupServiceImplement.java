@@ -300,7 +300,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
             if(optionalMeetingGroups.isPresent()) {
                 List<MeetingGroup> meetingGroups = optionalMeetingGroups.get();
-
                 data = meetingGroups.stream()
                         .map(SearchResponseDto::new)
                         .collect(Collectors.toList());

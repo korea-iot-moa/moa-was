@@ -77,7 +77,6 @@ public class FindUserIdMailServiceImplement implements FindUserIdMailService {
         }
     }
 
-
     @Override
     public ResponseDto<FindIdResponseDto> verifyEmail(String token) {
         FindIdResponseDto data = null;
