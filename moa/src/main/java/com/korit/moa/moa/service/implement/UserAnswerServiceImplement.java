@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackOn = Exception.class)
 public class UserAnswerServiceImplement implements UserAnswerService {
     private final UserRepository userRepository;
     private final UserListRepository userListRepository;
@@ -96,7 +97,6 @@ public class UserAnswerServiceImplement implements UserAnswerService {
 
     //참여 승인
     @Override
-    @Transactional(rollbackOn = Exception.class)
     public ResponseDto<Void> approveUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto) {
         int isApproved = dto.getIsApproved();
         UserAnswer updateData = null;
@@ -131,9 +131,7 @@ public class UserAnswerServiceImplement implements UserAnswerService {
                         .build();
                 userListRepository.save(userList);
 
-                updateData = userAnswerRepository.findByGroupIdAndUserId(groupId, dto.getUserId());
-                updateData.setIsApproved(1);
-                userAnswerRepository.save(updateData);
+                approveUpdateAnswer(dto.getUserId(), groupId);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -264,6 +262,18 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
+    public Boolean approveUpdateAnswer(String userId, Long groupId) {
+        UserAnswer updateData = null;
+        try {
+            updateData = userAnswerRepository.findByGroupIdAndUserId(groupId, userId);
+            updateData.setIsApproved(1);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
