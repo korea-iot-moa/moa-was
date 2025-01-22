@@ -50,7 +50,6 @@ public class MeetingGroupAuthController {
     @CrossOrigin
     @GetMapping(GET_GROUP_TYPE)
     public ResponseEntity<ResponseDto<List<SearchResponseDto>>> filterGroupType(@RequestParam GroupTypeCategory groupType) {
-        System.out.println("실행controller");
         ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupType(groupType);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status).body(response);
