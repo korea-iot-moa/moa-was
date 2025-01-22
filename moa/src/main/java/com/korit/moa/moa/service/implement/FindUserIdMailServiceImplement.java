@@ -38,7 +38,8 @@ public class FindUserIdMailServiceImplement implements FindUserIdMailService {
 
         String body = "";
         body += "<h2> 이메일 인증 링크 입니다.</h2>";
-        body += "<a href=\"http://localhost:3000/findUserId/verify-find-userId?token=" + token + "\">여기를 클릭해 인중해주세요.</a>";
+        body += "<a href=\"http://localhost:3000/findUserId/verify-find-userId?token="
+                + token + "\">여기를 클릭해 인중해주세요.</a>";
         body += "<p>이용해주셔서 감사합니다.</p>";
 
         message.setText(body, "UTF-8", "html");

@@ -32,7 +32,7 @@ public class UserServiceImplement implements UserService {
             Optional<User> optionalUser = userRepository.findByUserId(userId);
 
             if (optionalUser.isEmpty()) {
-                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA); // 사용자 없음
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
             }
 
             User user = optionalUser.get();
@@ -42,7 +42,7 @@ public class UserServiceImplement implements UserService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR); // 데이터베이스 오류
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
     }
 
