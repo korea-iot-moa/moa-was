@@ -19,17 +19,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
+    private final UserService userService;
+
     private static final String RESET_PASSWORD ="/password";
     private static final String USER_INFO = "/user-id";
     private static final String USER_INFO_PUT = "/user-info";
     private static final String USER_INFO_GET_DUPLICATION = "/duplication/{nickName}";
     private static final String USER_INFO_POST_PASSWORD = "/password";
 
-
-    private final UserService userService;
-
-
-    // 사용자 정보 조회
     @GetMapping(USER_INFO)
     public ResponseEntity<ResponseDto<ResponseUserDto>> findUserInfo(
             @AuthenticationPrincipal String userId
@@ -40,28 +37,26 @@ public class UserController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 사용자 정보 업데이트
     @PutMapping(USER_INFO_PUT)
     public ResponseEntity<ResponseDto<ResponseUserDto>> updateUser(
            @AuthenticationPrincipal String userId,
-           @ModelAttribute UpdateUserRequestDto dto) {
+           @ModelAttribute UpdateUserRequestDto dto
+    ) {
         ResponseDto<ResponseUserDto> response = userService.updateUser(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
-    // 사용자 탈퇴
     @DeleteMapping("/user")
     public ResponseEntity<ResponseDto<Void>> deleteUser(
             @AuthenticationPrincipal String userId,
-            @RequestBody DeleteUserRequestDto dto) {
-
+            @RequestBody DeleteUserRequestDto dto
+    ) {
         ResponseDto<Void> response = userService.deleteUser(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
-    // 닉네임 중복확인
     @GetMapping(USER_INFO_GET_DUPLICATION)
     public ResponseEntity<ResponseDto<Boolean>> duplicationNickName(
             @PathVariable String nickName
@@ -81,7 +76,6 @@ public class UserController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 비밀번호 일치 확인(내정보 조회시 사용)
     @PostMapping(USER_INFO_POST_PASSWORD)
     public ResponseEntity<ResponseDto<Boolean>> matchPassword(
             @AuthenticationPrincipal String userId,

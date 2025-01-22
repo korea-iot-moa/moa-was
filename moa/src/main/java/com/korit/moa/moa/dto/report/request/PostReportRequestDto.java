@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 public class PostReportRequestDto {
 
     @NotBlank
-    String reportUser;
+    private String reportUser;
 
     @NotBlank
-    ReportResult reportResult;
+    private ReportResult reportResult;
 
 
 }

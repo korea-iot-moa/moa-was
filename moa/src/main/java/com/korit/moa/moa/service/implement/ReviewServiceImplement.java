@@ -28,7 +28,6 @@ public class ReviewServiceImplement implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final ImgFileService imgFileService;
 
-    // 리뷰 등록
     @Override
     public ResponseDto<ReviewResponseDto> createReview(String userId, CreateRequestDto dto) {
         ReviewResponseDto data = null;
@@ -44,7 +43,6 @@ public class ReviewServiceImplement implements ReviewService {
         }
 
         try{
-
             Review review = Review.builder()
                     .groupId(groupId)
                     .groupName(groupName)
@@ -64,7 +62,6 @@ public class ReviewServiceImplement implements ReviewService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-    // 리뷰 단건 조회
     @Override
     public ResponseDto<ReviewResponseDto> getReviewById(Long reviewId) {
         ReviewResponseDto data = null;
@@ -85,7 +82,6 @@ public class ReviewServiceImplement implements ReviewService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-    // 내가 쓴 리뷰 조회
     @Override
     public ResponseDto<List<ReviewResponseDto>> getMyReviews(String userId) {
         List<ReviewResponseDto> data = null;
@@ -107,7 +103,6 @@ public class ReviewServiceImplement implements ReviewService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-    // 내가 쓴 리뷰 수정
     @Override
     public ResponseDto<ReviewResponseDto> updateReview(Long reviewId, String userId, UpdateRequestDto dto) {
         ReviewResponseDto data = null;
@@ -143,7 +138,6 @@ public class ReviewServiceImplement implements ReviewService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-    // 내가 쓴 리뷰 삭제
     @Override
     public ResponseDto<Void> deleteReview(Long reviewId, String userId) {
         try{
@@ -167,7 +161,6 @@ public class ReviewServiceImplement implements ReviewService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
     }
 
-    // 리뷰 전체 조회
     @Override
     public ResponseDto<List<ReviewResponseDto>> getAllReviews(int page, int size) {
         List<ReviewResponseDto> data;

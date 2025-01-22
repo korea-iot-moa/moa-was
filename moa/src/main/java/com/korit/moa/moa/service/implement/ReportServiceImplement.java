@@ -93,8 +93,6 @@ public class ReportServiceImplement implements ReportService {
         }
     }
 
-
-    //신고 유지시 - 그냥 삭제
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ResponseDto<Void> deleteReport(Long groupId, DeleteReportRequestDto dto ) {
@@ -115,7 +113,6 @@ public class ReportServiceImplement implements ReportService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
     }
 
-    //신고 삭제 - 블랙 리스트 등록
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ResponseDto<Void> postReport(Long groupId, PostReportRequestDto dto) {

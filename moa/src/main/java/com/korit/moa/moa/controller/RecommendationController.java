@@ -20,15 +20,16 @@ import java.util.List;
 public class RecommendationController {
 
     private final RecommendationService recommendationService;
+
     private static final String DEL_RECOMMENDATION = "/user-id";
 
     @PostMapping
-        public ResponseEntity<ResponseDto<ResponseRecommendationDto>> createRecommendation(
+    public ResponseEntity<ResponseDto<ResponseRecommendationDto>> createRecommendation(
                 @AuthenticationPrincipal String userId,
-                @RequestBody RequestRecommendationDto dto) {
+                @RequestBody RequestRecommendationDto dto
+    ) {
 
         ResponseDto<ResponseRecommendationDto> response = recommendationService.createRecommendation(userId,dto);
-
         HttpStatus status = response.isResult() ? HttpStatus.OK:HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

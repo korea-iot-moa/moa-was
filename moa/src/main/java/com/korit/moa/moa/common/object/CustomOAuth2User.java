@@ -1,6 +1,5 @@
 package com.korit.moa.moa.common.object;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -8,7 +7,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import java.util.Collection;
 import java.util.Map;
 
-// 사용자 지정 OAuth2 유저 객체
 public class CustomOAuth2User implements OAuth2User {
 
     private String name;

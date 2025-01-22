@@ -7,7 +7,7 @@ import com.korit.moa.moa.dto.user_answer.request.RequestUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.UserAnswerRequestDto;
 import com.korit.moa.moa.dto.user_answer.response.ParticipationStatusResponseDto;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
-import com.korit.moa.moa.dto.user_answer.response.UserAnswerGetReponseDto;
+import com.korit.moa.moa.dto.user_answer.response.UserAnswerGetResponseDto;
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
@@ -48,11 +48,7 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         String userId = dto.getUserId();
         String userAnswer = dto.getUserAnswer();
         LocalDate date = LocalDate.now();
-//        if (userAnswer == null || userAnswer.isEmpty() ||
-//              !userAnswer.matches("^(?!\\s)[가-힣A-Za-z\\s]{9,199}[가-힣A-Za-z\\s!@#$%^&*(),.?\":{}|<>]$\n")
-//        ) {
-//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
-//        }
+
         try {
                 meetingGroupRepository.findById(groupId);
             UserAnswer newUserAnswer = UserAnswer.builder()
@@ -72,9 +68,8 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         }
     }
 
-    //참여 요청 조회
     @Override
-    public ResponseDto<List<UserAnswerGetReponseDto>> getUserAnswer(Long groupId) {
+    public ResponseDto<List<UserAnswerGetResponseDto>> getUserAnswer(Long groupId) {
         if (groupId == null) {
             return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
         }
@@ -82,9 +77,8 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         try {
             List<Object[]> userAnswers = userAnswerRepository.findByGroupIdWithTitle(groupId);
 
-            // Object[] 데이터를 DTO로 변환
-            List<UserAnswerGetReponseDto> data = userAnswers.stream()
-                    .map(UserAnswerGetReponseDto::new)
+            List<UserAnswerGetResponseDto> data = userAnswers.stream()
+                    .map(UserAnswerGetResponseDto::new)
                     .collect(Collectors.toList());
 
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
@@ -94,12 +88,9 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         }
     }
 
-
-    //참여 승인
     @Override
     public ResponseDto<Void> approveUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto) {
         int isApproved = dto.getIsApproved();
-        UserAnswer updateData = null;
         try {
             List<UserAnswer> userAnswers = userAnswerRepository.findAllByGroupId(groupId);
 
@@ -140,7 +131,6 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
     }
 
-    //참여 요청 거절
     @Override
     public ResponseDto<Boolean> refuseRequestUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto) {
         int isApproved = dto.getIsApproved();
@@ -159,13 +149,10 @@ public class UserAnswerServiceImplement implements UserAnswerService {
 
     }
 
-    // 모임참여 답변
     @Override
     public ResponseDto<ResponseUserAnswerDto> createUserAnswer(String userId, UserAnswerRequestDto dto, Long answerId) {
-
         Long groupId = dto.getGroupId();
         String userAnswer = dto.getUserAnswer();
-
 
         if(userId == null) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userId");
@@ -200,7 +187,6 @@ public class UserAnswerServiceImplement implements UserAnswerService {
 
     }
 
-    // 사용자 답장 중복 확인
     @Override
     public ResponseDto<Boolean> duplicateUserAnswer(String userId, Long groupId) {
         try{

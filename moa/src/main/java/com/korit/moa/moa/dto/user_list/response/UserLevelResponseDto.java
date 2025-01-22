@@ -1,9 +1,6 @@
 package com.korit.moa.moa.dto.user_list.response;
 
-
-
 import com.korit.moa.moa.entity.userList.UserLevel;
-
 import com.korit.moa.moa.entity.userList.UserList;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -14,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserLevelResponseDto {
-    //유저 레벨 변경
+
     @NotBlank
     private Long groupId;
 

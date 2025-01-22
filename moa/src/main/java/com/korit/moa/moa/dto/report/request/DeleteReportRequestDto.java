@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeleteReportRequestDto {
+
     @NotBlank
     private String userId;
 

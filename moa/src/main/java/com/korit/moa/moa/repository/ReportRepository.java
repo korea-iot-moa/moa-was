@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
-    List<Object[]> findReportByGroupId(Long gropId);
+    List<Object[]> findReportByGroupId(Long groupId);
     void deleteByUserId(String userId);
 }

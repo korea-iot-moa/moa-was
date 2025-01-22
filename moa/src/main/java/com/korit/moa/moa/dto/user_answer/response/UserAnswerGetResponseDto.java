@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserAnswerGetReponseDto {
+
+public class UserAnswerGetResponseDto {
     @NotBlank
     private Long groupId;
 
@@ -22,7 +23,7 @@ public class UserAnswerGetReponseDto {
     private int isApproved = 2;
 
 
-    public UserAnswerGetReponseDto(Object[] objects) {
+    public UserAnswerGetResponseDto(Object[] objects) {
         this.groupId = objects[0] != null ? ((Number) objects[0]).longValue() : null;
 
         this.groupTitle = (String) objects[1];

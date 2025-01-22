@@ -20,7 +20,6 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
-    // 공지사항 전체 조회
     @GetMapping
     public ResponseEntity<ResponseDto<List<NoticeResponseDto>>> getAllNotice() {
         ResponseDto<List<NoticeResponseDto>> response = noticeService.getAllNotice();
