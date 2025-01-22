@@ -99,9 +99,6 @@ public class AuthServiceImplement implements AuthService {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
-        if (snsId.isEmpty()) {
-            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
-        }
 
         try {
             String profileImgPath = null;
