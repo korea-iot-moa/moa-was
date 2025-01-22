@@ -11,11 +11,6 @@ import java.util.List;
 @Repository
 public interface VoteResultRepository extends JpaRepository<VoteResult, Long> {
 
-    @Query("SELECT vr.voteAnswer " +
-            "FROM VoteResult vr " +
-            "WHERE vr.voteId = :voteId")
-    List<VoteResult> findByGroupId(@Param("voteId") Long voteId);
-
     Boolean existsByUserIdAndVoteId(String userId, Long voteId);
     @Query("""
     select vr.voteAnswer, count(vr)

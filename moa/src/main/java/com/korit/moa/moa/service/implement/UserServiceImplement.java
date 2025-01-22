@@ -8,7 +8,6 @@ import com.korit.moa.moa.dto.user.request.UpdateUserPasswordRequestDto;
 import com.korit.moa.moa.dto.user.request.UpdateUserRequestDto;
 import com.korit.moa.moa.dto.user.response.ResponseUserDto;
 import com.korit.moa.moa.entity.user.User;
-import com.korit.moa.moa.repository.UserHobbiesRepository;
 import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.UserService;

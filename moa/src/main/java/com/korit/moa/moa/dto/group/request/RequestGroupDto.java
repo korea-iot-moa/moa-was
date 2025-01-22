@@ -42,6 +42,4 @@ public class RequestGroupDto {
 
     @NotBlank
     private MeetingTypeCategory meetingType;
-
-
 }

@@ -16,6 +16,4 @@ public class VoteResultGetResponseDto {
     private  long count; 
     
     private double ratio;
-
-
 }

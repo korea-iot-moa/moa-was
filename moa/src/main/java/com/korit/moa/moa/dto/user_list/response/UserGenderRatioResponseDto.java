@@ -13,8 +13,9 @@ public class UserGenderRatioResponseDto {
 
     @NotBlank
     private String userGender;
-    private Long count;
-    private Double ratio;
 
+    private Long count;
+
+    private Double ratio;
 
 }

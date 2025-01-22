@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 public class MonthRatioResponseDto {
 
     private int quarter;
-    private Long userCount;
-    private Double ratio;
 
+    private Long userCount;
+
+    private Double ratio;
 
     public MonthRatioResponseDto(int quarter, long userCount, double ratio) {
         this.quarter = quarter;

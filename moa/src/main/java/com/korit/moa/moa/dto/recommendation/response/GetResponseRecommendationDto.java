@@ -14,5 +14,4 @@ public class GetResponseRecommendationDto {
     public GetResponseRecommendationDto(Object[] objects) {
         this.groupId = objects[0] != null ? ((Number) objects[0]).longValue() : null;
     }
-
 }
