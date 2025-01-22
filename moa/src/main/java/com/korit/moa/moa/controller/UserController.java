@@ -26,6 +26,7 @@ public class UserController {
     private static final String USER_INFO_PUT = "/user-info";
     private static final String USER_INFO_GET_DUPLICATION = "/duplication/{nickName}";
     private static final String USER_INFO_POST_PASSWORD = "/password";
+    private static final String USER_INFO_DELETE = "/user";
 
     @GetMapping(USER_INFO)
     public ResponseEntity<ResponseDto<ResponseUserDto>> findUserInfo(
@@ -36,7 +37,6 @@ public class UserController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 사용자 정보 업데이트
     @PutMapping(USER_INFO_PUT)
     public ResponseEntity<ResponseDto<ResponseUserDto>> updateUser(
             @AuthenticationPrincipal String userId,
@@ -47,7 +47,7 @@ public class UserController {
         return ResponseEntity.status(status).body(response);
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping(USER_INFO_DELETE)
     public ResponseEntity<ResponseDto<Void>> deleteUser(
             @AuthenticationPrincipal String userId,
             @RequestBody DeleteUserRequestDto dto

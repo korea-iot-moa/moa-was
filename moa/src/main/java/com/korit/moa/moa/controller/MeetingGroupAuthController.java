@@ -29,6 +29,7 @@ public class MeetingGroupAuthController {
     private static final String GET_GROUP_HOME = "/meeting-group/group";
     private static final String GET_MEETING_GROUP_ID = "/meeting-group/{groupId}";
 
+    @CrossOrigin
     @GetMapping(GET_GROUP)
     public ResponseEntity<ResponseDto<List<SearchResponseDto>>> SearchGroupKeyword(@RequestParam("keyword") String groupTitle) {
         ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupTitle(groupTitle);
@@ -36,6 +37,7 @@ public class MeetingGroupAuthController {
         return ResponseEntity.status(status).body(response);
     }
 
+    @CrossOrigin
     @GetMapping(GET_GROUP_CATEGORY)
     public ResponseEntity<ResponseDto<List<SearchResponseDto>>> findByGroupCategoryAndRegion(
             @RequestParam GroupCategory groupCategory,
@@ -45,9 +47,10 @@ public class MeetingGroupAuthController {
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status).body(response);
     }
-
+    @CrossOrigin
     @GetMapping(GET_GROUP_TYPE)
     public ResponseEntity<ResponseDto<List<SearchResponseDto>>> filterGroupType(@RequestParam GroupTypeCategory groupType) {
+        System.out.println("실행controller");
         ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupType(groupType);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status).body(response);

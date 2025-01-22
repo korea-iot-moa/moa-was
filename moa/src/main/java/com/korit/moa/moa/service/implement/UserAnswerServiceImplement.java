@@ -42,33 +42,6 @@ public class UserAnswerServiceImplement implements UserAnswerService {
     private final UserAnswerRepository userAnswerRepository;
     private final MeetingGroupRepository meetingGroupRepository;
 
-    //참여 요청 조회
-
-    @Override
-    public ResponseDto<ResponseUserAnswerDto> postMeetingGroup(Long groupId, RequestUserAnswerDto dto) {
-        String userId = dto.getUserId();
-        String userAnswer = dto.getUserAnswer();
-        LocalDate date = LocalDate.now();
-
-        try {
-                meetingGroupRepository.findById(groupId);
-            UserAnswer newUserAnswer = UserAnswer.builder()
-                    .userId(userId)
-                    .groupId(groupId)
-                    .answerDate(date)
-                    .isApproved(2)
-                    .userAnswer(userAnswer)
-                    .build();
-
-            userAnswerRepository.save(newUserAnswer);
-            ResponseUserAnswerDto data = new ResponseUserAnswerDto(newUserAnswer);
-            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
-        }
-    }
-
     @Override
     public ResponseDto<List<UserAnswerGetResponseDto>> getUserAnswer(Long groupId) {
         if (groupId == null) {
