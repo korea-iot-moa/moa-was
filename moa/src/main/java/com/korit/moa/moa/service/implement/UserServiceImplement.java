@@ -12,7 +12,6 @@ import com.korit.moa.moa.repository.UserHobbiesRepository;
 import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.UserService;
-import com.zaxxer.hikari.HikariConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,13 +26,10 @@ public class UserServiceImplement implements UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ImgFileService imgFileService;
-    private final UserHobbiesRepository userHobbiesRepository;
 
-    // 내정보 조회
     public ResponseDto<ResponseUserDto> findUserInfo(String userId ) {
 
         try {
-            // 사용자 조회
             Optional<User> optionalUser = userRepository.findByUserId(userId);
 
             if (optionalUser.isEmpty()) {
@@ -42,7 +38,6 @@ public class UserServiceImplement implements UserService {
 
             User user = optionalUser.get();
 
-            // 성공적으로 데이터 설정
             ResponseUserDto data = new ResponseUserDto(user);
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
 
@@ -144,7 +139,6 @@ public class UserServiceImplement implements UserService {
     @Override
     public ResponseDto<Boolean> resetPassword(String userId, UpdateUserPasswordRequestDto dto) {
         String newPassword = dto.getNewPassword();
-        // 비밀번호 유효성 검사
         if (newPassword == null || newPassword.isEmpty()
                 || !newPassword.matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[\\W_])[a-zA-Z\\d\\W_]{8,16}$")) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
@@ -156,7 +150,6 @@ public class UserServiceImplement implements UserService {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
             }
 
-            // 비밀번호 암호화
             String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
 
             User user = optionalUser.get();

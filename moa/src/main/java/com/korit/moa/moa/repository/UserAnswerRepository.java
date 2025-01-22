@@ -1,6 +1,5 @@
 package com.korit.moa.moa.repository;
 
-import com.korit.moa.moa.dto.user_answer.response.ParticipationStatusResponseDto;
 import com.korit.moa.moa.entity.userAnswer.UserAnswer;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
@@ -26,7 +24,6 @@ public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
     // 사용자 답변 중복 확인
     boolean existsByGroupIdAndUserId(Long groupId, String userId);
 
-    // 모임 신청 내역 확인
     @Query("SELECT mg.groupId, mg.groupTitle, mg.groupType, mg.meetingType, " +
             "mg.groupCategory, mg.groupImage, ua.answerId, ua.answerDate, ua.isApproved " +
             "FROM UserAnswer ua JOIN MeetingGroup mg ON ua.groupId = mg.groupId " +

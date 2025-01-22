@@ -18,14 +18,14 @@ public class FindUserIdMailController {
 
     private final FindUserIdMailService findUserIdMailService;
 
-    @PostMapping("/send-find-userId")
+    @PostMapping("/user-id")
     public ResponseEntity<ResponseDto<String>> sendEmail(@RequestBody FindUserIdMailRequestDto dto) throws MessagingException {
         ResponseDto<String> response = findUserIdMailService.sendMessage(dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
-    @GetMapping("/verify-find-userId")
+    @GetMapping("/verification/user-id")
     public ResponseEntity<ResponseDto<FindIdResponseDto>> findLoginId(@RequestParam String token) {
         ResponseDto<FindIdResponseDto> response = findUserIdMailService.verifyEmail(token);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;

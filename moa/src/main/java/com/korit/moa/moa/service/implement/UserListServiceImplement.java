@@ -2,37 +2,30 @@ package com.korit.moa.moa.service.implement;
 
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
-import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
 import com.korit.moa.moa.dto.user_list.request.UserLevelRequestDto;
 import com.korit.moa.moa.dto.user_list.response.*;
-import com.korit.moa.moa.entity.user.Gender;
 import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.entity.userList.UserLevel;
 import com.korit.moa.moa.entity.userList.UserList;
-import com.korit.moa.moa.entity.userList.UserListId;
 import com.korit.moa.moa.repository.UserListRepository;
 import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.UserListService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.SignatureUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-//@Transactional
 public class UserListServiceImplement implements UserListService {
 
     private final UserListRepository userListRepository;
     private  final UserRepository userRepository;
 
-    // 내가 가입한 모임 조회
     @Override
     public ResponseDto<List<GroupResponseDto>> getMyGroups(String userId) {
         List<GroupResponseDto> data = null;
@@ -50,7 +43,6 @@ public class UserListServiceImplement implements UserListService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-    // 모임 내 유저리스트 조회
     @Override
     public ResponseDto<List<UserListResponseDto>> getUserList(Long groupId) {
         List<UserListResponseDto> data = null;
@@ -73,14 +65,10 @@ public class UserListServiceImplement implements UserListService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-    // 모임 나가기
     @Transactional
     @Override
     public ResponseDto<Void> deleteUserList(String userId, Long groupId) {
         try{
-//            if (!userListRepository.existsByUserIdAndGroupId(userId, groupId)) {
-//                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
-//            }
             userListRepository.deleteUserList(userId, groupId);
 
         } catch (Exception e) {
@@ -90,7 +78,6 @@ public class UserListServiceImplement implements UserListService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
     }
 
-    //유저 등급 수정
     @Override
     public ResponseDto<UserLevelResponseDto> putUserLevel(Long groupId, UserLevelRequestDto dto) {
         UserLevelResponseDto data = null;
@@ -117,7 +104,6 @@ public class UserListServiceImplement implements UserListService {
 
     }
 
-    //유저 추방
     @Override
     public ResponseDto<Void> deleteUser(Long groupId, String userId) {
         try{
@@ -133,7 +119,6 @@ public class UserListServiceImplement implements UserListService {
        return ResponseDto.setSuccess(ResponseMessage.SUCCESS,null);
     }
 
-    //모임 내 남여 성비 차트
     @Override
     public ResponseDto<List<UserGenderRatioResponseDto>> getUserListGender(Long groupId) {
         List<UserGenderRatioResponseDto> data = new ArrayList<>();
@@ -151,7 +136,6 @@ public class UserListServiceImplement implements UserListService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-    //모임 분기별 유입율 차트
     @Override
     public ResponseDto<List<MonthRatioResponseDto>> getMonthUserList(Long groupId) {
         List<MonthRatioResponseDto> data = new ArrayList<>();
@@ -197,27 +181,5 @@ public class UserListServiceImplement implements UserListService {
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, true);
     }
-
-    // 그룹 아이디 유저리스트에 유저 존재여부
-//    @Override
-//    public ResponseDto<ResponseGetUserIdDto> getUserIdUserList(String userId, Long groupId) {
-//        ResponseGetUserIdDto data = null;
-//
-//        try{
-//            Optional<UserList> userListOptional = userListRepository.findByUserIdAndGroupId(userId, groupId);
-//            if (userListOptional.isEmpty()) {
-//                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
-//            }
-//
-//            UserList userList = userListOptional.get();
-//            data = new ResponseGetUserIdDto(userList);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
-//        }
-//        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-//    }
-
-
 
 }

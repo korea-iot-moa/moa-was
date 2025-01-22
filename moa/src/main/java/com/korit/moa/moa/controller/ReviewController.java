@@ -22,13 +22,11 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     public static final String GET_REVIEW = "/path/{reviewId}";
-    public static final String MY_REVIEWS = "/myReview";
+    public static final String MY_REVIEWS = "/my-review";
     public static final String PUT_REVIEWS = "/{reviewId}";
     public static final String DEL_REVIEWS = "/{reviewId}";
     public static final String AUTH_REVIEW = "/auth";
 
-
-    // 후기 생성
     @PostMapping
     public ResponseEntity<ResponseDto<ReviewResponseDto>> createReview(
             @AuthenticationPrincipal String userId,
@@ -39,7 +37,6 @@ public class ReviewController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 후기 전체 조회
     @GetMapping(AUTH_REVIEW)
     public ResponseEntity<ResponseDto<List<ReviewResponseDto>>> getAllReviews(
             @RequestParam(defaultValue = "0") int page,
@@ -50,7 +47,6 @@ public class ReviewController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 후기 단건 조회
     @GetMapping(GET_REVIEW)
     public ResponseEntity<ResponseDto<ReviewResponseDto>> getReviewById(
             @PathVariable Long reviewId
@@ -60,7 +56,6 @@ public class ReviewController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 내 후기 조회
     @GetMapping(MY_REVIEWS)
     public ResponseEntity<ResponseDto<List<ReviewResponseDto>>> getMyReviews(
             @AuthenticationPrincipal String userId
@@ -70,7 +65,6 @@ public class ReviewController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 후기 수정
     @PutMapping(PUT_REVIEWS)
     public ResponseEntity<ResponseDto<ReviewResponseDto>> updateReview(
             @PathVariable Long reviewId,
@@ -82,7 +76,6 @@ public class ReviewController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 후기 삭제
     @DeleteMapping(DEL_REVIEWS)
     public ResponseEntity<ResponseDto<Void>> deleteReview(
             @PathVariable Long reviewId,

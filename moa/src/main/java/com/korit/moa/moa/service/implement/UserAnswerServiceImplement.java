@@ -7,7 +7,7 @@ import com.korit.moa.moa.dto.user_answer.request.RequestUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.UserAnswerRequestDto;
 import com.korit.moa.moa.dto.user_answer.response.ParticipationStatusResponseDto;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
-import com.korit.moa.moa.dto.user_answer.response.UserAnswerGetReponseDto;
+import com.korit.moa.moa.dto.user_answer.response.UserAnswerGetResponseDto;
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackOn = Exception.class)
 public class UserAnswerServiceImplement implements UserAnswerService {
     private final UserRepository userRepository;
     private final UserListRepository userListRepository;
@@ -42,8 +43,34 @@ public class UserAnswerServiceImplement implements UserAnswerService {
     private final MeetingGroupRepository meetingGroupRepository;
 
     //참여 요청 조회
+
     @Override
-    public ResponseDto<List<UserAnswerGetReponseDto>> getUserAnswer(Long groupId) {
+    public ResponseDto<ResponseUserAnswerDto> postMeetingGroup(Long groupId, RequestUserAnswerDto dto) {
+        String userId = dto.getUserId();
+        String userAnswer = dto.getUserAnswer();
+        LocalDate date = LocalDate.now();
+
+        try {
+                meetingGroupRepository.findById(groupId);
+            UserAnswer newUserAnswer = UserAnswer.builder()
+                    .userId(userId)
+                    .groupId(groupId)
+                    .answerDate(date)
+                    .isApproved(2)
+                    .userAnswer(userAnswer)
+                    .build();
+
+            userAnswerRepository.save(newUserAnswer);
+            ResponseUserAnswerDto data = new ResponseUserAnswerDto(newUserAnswer);
+            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseDto<List<UserAnswerGetResponseDto>> getUserAnswer(Long groupId) {
         if (groupId == null) {
             return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
         }
@@ -51,9 +78,8 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         try {
             List<Object[]> userAnswers = userAnswerRepository.findByGroupIdWithTitle(groupId);
 
-            // Object[] 데이터를 DTO로 변환
-            List<UserAnswerGetReponseDto> data = userAnswers.stream()
-                    .map(UserAnswerGetReponseDto::new)
+            List<UserAnswerGetResponseDto> data = userAnswers.stream()
+                    .map(UserAnswerGetResponseDto::new)
                     .collect(Collectors.toList());
 
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
@@ -63,13 +89,9 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         }
     }
 
-
-    //참여 승인
     @Override
-    @Transactional(rollbackOn = Exception.class)
     public ResponseDto<Void> approveUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto) {
         int isApproved = dto.getIsApproved();
-        UserAnswer updateData = null;
         try {
             List<UserAnswer> userAnswers = userAnswerRepository.findAllByGroupId(groupId);
 
@@ -101,9 +123,7 @@ public class UserAnswerServiceImplement implements UserAnswerService {
                         .build();
                 userListRepository.save(userList);
 
-                updateData = userAnswerRepository.findByGroupIdAndUserId(groupId, dto.getUserId());
-                updateData.setIsApproved(1);
-                userAnswerRepository.save(updateData);
+                approveUpdateAnswer(dto.getUserId(), groupId);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,7 +132,6 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
     }
 
-    //참여 요청 거절
     @Override
     public ResponseDto<Boolean> refuseRequestUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto) {
         int isApproved = dto.getIsApproved();
@@ -133,10 +152,8 @@ public class UserAnswerServiceImplement implements UserAnswerService {
 
     @Override
     public ResponseDto<ResponseUserAnswerDto> createUserAnswer(String userId, UserAnswerRequestDto dto, Long answerId) {
-
         Long groupId = dto.getGroupId();
         String userAnswer = dto.getUserAnswer();
-
 
         if(userId == null) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userId");
@@ -232,6 +249,18 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
+    public Boolean approveUpdateAnswer(String userId, Long groupId) {
+        UserAnswer updateData = null;
+        try {
+            updateData = userAnswerRepository.findByGroupIdAndUserId(groupId, userId);
+            updateData.setIsApproved(1);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.korit.moa.moa.repository;
 
-import com.korit.moa.moa.entity.balckList.BlackList;
 import com.korit.moa.moa.entity.review.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

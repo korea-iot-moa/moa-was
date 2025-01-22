@@ -3,7 +3,6 @@ package com.korit.moa.moa.repository;
 import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
 import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -88,12 +87,6 @@ SELECT ranked.*
 
     Boolean existsByGroupIdAndCreatorId(Long groupId, String userId);
 
-    //같은 제목 모임 생성 중복 방지
     boolean existsByGroupTitle(String groupTitle);
-
-
-//    //특정 모임 생성자 찾기
-//    @Query("SELECT mg.creatorId FROM MeetingGroup mg WHERE mg.groupId = :groupId")
-//    String findByGroupId(@Param("groupId") Long groupId);
 
 }

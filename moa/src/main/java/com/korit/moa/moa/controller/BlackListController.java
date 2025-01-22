@@ -21,14 +21,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BlackListController {
 
-    private  final BlackListService blackListService;
-    public  static final String GET_BLACK_LIST = "/{groupId}";
+    private final BlackListService blackListService;
+
+    private static final String GET_BLACK_LIST = "/{groupId}";
     private static final String POST_BLACK_LIST = "/{groupId}";
 
-
-
     @GetMapping(GET_BLACK_LIST)
-    public ResponseEntity<ResponseDto<List<ResponseGetBlackListDto>>> getBlackList(@PathVariable Long groupId){
+    public ResponseEntity<ResponseDto<List<ResponseGetBlackListDto>>> getBlackList(@PathVariable Long groupId) {
         ResponseDto<List<ResponseGetBlackListDto>> response = blackListService.getBlackList(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
@@ -36,8 +35,8 @@ public class BlackListController {
 
     @PostMapping(POST_BLACK_LIST)
     public ResponseEntity<ResponseDto<ResponseBlackListDto>> postBlackList(
-            @PathVariable Long groupId, @RequestBody Map<String, String> reqBody) {
-        System.out.println("Map reBdoy"+ reqBody);
+            @PathVariable Long groupId, @RequestBody Map<String, String> reqBody
+    ) {
         ResponseDto<ResponseBlackListDto> response = blackListService.postBlackList(groupId, reqBody.get("userId"));
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
@@ -46,8 +45,8 @@ public class BlackListController {
     @DeleteMapping
     public ResponseEntity<ResponseDto<Void>> deleteBlackList(
             @RequestParam  Long groupId,
-            @RequestParam String userId)
-    {
+            @RequestParam String userId
+    ) {
         ResponseDto<Void> response = blackListService.deleteBlackList(groupId, userId);
         HttpStatus status = response.isResult() ? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);

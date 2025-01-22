@@ -4,7 +4,6 @@ import com.korit.moa.moa.common.object.CustomOAuth2User;
 import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.provider.JwtProvider;
 import com.korit.moa.moa.repository.UserRepository;
-import com.korit.moa.moa.service.AuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
-// OAuth2 유저 서비스 작업이 성공했을 때 처리
 @Component
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -36,7 +34,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Map<String, Object> attributes = customOAuth2User.getAttributes();
         boolean existed = customOAuth2User.isExisted();
 
-        // 회원가입 O
         if (existed) {
             Optional<User> optionalUser = userRepository.findById(customOAuth2User.getName());
             User user = optionalUser.get();
@@ -45,7 +42,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             int expirTime = jwtProvider.getExpiration();
             response.sendRedirect("http://localhost:3000/sns-success?accessToken=" + accessToken + "&expiration= + " + expirTime);
         }
-        // 회원가입 X
         else {
             String snsId = (String) attributes.get("snsId");
             String joinPath = (String) attributes.get("joinPath");

@@ -21,10 +21,9 @@ import java.util.List;
 public class ReportController {
 
     private final ReportService reportService;
-    private static final String GET_REPORT = "/{groupId}";
-    private static final String DEL_REPORT = "/{reportId}";
 
-    // 신고 등록
+    private static final String GET_REPORT = "/{groupId}";
+
     @PostMapping
     public ResponseEntity<ResponseDto<ReportResponseDto>> createReport(
             @AuthenticationPrincipal String userId,
@@ -35,35 +34,33 @@ public class ReportController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //신고 조회
     @GetMapping(GET_REPORT)
-    public  ResponseEntity<ResponseDto<List<ReportResponseDto>>> getReport(
-            @PathVariable Long groupId)
+    public  ResponseEntity<ResponseDto<List<ReportResponseDto>>> getReport(@PathVariable Long groupId)
     {
-
         ResponseDto<List<ReportResponseDto>> response = reportService.getReport(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
-    //신고 처리 - 추방
     @PostMapping(GET_REPORT)
     public  ResponseEntity<ResponseDto<Void>> postReport(
-            @PathVariable Long groupId, @RequestBody PostReportRequestDto dto){
+            @PathVariable Long groupId,
+            @RequestBody PostReportRequestDto dto
+    ) {
         ResponseDto<Void> response = reportService.postReport(groupId,dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
-    //신고 처리 - 유지
     @DeleteMapping(GET_REPORT)
     public  ResponseEntity<ResponseDto<Void>> deleteReport(
-            @PathVariable Long groupId, @RequestBody DeleteReportRequestDto dto){
+            @PathVariable Long groupId,
+            @RequestBody DeleteReportRequestDto dto
+    ) {
         ResponseDto<Void> response = reportService.deleteReport(groupId,dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
-
 
 }
 

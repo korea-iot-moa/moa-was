@@ -31,9 +31,9 @@ public class BlackListServiceImplement implements BlackListService {
 
     private final BlackListRepository blackListRepository;
     private final UserRepository userRepository;
-    private final MeetingGroupRepository meetingGroupRepository;
 
-    // 블랙 리스트 조회
+
+
     @Override
     public ResponseDto<List<ResponseGetBlackListDto>> getBlackList(Long groupId) {
         List<ResponseGetBlackListDto> data = null;
@@ -50,6 +50,7 @@ public class BlackListServiceImplement implements BlackListService {
                         return new ResponseGetBlackListDto(blackListId, userId,
                                 profileImage, nickName);
                     })
+                    .distinct()
                     .collect(Collectors.toList());
 
             return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
@@ -61,7 +62,6 @@ public class BlackListServiceImplement implements BlackListService {
 
     @Override
     @Transactional
-    // 블랙 리스트 등록
     public ResponseDto<ResponseBlackListDto> postBlackList(Long groupId, String userId) {
         ResponseBlackListDto data = null;
         try {
@@ -88,7 +88,6 @@ public class BlackListServiceImplement implements BlackListService {
 
     @Override
     @Transactional
-    //블랙 리스트 삭제
     public ResponseDto<Void> deleteBlackList(Long groupId, String userId) {
         try {
             Optional<BlackList> blackList = blackListRepository.findByGroupIdAndUserId(groupId, userId);

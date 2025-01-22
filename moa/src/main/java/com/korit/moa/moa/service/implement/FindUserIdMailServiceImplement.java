@@ -16,9 +16,6 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -35,9 +32,9 @@ public class FindUserIdMailServiceImplement implements FindUserIdMailService {
     @Override
     public MimeMessage createMail(String mail, String token) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
-        message.setFrom(senderEmail); // 발신자 설정
-        message.setRecipients(MimeMessage.RecipientType.TO, mail); // 수신자 설정
-        message.setSubject("MOA 아이디 이메일 인증");//이메일 제목
+        message.setFrom(senderEmail);
+        message.setRecipients(MimeMessage.RecipientType.TO, mail);
+        message.setSubject("MOA 아이디 이메일 인증");
 
         String body = "";
         body += "<h2> 이메일 인증 링크 입니다.</h2>";

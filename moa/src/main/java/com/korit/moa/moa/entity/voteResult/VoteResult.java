@@ -1,6 +1,5 @@
 package com.korit.moa.moa.entity.voteResult;
 
-import com.korit.moa.moa.entity.votes.Votes;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class VoteResult {
+
     @Id
     @Column(name = "vote_result_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
