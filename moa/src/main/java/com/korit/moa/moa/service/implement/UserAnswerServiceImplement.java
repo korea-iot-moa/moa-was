@@ -47,11 +47,7 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         String userId = dto.getUserId();
         String userAnswer = dto.getUserAnswer();
         LocalDate date = LocalDate.now();
-//        if (userAnswer == null || userAnswer.isEmpty() ||
-//              !userAnswer.matches("^(?!\\s)[가-힣A-Za-z\\s]{9,199}[가-힣A-Za-z\\s!@#$%^&*(),.?\":{}|<>]$\n")
-//        ) {
-//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
-//        }
+
         try {
                 meetingGroupRepository.findById(groupId);
             UserAnswer newUserAnswer = UserAnswer.builder()
@@ -93,8 +89,6 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         }
     }
 
-
-    //참여 승인
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ResponseDto<Void> approveUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto) {
@@ -142,7 +136,6 @@ public class UserAnswerServiceImplement implements UserAnswerService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
     }
 
-    //참여 요청 거절
     @Override
     public ResponseDto<Boolean> refuseRequestUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto) {
         int isApproved = dto.getIsApproved();

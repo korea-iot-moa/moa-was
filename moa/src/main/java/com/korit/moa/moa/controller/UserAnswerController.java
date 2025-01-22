@@ -43,7 +43,6 @@ public class UserAnswerController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //참여 요청 조회
     @GetMapping(GET_USER_ANSWER)
     public ResponseEntity<ResponseDto<List<UserAnswerGetReponseDto>>> getUserAnswer(@PathVariable Long groupId){
         ResponseDto<List<UserAnswerGetReponseDto>> response = userAnswerService.getUserAnswer(groupId);
@@ -51,7 +50,6 @@ public class UserAnswerController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //참여거절
     @PutMapping(PUT_REFUSE_REQUEST)
     public ResponseEntity<ResponseDto<Boolean>> refuseRequestUserAnswer(
             @PathVariable Long groupId, @RequestBody RequestDeleteUserAnswerDto dto)
@@ -61,7 +59,6 @@ public class UserAnswerController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //참여 승인
     @PutMapping(PUT_APPROVE_REQUEST)
     public ResponseEntity<ResponseDto<Void>> approveUserAnswer(
             @PathVariable Long groupId, @RequestBody RequestDeleteUserAnswerDto dto)
@@ -103,7 +100,6 @@ public class UserAnswerController {
         HttpStatus status = response.isResult() ? HttpStatus.OK:HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
-
 
     // 모임 신청 취소
     @DeleteMapping(DELETE_USER_ANSWER)

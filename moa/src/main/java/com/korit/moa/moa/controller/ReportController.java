@@ -23,7 +23,6 @@ public class ReportController {
     private final ReportService reportService;
     private static final String GET_REPORT = "/{groupId}";
 
-    // 신고 등록
     @PostMapping
     public ResponseEntity<ResponseDto<ReportResponseDto>> createReport(
             @AuthenticationPrincipal String userId,
@@ -34,7 +33,6 @@ public class ReportController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //신고 조회
     @GetMapping(GET_REPORT)
     public  ResponseEntity<ResponseDto<List<ReportResponseDto>>> getReport(
             @PathVariable Long groupId)
@@ -45,7 +43,6 @@ public class ReportController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //신고 처리 - 추방
     @PostMapping(GET_REPORT)
     public  ResponseEntity<ResponseDto<Void>> postReport(
             @PathVariable Long groupId, @RequestBody PostReportRequestDto dto){
@@ -54,7 +51,6 @@ public class ReportController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //신고 처리 - 유지
     @DeleteMapping(GET_REPORT)
     public  ResponseEntity<ResponseDto<Void>> deleteReport(
             @PathVariable Long groupId, @RequestBody DeleteReportRequestDto dto){
@@ -62,8 +58,6 @@ public class ReportController {
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
-
-
 }
 
 

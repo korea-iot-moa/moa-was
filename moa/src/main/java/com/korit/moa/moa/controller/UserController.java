@@ -25,7 +25,6 @@ public class UserController {
     private static final String USER_INFO_GET_DUPLICATION = "/duplication/{nickName}";
     private static final String USER_INFO_POST_PASSWORD = "/password";
 
-
     private final UserService userService;
 
 

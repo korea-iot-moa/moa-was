@@ -34,7 +34,6 @@ public class VoteResultController {
     }
 
     @GetMapping(GET_VOTE_RESULT)
-    //투표 결과 조회
     public ResponseEntity<ResponseDto<List<VoteResultGetResponseDto>>> getVoteResult(@PathVariable Long voteId){
         ResponseDto<List<VoteResultGetResponseDto>> response = voteResultService.getVoteResult(voteId);
         HttpStatus status  = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;

@@ -31,8 +31,6 @@ public class MeetingGroupController {
     private static final String EXISTS_CREATOR = "/exists/{groupId}";
     private static final String GET_MEETING_GROUP = "/{groupId}";
 
-
-    // 모임 생성
     @PostMapping
     public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(
             @AuthenticationPrincipal String userId, @ModelAttribute RequestGroupDto dto
@@ -42,7 +40,6 @@ public class MeetingGroupController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 모임 수정
     @PutMapping(UPD_MEETINGGROUP)
     public ResponseEntity<ResponseDto<ResponseGroupDto>> updateMeetingGroupId(
             @PathVariable Long groupId, @ModelAttribute RequestGroupDto dto
@@ -52,7 +49,6 @@ public class MeetingGroupController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 모임 삭제
     @DeleteMapping(DEL_MEETINGGROUP)
     public ResponseEntity<ResponseDto<Void>> deleteMeetingGroupId(@PathVariable Long groupId) {
         ResponseDto<Void> response = meetingGroupService.deleteMeetingGroupId(groupId);

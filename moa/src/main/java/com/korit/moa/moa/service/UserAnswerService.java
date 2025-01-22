@@ -15,13 +15,8 @@ public interface UserAnswerService {
     ResponseDto<ResponseUserAnswerDto> postMeetingGroup(Long groupId, RequestUserAnswerDto dto);
     ResponseDto<Void> approveUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto);
     ResponseDto<Boolean> refuseRequestUserAnswer (Long groupId, RequestDeleteUserAnswerDto dto);
-    // 모임참여 답변
     ResponseDto<ResponseUserAnswerDto> createUserAnswer(String userId, UserAnswerRequestDto dto, Long answerId);
-
-    // 모임참여신청 중복 확인
     ResponseDto<Boolean> duplicateUserAnswer(String userId, Long groupId);
-
     ResponseDto<List<ParticipationStatusResponseDto >> findParticipationStatus(String userId);
-
     ResponseDto<Boolean> deleteAnswer(Long answerId);
 }

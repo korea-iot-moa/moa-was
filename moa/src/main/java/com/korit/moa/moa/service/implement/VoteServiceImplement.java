@@ -6,14 +6,12 @@ import com.korit.moa.moa.dto.vote.request.RequestUpdateVoteDto;
 import com.korit.moa.moa.dto.vote.request.RequestVoteDto;
 import com.korit.moa.moa.dto.vote.response.PostVoteResponseDto;
 import com.korit.moa.moa.dto.vote.response.VoteResponseDto;
-import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.votes.Votes;
 import com.korit.moa.moa.repository.MeetingGroupRepository;
 import com.korit.moa.moa.repository.VoteRepository;
 import com.korit.moa.moa.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 
 import java.util.Date;
 import java.util.Optional;
@@ -38,8 +36,7 @@ public class  VoteServiceImplement implements VoteService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
     }
-    
-    //투표 등록
+
     @Override
     public ResponseDto<PostVoteResponseDto> postMyGroupVote(RequestVoteDto dto, String userId) {
         PostVoteResponseDto data = null;
@@ -81,7 +78,6 @@ public class  VoteServiceImplement implements VoteService {
     }
 
     @Override
-    //투표  수정
     public ResponseDto<VoteResponseDto> updateMyGroupVote(Long voteId, RequestUpdateVoteDto dto) {
         VoteResponseDto data = null;
         try {
@@ -102,7 +98,6 @@ public class  VoteServiceImplement implements VoteService {
         }
     }
 
-    //투표 삭제
     @Override
     public ResponseDto<Void> deleteMyGroupVote(Long voteId) {
         try {

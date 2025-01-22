@@ -19,7 +19,6 @@ import com.korit.moa.moa.repository.UserListRepository;
 import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.MeetingGroupService;
-import io.lettuce.core.ScriptOutputType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
     public final UserRepository userRepository;
     private final ImgFileService imgFileService;
 
-    // 모임 생성
+
     @Override
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
 
@@ -103,7 +102,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
             meetingGroupRepository.save(meetingGroup);
 
-
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
             String profileImgPath = user.getProfileImage();
@@ -133,7 +131,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     }
 
-    // 모임 수정
     @Override
     public ResponseDto<ResponseGroupDto> updateMeetingGroupId(Long groupId, RequestGroupDto dto) {
         ResponseGroupDto data = null;
@@ -168,7 +165,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
             meetingGroup.setMeetingType(dto.getMeetingType() != null ?
                     dto.getMeetingType() : meetingGroup.getMeetingType());
 
-
             meetingGroupRepository.save(meetingGroup);
             data = new ResponseGroupDto(meetingGroup);
 
@@ -180,7 +176,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         }
     }
 
-    // 모임 삭제
     @Override
     @Transactional
     public ResponseDto<Void> deleteMeetingGroupId( Long groupId) {

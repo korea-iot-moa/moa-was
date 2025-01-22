@@ -45,13 +45,11 @@ public interface UserListRepository extends JpaRepository<UserList, UserListId> 
     @Query("DELETE FROM UserList ul WHERE ul.user.userId = :userId AND ul.group.groupId = :groupId")
     void deleteUserList(@Param("userId") String userId, @Param("groupId") Long groupId);
 
-    //모임 내 남녀 성비 차트
     @Query( "SELECT u.userGender, COUNT(u) " +
             "FROM UserList ul JOIN User u ON u.userId = ul.user.userId  " +
             "WHERE ul.group.groupId = :groupId GROUP BY u.userGender" )
     List<Object[]> findGroupByUserGenderWithCount(@Param("groupId") Long groupId);
 
-    //모임내 유입율 차트
     @Query(value = """
         SELECT
             CONCAT(YEAR(ul.join_date), '-', CEIL(MONTH(ul.join_date) / 3)) AS quarter,
@@ -68,22 +66,20 @@ public interface UserListRepository extends JpaRepository<UserList, UserListId> 
         """, nativeQuery = true)
     List<Object[]> getQuarterlyData(@Param("groupId") Long groupId);
 
-    //유저 등급 수정
     @Query("SELECT ul FROM UserList ul WHERE ul.group.groupId = :groupId AND ul.user.userId = :userId")
     Optional<UserList> findByGroupIdAndUserId(@Param("groupId") Long groupId, @Param("userId") String userId);
 
-    //유저 추방
     @Modifying
     @Transactional
     @Query("DELETE FROM UserList ul WHERE ul.user.userId = :userId AND ul.group.groupId = :groupId")
     void deleteByUserIdAndGroupId(@Param("userId") String userId, @Param("groupId") Long groupId);
 
-
-    //    // 그룹 아이디에 유저 존재 여부
-@Query("SELECT ul FROM UserList ul " +
+    @Query(
+        "SELECT ul FROM UserList ul " +
         "JOIN ul.user u " +
         "JOIN ul.group mg " +
-        "WHERE u.userId = :userId AND mg.groupId = :groupId")
+        "WHERE u.userId = :userId AND mg.groupId = :groupId"
+    )
 Optional<UserList> findByUserIdAndGroupId(@Param("userId") String userId, @Param("groupId") Long groupId);
 
 }

@@ -16,7 +16,7 @@ public interface BlackListRepository extends JpaRepository<BlackList, Long> {
     //블랙 리스트 조회
     @Query("""
  select distinct  bl.blackListId
- , u.userId
+ ,  u.userId
  ,COALESCE(u.profileImage, '') AS profileImage
  , u.nickName
 FROM BlackList bl

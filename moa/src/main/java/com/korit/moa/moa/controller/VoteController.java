@@ -25,7 +25,6 @@ public class VoteController {
     private static final String POST_VOTE = "/{voteId}";
     private static final String EXIST_VOTE = "exists-vote/{groupId}";
 
-
     // 내 그룹 투표 조회
     @GetMapping(GET_VOTE)
     public ResponseEntity<ResponseDto<VoteResponseDto>> getMyGroupVote(
@@ -36,7 +35,7 @@ public class VoteController {
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
-    //투표 등록
+
     @PostMapping
     public ResponseEntity<ResponseDto<PostVoteResponseDto>> postMyGroupVote(
             @RequestBody RequestVoteDto dto,
@@ -48,7 +47,6 @@ public class VoteController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //투표 수정
     @PutMapping(PUT_VOTE)
     public ResponseEntity<ResponseDto<VoteResponseDto>> updateMyGroupVote(
             @PathVariable Long voteId, @RequestBody RequestUpdateVoteDto dto
@@ -58,7 +56,6 @@ public class VoteController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //투표 조회 삭제
     @DeleteMapping(PUT_VOTE)
     public ResponseEntity<ResponseDto<Void>> deleteMyGroupVote(
             @PathVariable Long voteId

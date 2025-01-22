@@ -25,8 +25,6 @@ public class BlackListController {
     public  static final String GET_BLACK_LIST = "/{groupId}";
     private static final String POST_BLACK_LIST = "/{groupId}";
 
-
-
     @GetMapping(GET_BLACK_LIST)
     public ResponseEntity<ResponseDto<List<ResponseGetBlackListDto>>> getBlackList(@PathVariable Long groupId) {
         ResponseDto<List<ResponseGetBlackListDto>> response = blackListService.getBlackList(groupId);

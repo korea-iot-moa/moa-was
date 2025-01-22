@@ -32,7 +32,6 @@ public class UserListController {
     public static final String USER_CHART_PAGE = "/user-chart/{groupId}";
     public static final String USER_LIST_GET= "/user-list-in/{groupId}";
 
-
 //     내 모임 조회
     @GetMapping
     public ResponseEntity<ResponseDto<List<GroupResponseDto>>> getMyGroups(
@@ -64,7 +63,6 @@ public class UserListController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //유저 레벨 수정
     @PutMapping(USER_LEVEL)
     public ResponseEntity<ResponseDto<UserLevelResponseDto>> putUserLevel(
             @PathVariable Long groupId, @RequestBody UserLevelRequestDto dto)
@@ -74,7 +72,6 @@ public class UserListController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //모임에서 추방
     @DeleteMapping(USER_DEL)
     public ResponseEntity<ResponseDto<Void>> deleteUser(@PathVariable Long groupId, @RequestParam String userId){
         ResponseDto<Void> response = userListService.deleteUser(groupId,userId);
@@ -82,7 +79,6 @@ public class UserListController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //모입 내 성별 차트
     @GetMapping(GENDER_CHART_PAGE)
     public ResponseEntity<ResponseDto<List<UserGenderRatioResponseDto>>> getUserListGender(@PathVariable Long groupId){
         ResponseDto<List<UserGenderRatioResponseDto>> response = userListService.getUserListGender(groupId);
@@ -90,7 +86,6 @@ public class UserListController {
         return ResponseEntity.status(status).body(response);
     }
 
-    //모입 유입율 차트
     @GetMapping(USER_CHART_PAGE)
     public ResponseEntity<ResponseDto<List<MonthRatioResponseDto>>> getMonthUserList(@PathVariable Long groupId){
         ResponseDto<List<MonthRatioResponseDto>> response = userListService.getMonthUserList(groupId);

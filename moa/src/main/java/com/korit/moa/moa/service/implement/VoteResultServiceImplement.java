@@ -2,7 +2,6 @@ package com.korit.moa.moa.service.implement;
 
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
-import com.korit.moa.moa.dto.user_list.response.UserGenderRatioResponseDto;
 import com.korit.moa.moa.dto.vote_result.request.VoteResultRequestDto;
 import com.korit.moa.moa.dto.vote_result.response.VoteResultGetResponseDto;
 import com.korit.moa.moa.dto.vote_result.response.VoteResultResponseDto;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,8 +22,6 @@ import java.util.stream.Collectors;
 public class VoteResultServiceImplement implements VoteResultService {
 
     private final VoteResultRepository voteResultRepository;
-
-
 
     @Override
     public ResponseDto<VoteResultResponseDto> createVoteResult(String userId, VoteResultRequestDto dto) {
@@ -52,7 +48,6 @@ public class VoteResultServiceImplement implements VoteResultService {
     }
 
     @Override
-    //결과 조회
     public ResponseDto<List<VoteResultGetResponseDto>> getVoteResult(Long voteId) {
         List<VoteResultGetResponseDto> data = new ArrayList<>();
         try {
