@@ -62,7 +62,7 @@ public class UserAnswerController {
     }
 
     //참여 승인
-    @PutMapping(PUT_APPROVE_REQUEST)
+    @PostMapping(PUT_APPROVE_REQUEST)
     public ResponseEntity<ResponseDto<Void>> approveUserAnswer(
             @PathVariable Long groupId, @RequestBody RequestDeleteUserAnswerDto dto)
     {
