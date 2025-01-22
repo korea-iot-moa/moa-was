@@ -9,7 +9,6 @@ import com.korit.moa.moa.dto.report.response.ReportResponseDto;
 import java.util.List;
 
 public interface ReportService {
-
     ResponseDto<ReportResponseDto> createReport (String userId, CreateReportRequestDto dto);
 
     ResponseDto<List<ReportResponseDto>> getReport(Long groupId);

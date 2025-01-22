@@ -11,4 +11,10 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     List<Object[]> findReportByGroupId(Long groupId);
     void deleteByUserId(String userId);
+
+    @Modifying
+    @Query("""
+        delete from Report r where r.groupId = :groupId and r.reportUser = :reportUser
+    """)
+    void deleteReport(@Param("groupId") Long groupId, @Param("reportUser") @NotBlank String reportUser);
 }

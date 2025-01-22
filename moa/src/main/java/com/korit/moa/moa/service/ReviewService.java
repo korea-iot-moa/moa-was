@@ -8,7 +8,6 @@ import com.korit.moa.moa.dto.review.response.ReviewResponseDto;
 import java.util.List;
 
 public interface ReviewService {
-
     ResponseDto<ReviewResponseDto> createReview (String userId, CreateRequestDto dto);
 
     ResponseDto<ReviewResponseDto> getReviewById(Long reviewId);

@@ -52,13 +52,11 @@ public class VoteResultServiceImplement implements VoteResultService {
         List<VoteResultGetResponseDto> data = new ArrayList<>();
         try {
             List<Object[]> results = voteResultRepository.findByVoteId(voteId);
-            System.out.println(results);
             int total = results.stream().mapToInt(result -> ((Long) result[1]).intValue()).sum();
             data = results.stream()
                     .map(result -> new VoteResultGetResponseDto
                             (result[0].toString(), (Long) result[1], (double) ((Long) result[1]) / total * 100))
                     .collect(Collectors.toList());
-            System.out.println(data);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);

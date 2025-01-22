@@ -37,6 +37,7 @@ public class UserController {
         return ResponseEntity.status(status).body(response);
     }
 
+    // 사용자 정보 업데이트
     @PutMapping(USER_INFO_PUT)
     public ResponseEntity<ResponseDto<ResponseUserDto>> updateUser(
            @AuthenticationPrincipal String userId,
