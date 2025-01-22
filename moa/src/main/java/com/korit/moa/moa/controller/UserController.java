@@ -54,16 +54,6 @@ public class UserController {
         return ResponseEntity.status(status).body(response);
     }
 
-//    @GetMapping("/userId")
-//    public ResponseEntity<ResponseDto<FindIdResponseDto>> findLoginId(
-//            @Valid @RequestParam String userName,
-//            @Valid @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") Date userBirthDate
-//    ) {
-//        ResponseDto<FindIdResponseDto> response = authService.findLoginId(userName, userBirthDate);
-//        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-//        return ResponseEntity.status(status).body(response);
-//    }
-
     @GetMapping("/duplicateId/{userId}")
     public ResponseEntity<ResponseDto<Boolean>> duplicateId(@Valid @PathVariable String userId){
         ResponseDto<Boolean> response = authService.duplicateId(userId);
@@ -77,8 +67,5 @@ public class UserController {
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
-
-
-
 
 }

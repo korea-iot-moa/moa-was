@@ -20,7 +20,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     boolean existsByUserId(String userId);
 
-    // 아이디 찾기
     @Query(
             "SELECT u FROM User u" +
                     " WHERE u.userName = :userName AND u.phoneNumber = :phoneNumber "
@@ -39,8 +38,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     String findByUserNickName(@Param("userId") String userId);
 
     User findBySnsIdAndJoinPath(String snsId, String registration);
-    
-    // 회원탈퇴
+
     @Modifying
     @Query("DELETE FROM User u WHERE u.userId = :userId")
     void deleteUser(@Param("userId") String userId);

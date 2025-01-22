@@ -12,7 +12,6 @@ import java.util.List;
 
 public interface UserAnswerService {
     ResponseDto<List<UserAnswerGetReponseDto>> getUserAnswer(Long groupId);
-    ResponseDto<ResponseUserAnswerDto> postMeetingGroup(Long groupId, RequestUserAnswerDto dto);
     ResponseDto<Void> approveUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto);
     ResponseDto<Boolean> refuseRequestUserAnswer (Long groupId, RequestDeleteUserAnswerDto dto);
     // 모임참여 답변

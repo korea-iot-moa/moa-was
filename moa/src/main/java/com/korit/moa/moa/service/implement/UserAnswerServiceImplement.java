@@ -41,36 +41,6 @@ public class UserAnswerServiceImplement implements UserAnswerService {
     private final UserAnswerRepository userAnswerRepository;
     private final MeetingGroupRepository meetingGroupRepository;
 
-
-    @Override
-    public ResponseDto<ResponseUserAnswerDto> postMeetingGroup(Long groupId, RequestUserAnswerDto dto) {
-        String userId = dto.getUserId();
-        String userAnswer = dto.getUserAnswer();
-        LocalDate date = LocalDate.now();
-//        if (userAnswer == null || userAnswer.isEmpty() ||
-//              !userAnswer.matches("^(?!\\s)[가-힣A-Za-z\\s]{9,199}[가-힣A-Za-z\\s!@#$%^&*(),.?\":{}|<>]$\n")
-//        ) {
-//            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
-//        }
-        try {
-                meetingGroupRepository.findById(groupId);
-            UserAnswer newUserAnswer = UserAnswer.builder()
-                    .userId(userId)
-                    .groupId(groupId)
-                    .answerDate(date)
-                    .isApproved(2)
-                    .userAnswer(userAnswer)
-                    .build();
-
-            userAnswerRepository.save(newUserAnswer);
-            ResponseUserAnswerDto data = new ResponseUserAnswerDto(newUserAnswer);
-            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
-        }
-    }
-
     //참여 요청 조회
     @Override
     public ResponseDto<List<UserAnswerGetReponseDto>> getUserAnswer(Long groupId) {
@@ -161,7 +131,6 @@ public class UserAnswerServiceImplement implements UserAnswerService {
 
     }
 
-    // 모임참여 답변
     @Override
     public ResponseDto<ResponseUserAnswerDto> createUserAnswer(String userId, UserAnswerRequestDto dto, Long answerId) {
 
@@ -202,7 +171,6 @@ public class UserAnswerServiceImplement implements UserAnswerService {
 
     }
 
-    // 사용자 답장 중복 확인
     @Override
     public ResponseDto<Boolean> duplicateUserAnswer(String userId, Long groupId) {
         try{

@@ -32,17 +32,6 @@ public class UserAnswerController {
     private static final String GET_USER_ANSWER_DUPLICATION = "/duplication/{groupId}";
     private static final String GROUP_PARTICIPATION_STATUS = "/participation-status";
 
-
-    //모임 참가
-    @PostMapping(GET_USER_ANSWER)
-    public ResponseEntity<ResponseDto<ResponseUserAnswerDto>> postMeetingGroup(
-            @PathVariable Long groupId, @RequestBody RequestUserAnswerDto dto)
-    {
-        ResponseDto<ResponseUserAnswerDto> response = userAnswerService.postMeetingGroup(groupId, dto);
-        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-        return ResponseEntity.status(status).body(response);
-    }
-
     //참여 요청 조회
     @GetMapping(GET_USER_ANSWER)
     public ResponseEntity<ResponseDto<List<UserAnswerGetReponseDto>>> getUserAnswer(@PathVariable Long groupId){

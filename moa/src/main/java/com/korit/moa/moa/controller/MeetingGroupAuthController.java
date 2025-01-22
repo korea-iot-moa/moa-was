@@ -28,8 +28,6 @@ public class MeetingGroupAuthController {
     private static final String GET_GROUP_HOME = "/meeting-group/group";
     private static final String GET_MEETING_GROUP_ID = "/meeting-group/{groupId}";
 
-
-    // 모임이름 검색 필터링
     @GetMapping(GET_GROUP)
     public ResponseEntity<ResponseDto<List<SearchResponseDto>>> SearchGroupKeyword(@RequestParam("keyword") String groupTitle) {
         ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupTitle(groupTitle);
@@ -37,7 +35,6 @@ public class MeetingGroupAuthController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 모임 취미카테고리,지역칸테고리 필터링
     @GetMapping(GET_GROUP_CATEGORY)
     public ResponseEntity<ResponseDto<List<SearchResponseDto>>> findByGroupCategoryAndRegion(
             @RequestParam GroupCategory groupCategory,
@@ -48,7 +45,6 @@ public class MeetingGroupAuthController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 단기/정기 모임 필터
     @GetMapping(GET_GROUP_TYPE)
     public ResponseEntity<ResponseDto<List<SearchResponseDto>>> filterGroupType(@RequestParam GroupTypeCategory groupType) {
         ResponseDto<List<SearchResponseDto>> response = meetingGroupService.findByGroupType(groupType);
@@ -56,7 +52,6 @@ public class MeetingGroupAuthController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 홈화면 카테고리별 추천 모임
     @GetMapping(GET_GROUP_HOME)
     public ResponseEntity<ResponseDto<List<HomeGroupResponseDto>>> getGroupAtHomeAuth() {
         ResponseDto<List<HomeGroupResponseDto>> response = meetingGroupService.getGroupAtHomeAuth();
@@ -64,7 +59,6 @@ public class MeetingGroupAuthController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 모임 id로 단건 조회
     @GetMapping(GET_MEETING_GROUP_ID)
     public ResponseEntity<ResponseDto<ResponseGroupDto>> getGroupById(@PathVariable Long groupId) {
         ResponseDto<ResponseGroupDto> response = meetingGroupService.getGroupById(groupId);

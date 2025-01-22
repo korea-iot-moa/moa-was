@@ -60,7 +60,6 @@ public class MeetingGroupController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 홈화면 카테고리별 추천 모임
     @GetMapping(GET_MEETINGGROUP_HOME)
     public ResponseEntity<ResponseDto<List<HomeGroupResponseDto>>> getGroupAtHome(
             @AuthenticationPrincipal String userId
@@ -70,7 +69,6 @@ public class MeetingGroupController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 모임 관리자 확인
     @GetMapping(EXISTS_CREATOR)
     public ResponseEntity<ResponseDto<Boolean>> isCreator(
             @PathVariable Long groupId,
@@ -81,7 +79,6 @@ public class MeetingGroupController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 모임 단건 조회
     @GetMapping(GET_MEETING_GROUP)
     public ResponseEntity<ResponseDto<ResponseGroupDto>> findGroup(@PathVariable Long groupId) {
         ResponseDto<ResponseGroupDto> response = meetingGroupService.findGroup(groupId);

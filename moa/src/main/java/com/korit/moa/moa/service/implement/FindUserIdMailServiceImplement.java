@@ -32,7 +32,6 @@ public class FindUserIdMailServiceImplement implements FindUserIdMailService {
     @Value("${spring.mail.username}")
     private static String senderEmail;
 
-    // 메일 내용 생성
     @Override
     public MimeMessage createMail(String mail, String token) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -50,7 +49,6 @@ public class FindUserIdMailServiceImplement implements FindUserIdMailService {
         return message;
     }
 
-    // 메일 보내기
     @Override
     public ResponseDto<String> sendMessage(FindUserIdMailRequestDto dto) throws MessagingException {
         String phoneNumber = dto.getPhoneNumber();
@@ -81,7 +79,6 @@ public class FindUserIdMailServiceImplement implements FindUserIdMailService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
     }
-
 
     @Override
     public ResponseDto<FindIdResponseDto> verifyEmail(String token) {

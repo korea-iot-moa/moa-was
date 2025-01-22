@@ -7,9 +7,7 @@ import com.korit.moa.moa.dto.user.request.RequestUserDto;
 import com.korit.moa.moa.dto.user.request.UpdateUserPasswordRequestDto;
 import com.korit.moa.moa.dto.user.request.UpdateUserRequestDto;
 import com.korit.moa.moa.dto.user.response.ResponseUserDto;
-import com.korit.moa.moa.entity.user.User;
 import com.korit.moa.moa.service.UserService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +25,8 @@ public class UserInfoController {
     private static final String USER_INFO_GET_DUPLICATION = "/duplication/{nickName}";
     private static final String USER_INFO_POST_PASSWORD = "/isPassword";
 
-
     private final UserService userService;
 
-
-    // 사용자 정보 조회
     @GetMapping(USER_INFO)
     public ResponseEntity<ResponseDto<ResponseUserDto>> findUserInfo(
             @AuthenticationPrincipal String userId
@@ -42,7 +37,6 @@ public class UserInfoController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 사용자 정보 업데이트
     @PutMapping(USER_INFO_PUT)
     public ResponseEntity<ResponseDto<ResponseUserDto>> updateUser(
            @AuthenticationPrincipal String userId,
@@ -52,7 +46,6 @@ public class UserInfoController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 사용자 탈퇴
     @DeleteMapping("/user")
     public ResponseEntity<ResponseDto<Void>> deleteUser(
             @AuthenticationPrincipal String userId,
@@ -63,7 +56,6 @@ public class UserInfoController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 닉네임 중복확인
     @GetMapping(USER_INFO_GET_DUPLICATION)
     public ResponseEntity<ResponseDto<Boolean>> duplicationNickName(
             @PathVariable String nickName
@@ -83,7 +75,6 @@ public class UserInfoController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 비밀번호 일치 확인(내정보 조회시 사용)
     @PostMapping(USER_INFO_POST_PASSWORD)
     public ResponseEntity<ResponseDto<Boolean>> matchPassword(
             @AuthenticationPrincipal String userId,
