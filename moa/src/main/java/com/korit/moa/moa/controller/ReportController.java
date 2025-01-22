@@ -21,6 +21,7 @@ import java.util.List;
 public class ReportController {
 
     private final ReportService reportService;
+
     private static final String GET_REPORT = "/{groupId}";
 
     @PostMapping
@@ -34,10 +35,8 @@ public class ReportController {
     }
 
     @GetMapping(GET_REPORT)
-    public  ResponseEntity<ResponseDto<List<ReportResponseDto>>> getReport(
-            @PathVariable Long groupId)
+    public  ResponseEntity<ResponseDto<List<ReportResponseDto>>> getReport(@PathVariable Long groupId)
     {
-
         ResponseDto<List<ReportResponseDto>> response = reportService.getReport(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
@@ -45,7 +44,9 @@ public class ReportController {
 
     @PostMapping(GET_REPORT)
     public  ResponseEntity<ResponseDto<Void>> postReport(
-            @PathVariable Long groupId, @RequestBody PostReportRequestDto dto){
+            @PathVariable Long groupId,
+            @RequestBody PostReportRequestDto dto
+    ) {
         ResponseDto<Void> response = reportService.postReport(groupId,dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
@@ -53,11 +54,14 @@ public class ReportController {
 
     @DeleteMapping(GET_REPORT)
     public  ResponseEntity<ResponseDto<Void>> deleteReport(
-            @PathVariable Long groupId, @RequestBody DeleteReportRequestDto dto){
+            @PathVariable Long groupId,
+            @RequestBody DeleteReportRequestDto dto
+    ) {
         ResponseDto<Void> response = reportService.deleteReport(groupId,dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
+
 }
 
 

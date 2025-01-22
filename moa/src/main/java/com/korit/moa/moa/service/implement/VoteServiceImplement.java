@@ -13,6 +13,7 @@ import com.korit.moa.moa.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Date;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ public class  VoteServiceImplement implements VoteService {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
     }
-
+    
     @Override
     public ResponseDto<PostVoteResponseDto> postMyGroupVote(RequestVoteDto dto, String userId) {
         PostVoteResponseDto data = null;

@@ -25,39 +25,41 @@ import java.util.List;
 public class MeetingGroupController {
 
     private final MeetingGroupService meetingGroupService;
-    private static final String UPD_MEETINGGROUP = "/{groupId}";
-    private static final String DEL_MEETINGGROUP = "/{groupId}";
-    private static final String GET_MEETINGGROUP_HOME = "/home-recommendation";
+
+    private static final String UPD_MEETING_GROUP = "/{groupId}";
+    private static final String DEL_MEETING_GROUP = "/{groupId}";
+    private static final String GET_MEETING_GROUP_HOME = "/home-recommendation";
     private static final String EXISTS_CREATOR = "/exists/{groupId}";
     private static final String GET_MEETING_GROUP = "/{groupId}";
 
     @PostMapping
     public ResponseEntity<ResponseDto<ResponseGroupDto>> createGroupMeeting(
-            @AuthenticationPrincipal String userId, @ModelAttribute RequestGroupDto dto
+            @AuthenticationPrincipal String userId,
+            @ModelAttribute RequestGroupDto dto
     ) {
         ResponseDto<ResponseGroupDto> response = meetingGroupService.createGroupMeeting(userId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
-    @PutMapping(UPD_MEETINGGROUP)
+    @PutMapping(UPD_MEETING_GROUP)
     public ResponseEntity<ResponseDto<ResponseGroupDto>> updateMeetingGroupId(
-            @PathVariable Long groupId, @ModelAttribute RequestGroupDto dto
+            @PathVariable Long groupId,
+            @ModelAttribute RequestGroupDto dto
     ) {
         ResponseDto<ResponseGroupDto> response = meetingGroupService.updateMeetingGroupId(groupId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
-    @DeleteMapping(DEL_MEETINGGROUP)
+    @DeleteMapping(DEL_MEETING_GROUP)
     public ResponseEntity<ResponseDto<Void>> deleteMeetingGroupId(@PathVariable Long groupId) {
         ResponseDto<Void> response = meetingGroupService.deleteMeetingGroupId(groupId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
-    // 홈화면 카테고리별 추천 모임
-    @GetMapping(GET_MEETINGGROUP_HOME)
+    @GetMapping(GET_MEETING_GROUP_HOME)
     public ResponseEntity<ResponseDto<List<HomeGroupResponseDto>>> getGroupAtHome(
             @AuthenticationPrincipal String userId
     ) {
@@ -66,7 +68,6 @@ public class MeetingGroupController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 모임 관리자 확인
     @GetMapping(EXISTS_CREATOR)
     public ResponseEntity<ResponseDto<Boolean>> isCreator(
             @PathVariable Long groupId,
@@ -77,7 +78,6 @@ public class MeetingGroupController {
         return ResponseEntity.status(status).body(response);
     }
 
-    // 모임 단건 조회
     @GetMapping(GET_MEETING_GROUP)
     public ResponseEntity<ResponseDto<ResponseGroupDto>> findGroup(@PathVariable Long groupId) {
         ResponseDto<ResponseGroupDto> response = meetingGroupService.findGroup(groupId);

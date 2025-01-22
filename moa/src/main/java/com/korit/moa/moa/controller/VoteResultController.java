@@ -34,15 +34,17 @@ public class VoteResultController {
     }
 
     @GetMapping(GET_VOTE_RESULT)
-    public ResponseEntity<ResponseDto<List<VoteResultGetResponseDto>>> getVoteResult(@PathVariable Long voteId){
+    public ResponseEntity<ResponseDto<List<VoteResultGetResponseDto>>> getVoteResult(@PathVariable Long voteId) {
         ResponseDto<List<VoteResultGetResponseDto>> response = voteResultService.getVoteResult(voteId);
         HttpStatus status  = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);
     }
 
     @GetMapping(EXIST_VOTE_ANSWER)
-    // 투표 참여 여부 확인
-    public ResponseEntity<ResponseDto<Boolean>> existsByVoteIdAndUserId(@AuthenticationPrincipal String userId ,@PathVariable Long voteId) {
+    public ResponseEntity<ResponseDto<Boolean>> existsByVoteIdAndUserId(
+            @AuthenticationPrincipal String userId,
+            @PathVariable Long voteId
+    ) {
         ResponseDto<Boolean> response = voteResultService.existsByVoteIdAndUserId(userId, voteId);
         HttpStatus status  = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return  ResponseEntity.status(status).body(response);

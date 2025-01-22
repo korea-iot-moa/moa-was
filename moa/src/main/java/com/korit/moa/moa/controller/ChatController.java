@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping(ApiMappingPattern.CHAT)
 @RequiredArgsConstructor
 public class ChatController {
+
     private final ChatService chatService;
 
     private static final String SEND_MESSAGE = "/chat/{roomId}";

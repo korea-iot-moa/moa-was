@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VoteResponseDto {
+
     @NotBlank
     private Long voteId;
 

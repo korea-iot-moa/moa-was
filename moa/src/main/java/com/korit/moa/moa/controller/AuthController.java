@@ -33,7 +33,6 @@ public class AuthController {
         return ResponseEntity.status(status).body(response);
     }
 
-
     @PostMapping(SIGN_IN_PATH)
     public ResponseEntity<ResponseDto<SignInResponseDto>> signIn (@Valid @RequestBody SignInRequestDto dto){
         ResponseDto<SignInResponseDto> response = authService.signIn(dto);
@@ -49,16 +48,6 @@ public class AuthController {
         return ResponseEntity.status(status).body(response);
     }
 
-//    @GetMapping("/userId")
-//    public ResponseEntity<ResponseDto<FindIdResponseDto>> findLoginId(
-//            @Valid @RequestParam String userName,
-//            @Valid @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") Date userBirthDate
-//    ) {
-//        ResponseDto<FindIdResponseDto> response = authService.findLoginId(userName, userBirthDate);
-//        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-//        return ResponseEntity.status(status).body(response);
-//    }
-
     @GetMapping("/duplicate-id/{userId}")
     public ResponseEntity<ResponseDto<Boolean>> duplicateId(@Valid @PathVariable String userId){
         ResponseDto<Boolean> response = authService.duplicateId(userId);
@@ -72,8 +61,5 @@ public class AuthController {
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
-
-
-
 
 }

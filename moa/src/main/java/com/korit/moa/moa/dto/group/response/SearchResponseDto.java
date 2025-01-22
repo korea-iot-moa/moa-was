@@ -1,10 +1,6 @@
 package com.korit.moa.moa.dto.group.response;
 
-import com.korit.moa.moa.entity.meetingGroup.GroupCategory;
-import com.korit.moa.moa.entity.meetingGroup.GroupTypeCategory;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
-import com.korit.moa.moa.entity.meetingGroup.MeetingTypeCategory;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

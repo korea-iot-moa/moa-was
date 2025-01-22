@@ -37,7 +37,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
     public final UserRepository userRepository;
     private final ImgFileService imgFileService;
 
-
     @Override
     public ResponseDto<ResponseGroupDto> createGroupMeeting(String userId, RequestGroupDto dto) {
 
@@ -102,6 +101,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
             meetingGroupRepository.save(meetingGroup);
 
+
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
             String profileImgPath = user.getProfileImage();
@@ -150,18 +150,25 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
             meetingGroup.setGroupTitle(dto.getGroupTitle() != null ?
                     dto.getGroupTitle() : meetingGroup.getGroupTitle());
+
             meetingGroup.setGroupContent(dto.getGroupContent() != null ?
                     dto.getGroupContent() : meetingGroup.getGroupContent());
+
             meetingGroup.setGroupAddress(dto.getGroupAddress() != null ?
                     dto.getGroupAddress() : meetingGroup.getGroupAddress());
+
             meetingGroup.setGroupImage(groupImgPath != null ?
                     groupImgPath : meetingGroup.getGroupImage());
+
             meetingGroup.setGroupSupplies(dto.getGroupSupplies() != null ?
                     dto.getGroupSupplies() : meetingGroup.getGroupSupplies());
+
             meetingGroup.setGroupCategory(dto.getGroupCategory() != null ?
                     dto.getGroupCategory() : meetingGroup.getGroupCategory());
+
             meetingGroup.setGroupType(dto.getGroupType() != null ?
                     dto.getGroupType() : meetingGroup.getGroupType());
+
             meetingGroup.setMeetingType(dto.getMeetingType() != null ?
                     dto.getMeetingType() : meetingGroup.getMeetingType());
 
@@ -184,6 +191,7 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         }
         try {
             Optional<MeetingGroup> optionalMeetingGroup = meetingGroupRepository.findById(groupId);
+
             if(optionalMeetingGroup.isPresent()){
                 meetingGroupRepository.deleteById(groupId);
             }
@@ -195,7 +203,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     }
 
-  // 그룹 모임 홈화면 출력 사용자가 카테고리 선택한 경우/안한 경우
     @Override
     public ResponseDto<List<HomeGroupResponseDto>> getGroupAtHome(String userId) {
         List<HomeGroupResponseDto> data = null;
@@ -225,7 +232,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     }
 
-    // 그룹 모임 홈화면 출력 로그아웃
     @Override
     public ResponseDto<List<HomeGroupResponseDto>> getGroupAtHomeAuth() {
         List<HomeGroupResponseDto> data = null;
@@ -251,9 +257,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
 
     }
 
-
-
-    // 검색어 필터링
     @Override
     public ResponseDto<List<SearchResponseDto>> findByGroupTitle(String keyword) {
         List<SearchResponseDto> data = null;
@@ -282,7 +285,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-    // 단기/정기 필터링
     @Override
     public ResponseDto<List<SearchResponseDto>> findByGroupType(GroupTypeCategory groupType) {
         String groupTypes  = groupType.toString();
@@ -311,7 +313,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-    // 취미카테고리/지역카테고리
     @Override
     public ResponseDto<List<SearchResponseDto>> findByGroupCategoryAndRegion(
             GroupCategory groupCategory, String region) {
@@ -344,11 +345,6 @@ public class MeetingGroupServiceImplement implements MeetingGroupService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-
-
-
-
-    // 그룹 단건 조회
     @Override
     public ResponseDto<ResponseGroupDto> getGroupById(Long groupId) {
         ResponseGroupDto data = null;

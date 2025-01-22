@@ -16,9 +16,14 @@ public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
   
     List<UserAnswer> findAllByGroupId(Long groupId);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE  FROM UserAnswer ua WHERE ua.userId = :userId  and ua.groupId = :groupId  ")
+    void deleteByUserId(@Param("userId") String userId , @Param("groupId") Long groupId);
+
+    // 사용자 답변 중복 확인
     boolean existsByGroupIdAndUserId(Long groupId, String userId);
 
-    // 모임 신청 내역 확인
     @Query("SELECT mg.groupId, mg.groupTitle, mg.groupType, mg.meetingType, " +
             "mg.groupCategory, mg.groupImage, ua.answerId, ua.answerDate, ua.isApproved " +
             "FROM UserAnswer ua JOIN MeetingGroup mg ON ua.groupId = mg.groupId " +

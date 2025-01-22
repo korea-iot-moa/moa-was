@@ -84,7 +84,6 @@ public class VoteResultServiceImplement implements VoteResultService {
         }
     }
 
-
 }
 
 

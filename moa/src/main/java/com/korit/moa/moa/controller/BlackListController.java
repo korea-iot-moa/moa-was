@@ -21,8 +21,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BlackListController {
 
-    private  final BlackListService blackListService;
-    public  static final String GET_BLACK_LIST = "/{groupId}";
+    private final BlackListService blackListService;
+
+    private static final String GET_BLACK_LIST = "/{groupId}";
     private static final String POST_BLACK_LIST = "/{groupId}";
 
     @GetMapping(GET_BLACK_LIST)

@@ -1,6 +1,5 @@
 package com.korit.moa.moa.dto.black_list.response;
 
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,5 @@
 package com.korit.moa.moa.repository;
 
-import com.korit.moa.moa.entity.user.User;
-import com.korit.moa.moa.entity.userAnswer.UserAnswer;
 import com.korit.moa.moa.entity.userList.UserList;
 import com.korit.moa.moa.entity.userList.UserListId;
 import jakarta.transaction.Transactional;
@@ -11,17 +9,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UserListRepository extends JpaRepository<UserList, UserListId> {
 
-
-
-
-    // 모임 내 유저 조회
     @Query(
             "SELECT u, ul " +
             "FROM User u JOIN UserList ul ON u.userId = ul.user.userId " +
@@ -29,7 +22,6 @@ public interface UserListRepository extends JpaRepository<UserList, UserListId> 
     )
     List<Object[]> findUsersByGroupId(@Param("groupId") Long groupId);
 
-    // 내 모임 조회
     @Query(
             "SELECT g.groupId, g.groupImage, g.groupTitle " +
             "FROM MeetingGroup g JOIN UserList ul ON g.groupId = ul.group.groupId " +
@@ -37,10 +29,7 @@ public interface UserListRepository extends JpaRepository<UserList, UserListId> 
     )
     List<Object[]> findGroupByUserId(@Param("userId") String userId);
 
-//    // 데이터 베이스 존재 확인
-//    boolean existsByUserIdAndGroupId(String userId, Long groupId);
 
-    // 모임 나가기
     @Modifying
     @Query("DELETE FROM UserList ul WHERE ul.user.userId = :userId AND ul.group.groupId = :groupId")
     void deleteUserList(@Param("userId") String userId, @Param("groupId") Long groupId);
@@ -74,12 +63,11 @@ public interface UserListRepository extends JpaRepository<UserList, UserListId> 
     @Query("DELETE FROM UserList ul WHERE ul.user.userId = :userId AND ul.group.groupId = :groupId")
     void deleteByUserIdAndGroupId(@Param("userId") String userId, @Param("groupId") Long groupId);
 
-    @Query(
-        "SELECT ul FROM UserList ul " +
+
+@Query("SELECT ul FROM UserList ul " +
         "JOIN ul.user u " +
         "JOIN ul.group mg " +
-        "WHERE u.userId = :userId AND mg.groupId = :groupId"
-    )
+        "WHERE u.userId = :userId AND mg.groupId = :groupId")
 Optional<UserList> findByUserIdAndGroupId(@Param("userId") String userId, @Param("groupId") Long groupId);
 
 }
