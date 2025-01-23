@@ -32,8 +32,6 @@ public class BlackListServiceImplement implements BlackListService {
     private final BlackListRepository blackListRepository;
     private final UserRepository userRepository;
 
-
-
     @Override
     public ResponseDto<List<ResponseGetBlackListDto>> getBlackList(Long groupId) {
         List<ResponseGetBlackListDto> data = null;

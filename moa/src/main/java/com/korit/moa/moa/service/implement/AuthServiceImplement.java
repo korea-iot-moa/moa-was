@@ -99,7 +99,6 @@ public class AuthServiceImplement implements AuthService {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL);
         }
 
-
         try {
             String profileImgPath = null;
             if(dto.getProfileImage() != null) {

@@ -25,4 +25,5 @@ public class Recommendation {
     @MapsId("groupId")
     @JoinColumn(name = "group_id", referencedColumnName = "group_id")
     private MeetingGroup meetingGroup;
+
 }

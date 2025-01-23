@@ -14,8 +14,6 @@ public interface UserAnswerService {
 
     ResponseDto<List<UserAnswerGetResponseDto>> getUserAnswer(Long groupId);
 
-    ResponseDto<ResponseUserAnswerDto> postMeetingGroup(Long groupId, RequestUserAnswerDto dto);
-
     ResponseDto<Void> approveUserAnswer(Long groupId, RequestDeleteUserAnswerDto dto);
 
     ResponseDto<Boolean> refuseRequestUserAnswer (Long groupId, RequestDeleteUserAnswerDto dto);

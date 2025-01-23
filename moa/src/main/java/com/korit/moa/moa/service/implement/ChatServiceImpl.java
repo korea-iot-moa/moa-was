@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Log4j2
 public class ChatServiceImpl implements ChatService {
+
     private final ChatRepository chatRepository;
     private final RedisTemplate<String, Object> redisTemplate;
 

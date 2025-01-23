@@ -17,5 +17,4 @@ public class PostReportRequestDto {
     @NotBlank
     private ReportResult reportResult;
 
-
 }

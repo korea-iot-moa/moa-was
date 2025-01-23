@@ -139,5 +139,4 @@ public class ReportServiceImplement implements ReportService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
     }
 
-
 }

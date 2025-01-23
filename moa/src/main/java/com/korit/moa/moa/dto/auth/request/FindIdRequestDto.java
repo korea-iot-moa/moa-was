@@ -18,4 +18,5 @@ public class FindIdRequestDto {
 
     @NotNull
     private String email;
+
 }

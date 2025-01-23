@@ -77,7 +77,6 @@ public class MailServiceImplement implements MailService {
         }
     }
 
-
     @Override
     public ResponseDto<String> verifyEmail(String token) {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, token);

@@ -12,5 +12,4 @@ public class FindUserIdMailRequestDto {
     private String phoneNumber;
 
     private String userName;
-
 }

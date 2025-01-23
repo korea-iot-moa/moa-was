@@ -53,4 +53,5 @@ public class SignUpRequestDto {
 
     @NotBlank
     private String email;
+
 }

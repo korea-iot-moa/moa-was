@@ -64,7 +64,6 @@ public class VoteResultServiceImplement implements VoteResultService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
     }
 
-
     @Override
     public ResponseDto<Boolean> existsByVoteIdAndUserId(String userId, Long voteId) {
         Boolean data = null;

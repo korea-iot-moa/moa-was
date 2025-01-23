@@ -3,7 +3,6 @@ package com.korit.moa.moa.service.implement;
 import com.korit.moa.moa.common.constant.ResponseMessage;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestDeleteUserAnswerDto;
-import com.korit.moa.moa.dto.user_answer.request.RequestUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.UserAnswerRequestDto;
 import com.korit.moa.moa.dto.user_answer.response.ParticipationStatusResponseDto;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
@@ -37,36 +36,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(rollbackOn = Exception.class)
 public class UserAnswerServiceImplement implements UserAnswerService {
+
     private final UserRepository userRepository;
     private final UserListRepository userListRepository;
     private final UserAnswerRepository userAnswerRepository;
     private final MeetingGroupRepository meetingGroupRepository;
-
-
-    @Override
-    public ResponseDto<ResponseUserAnswerDto> postMeetingGroup(Long groupId, RequestUserAnswerDto dto) {
-        String userId = dto.getUserId();
-        String userAnswer = dto.getUserAnswer();
-        LocalDate date = LocalDate.now();
-
-        try {
-                meetingGroupRepository.findById(groupId);
-            UserAnswer newUserAnswer = UserAnswer.builder()
-                    .userId(userId)
-                    .groupId(groupId)
-                    .answerDate(date)
-                    .isApproved(2)
-                    .userAnswer(userAnswer)
-                    .build();
-
-            userAnswerRepository.save(newUserAnswer);
-            ResponseUserAnswerDto data = new ResponseUserAnswerDto(newUserAnswer);
-            return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
-        }
-    }
 
     @Override
     public ResponseDto<List<UserAnswerGetResponseDto>> getUserAnswer(Long groupId) {

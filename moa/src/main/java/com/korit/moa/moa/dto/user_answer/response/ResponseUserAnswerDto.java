@@ -33,5 +33,4 @@ public class ResponseUserAnswerDto {
         this.userAnswer = userAnswer.getUserAnswer();
         this.answerDate = userAnswer.getAnswerDate();
     }
-
 }
