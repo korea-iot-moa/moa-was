@@ -42,17 +42,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }
-
             String userId = jwtProvider.getUserIdFromJwt(token);
             String nickName = jwtProvider.getNickNameFromJwt(token);
             String profileImage = jwtProvider.getProfileImageFromJwt(token);
-
 
             setAuthenticationContext(request, userId, nickName, profileImage);
         }catch (Exception e){
             e.printStackTrace();
         }
-
         filterChain.doFilter(request, response);
     }
 
@@ -61,7 +58,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 = new UsernamePasswordAuthenticationToken(userId, null, AuthorityUtils.NO_AUTHORITIES);
 
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
 
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(authenticationToken);
