@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseGetBlackListDto {
+
     @NotBlank
     private Long blackListId;
 
@@ -20,9 +21,5 @@ public class ResponseGetBlackListDto {
 
     @NotBlank
     private String nickName;
-
-
-
-
 
 }

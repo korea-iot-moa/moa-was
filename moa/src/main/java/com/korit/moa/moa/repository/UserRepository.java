@@ -34,7 +34,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     String findByUserNickName(@Param("userId") String userId);
 
     User findBySnsIdAndJoinPath(String snsId, String registration);
-    
+
     @Modifying
     @Query("DELETE FROM User u WHERE u.userId = :userId")
     void deleteUser(@Param("userId") String userId);

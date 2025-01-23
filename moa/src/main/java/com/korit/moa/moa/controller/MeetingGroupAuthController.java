@@ -1,6 +1,5 @@
 package com.korit.moa.moa.controller;
 
-
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.group.response.HomeGroupResponseDto;

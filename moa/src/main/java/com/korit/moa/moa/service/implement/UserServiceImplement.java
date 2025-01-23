@@ -8,7 +8,6 @@ import com.korit.moa.moa.dto.user.request.UpdateUserPasswordRequestDto;
 import com.korit.moa.moa.dto.user.request.UpdateUserRequestDto;
 import com.korit.moa.moa.dto.user.response.ResponseUserDto;
 import com.korit.moa.moa.entity.user.User;
-import com.korit.moa.moa.repository.UserHobbiesRepository;
 import com.korit.moa.moa.repository.UserRepository;
 import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.UserService;
@@ -33,7 +32,7 @@ public class UserServiceImplement implements UserService {
             Optional<User> optionalUser = userRepository.findByUserId(userId);
 
             if (optionalUser.isEmpty()) {
-                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA); // 사용자 없음
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
             }
 
             User user = optionalUser.get();
@@ -43,7 +42,7 @@ public class UserServiceImplement implements UserService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR); // 데이터베이스 오류
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
     }
 
@@ -54,6 +53,7 @@ public class UserServiceImplement implements UserService {
         if (dto.getNickName() != null && !dto.getNickName().matches("^[a-zA-Z가-힣0-9]{1,10}$")) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "nickName");
         }
+
         if (dto.getUserName() != null && !dto.getUserName().matches("^[a-zA-Z가-힣]+$")) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userName");
         }
@@ -67,6 +67,7 @@ public class UserServiceImplement implements UserService {
         }
 
         try {
+
             Optional<User> optionalUser = userRepository.findById(userId);
             if (optionalUser.isEmpty()) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
@@ -120,6 +121,7 @@ public class UserServiceImplement implements UserService {
             if (user == null) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
             }
+
             if(!bCryptPasswordEncoder.matches(password, user.getPassword())) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD);
             }

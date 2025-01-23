@@ -1,6 +1,5 @@
 package com.korit.moa.moa.entity.user;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

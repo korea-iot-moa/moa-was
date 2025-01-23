@@ -21,13 +21,11 @@ public class RedisSubscriber implements MessageListener {
     @Override
     public void onMessage(Message message, byte[] pattern) {
         try {
-            // Redis 메시지를 ChatMessageRequestDto로 변환
             String msgBody = new String(message.getBody());
             ChatMessageRequestDto chatMessage = objectMapper.readValue(msgBody, ChatMessageRequestDto.class);
 
             System.out.println("Redis 메시지 수신: " + chatMessage);
 
-            // WebSocket 클라이언트로 메시지 브로드캐스트
             messagingTemplate.convertAndSend("/topic/" + chatMessage.getRoomId(), chatMessage);
         } catch (Exception e) {
             e.printStackTrace();

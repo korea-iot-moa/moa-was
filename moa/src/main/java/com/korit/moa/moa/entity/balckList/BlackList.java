@@ -16,7 +16,6 @@ public class BlackList {
     @Column(name = "black_list_id")
     private Long blackListId;
 
-
     @Column(name = "user_id", nullable = false, unique = true)
     private String userId;
 

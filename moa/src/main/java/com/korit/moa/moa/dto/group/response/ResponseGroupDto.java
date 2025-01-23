@@ -52,6 +52,4 @@ public class ResponseGroupDto {
         this.groupType = meetingGroup.getGroupType();
         this.meetingType = meetingGroup.getMeetingType();
     }
-
-
 }

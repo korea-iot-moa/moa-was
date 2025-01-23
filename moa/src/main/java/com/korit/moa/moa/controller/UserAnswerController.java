@@ -3,15 +3,12 @@ package com.korit.moa.moa.controller;
 import com.korit.moa.moa.common.constant.ApiMappingPattern;
 import com.korit.moa.moa.dto.ResponseDto;
 import com.korit.moa.moa.dto.user_answer.request.RequestDeleteUserAnswerDto;
-import com.korit.moa.moa.dto.user_answer.request.RequestUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.request.UserAnswerRequestDto;
 import com.korit.moa.moa.dto.user_answer.response.ParticipationStatusResponseDto;
 import com.korit.moa.moa.dto.user_answer.response.ResponseUserAnswerDto;
 import com.korit.moa.moa.dto.user_answer.response.UserAnswerGetResponseDto;
 import com.korit.moa.moa.service.UserAnswerService;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,17 +29,6 @@ public class UserAnswerController {
     private static final String PUT_APPROVE_REQUEST = "approved/{groupId}";
     private static final String GET_USER_ANSWER_DUPLICATION = "/duplication/{groupId}";
     private static final String GROUP_PARTICIPATION_STATUS = "/participation-status";
-
-
-    @PostMapping(GET_USER_ANSWER)
-    public ResponseEntity<ResponseDto<ResponseUserAnswerDto>> postMeetingGroup(
-            @PathVariable Long groupId,
-            @RequestBody RequestUserAnswerDto dto
-    ) {
-        ResponseDto<ResponseUserAnswerDto> response = userAnswerService.postMeetingGroup(groupId, dto);
-        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-        return ResponseEntity.status(status).body(response);
-    }
 
     @GetMapping(GET_USER_ANSWER)
     public ResponseEntity<ResponseDto<List<UserAnswerGetResponseDto>>> getUserAnswer(@PathVariable Long groupId) {
@@ -91,7 +77,7 @@ public class UserAnswerController {
         HttpStatus status = response.isResult() ? HttpStatus.OK:HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
-    
+
     @GetMapping(GROUP_PARTICIPATION_STATUS)
     public ResponseEntity<ResponseDto<List<ParticipationStatusResponseDto>>> findParticipationStatus(
             @AuthenticationPrincipal String userId

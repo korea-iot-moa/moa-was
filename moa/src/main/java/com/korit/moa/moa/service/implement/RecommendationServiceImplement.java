@@ -89,7 +89,6 @@ public class RecommendationServiceImplement implements RecommendationService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-
     @Override
     public ResponseDto<Void> deleteRecommendation(String userId, RequestRecommendationDto dto) {
         Long groupId = dto.getGroupId();

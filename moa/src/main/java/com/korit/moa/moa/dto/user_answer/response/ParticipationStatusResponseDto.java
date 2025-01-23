@@ -13,13 +13,22 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ParticipationStatusResponseDto {
+
     private Long groupId;
+
     private String groupTitle;
+
     private GroupTypeCategory groupType;
+
     private MeetingTypeCategory meetingType;
+
     private GroupCategory groupCategory;
+
     private String groupImage;
+
     private Long answerId;
+
     private LocalDate answerDate;
+
     private int isApproved;
 }

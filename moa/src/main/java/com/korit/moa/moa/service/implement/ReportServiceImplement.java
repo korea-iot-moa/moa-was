@@ -13,10 +13,7 @@ import com.korit.moa.moa.entity.Report.ReportType;
 import com.korit.moa.moa.entity.balckList.BlackList;
 import com.korit.moa.moa.entity.meetingGroup.MeetingGroup;
 import com.korit.moa.moa.entity.user.User;
-import com.korit.moa.moa.repository.BlackListRepository;
-import com.korit.moa.moa.repository.MeetingGroupRepository;
-import com.korit.moa.moa.repository.ReportRepository;
-import com.korit.moa.moa.repository.UserRepository;
+import com.korit.moa.moa.repository.*;
 import com.korit.moa.moa.service.ImgFileService;
 import com.korit.moa.moa.service.ReportService;
 import jakarta.transaction.Transactional;
@@ -35,6 +32,7 @@ public class ReportServiceImplement implements ReportService {
     private final UserRepository userRepository;
     private final BlackListRepository blackListRepository;
     private final ImgFileService imgFileService;
+    private final UserListRepository userListRepository;
 
     @Override
     public ResponseDto<ReportResponseDto> createReport(String userId, CreateReportRequestDto dto) {
@@ -81,8 +79,8 @@ public class ReportServiceImplement implements ReportService {
         try{
             List<Object[]> results = reportRepository.findReportByGroupId(groupId);
             data = results.stream()
-                    .map(ressult -> {
-                        Report report = (Report) ressult[0];
+                    .map(result -> {
+                        Report report = (Report) result[0];
                         return new ReportResponseDto(report);
                     })
                     .toList();
@@ -116,28 +114,23 @@ public class ReportServiceImplement implements ReportService {
     @Override
     @Transactional(rollbackOn = Exception.class)
     public ResponseDto<Void> postReport(Long groupId, PostReportRequestDto dto) {
-        ReportResult reportResult = dto.getReportResult();
-        try{
-            Optional<MeetingGroup> optionalReport = meetingGroupRepository.findById(groupId);
+        try {
+            MeetingGroup meetingGroup = meetingGroupRepository.findById(groupId)
+                    .orElseThrow(() -> new IllegalArgumentException("그룹이 존재하지 않습니다."));
 
-            if (optionalReport.isEmpty()) {
-                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_GROUP);
+            if (dto.getReportResult() == ReportResult.추방) {
+                User user = userRepository.findByUserId(dto.getReportUser())
+                        .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+                BlackList blackList = BlackList.builder()
+                        .userId(user.getUserId())
+                        .groupId(meetingGroup.getGroupId())
+                        .build();
+                blackListRepository.save(blackList);
             }
 
-            if (reportResult == ReportResult.추방) {
-                Optional<MeetingGroup> meetingGroupOptional = meetingGroupRepository.findById(groupId);
-                Optional<User> userOptional = userRepository.findByUserId(dto.getReportUser());
-
-                if (meetingGroupOptional.isPresent() && userOptional.isPresent()) {
-                    MeetingGroup meetingGroup = meetingGroupOptional.get();
-                    User user = userOptional.get();
-                    BlackList blackList = BlackList.builder()
-                            .userId(user.getUserId())
-                            .groupId(meetingGroup.getGroupId())
-                            .build();
-                    blackListRepository.save(blackList);
-                }
-            }
+            reportRepository.deleteReport(groupId, dto.getReportUser());
+            userListRepository.deleteUserList(dto.getReportUser(), groupId);
 
         } catch (Exception e) {
             e.printStackTrace();
