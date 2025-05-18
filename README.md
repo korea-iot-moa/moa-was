@@ -94,7 +94,7 @@ JPA 연관관계 처리 및 트랜잭션 흐름 관리 경험 축적
 팀워크의 핵심은 명확한 규칙과 체계적인 커뮤니케이션임을 절실히 느꼈습니다.
 
 📎 기술 스택
-Java 17 / Spring Boot
+Java 21 / Spring Boot
 
 JPA / MySQL
 
